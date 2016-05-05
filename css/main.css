@@ -549,3 +549,11 @@ table tr th :last-child,
 table tr td :last-child {
   margin-bottom: 0;
 }
+
+code,
+kbd,
+pre,
+samp {
+  font-family: monospace, monospace;
+  font-size: 0.90em;
+}

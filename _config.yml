@@ -74,8 +74,9 @@ url-pretty: "mookiefumi.com"  # eg. "deanattali.com/beautiful-jekyll"
 timezone: "Europe/Madrid"
 markdown: kramdown
 highlighter: rouge
-permalink: /:year-:month-:day-:title/
-paginate: 10
+permalink: /:year-:month-:day-:title
+paginate: 5
+future: false
 
 # Default YAML values (more information on Jekyll's site)
 defaults:

@@ -25,7 +25,7 @@ layout: page
     </p>
   
     <div class="post-entry">
-      {{ post.content | truncatewords: 50 | strip_html | xml_escape}}
+      {{ post.content | truncatewords: 150 | strip_html | xml_escape}}
 	  <a href="{{ post.url | prepend: site.baseurl }}" class="post-read-more">[Leer más]</a>
     </div>
   

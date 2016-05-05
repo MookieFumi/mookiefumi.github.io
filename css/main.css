@@ -550,10 +550,11 @@ table tr td :last-child {
   margin-bottom: 0;
 }
 
+/*MookieFumi*/
 code,
 kbd,
 pre,
 samp {
   font-family: monospace, monospace;
-  font-size: 0.90em;
+  font-size: 1em;
 }

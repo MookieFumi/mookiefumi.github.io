@@ -78,6 +78,9 @@ permalink: /:year-:month-:day-:title
 paginate: 10
 future: false
 
+# Plugins
+gems: [jekyll-paginate]
+
 # Default YAML values (more information on Jekyll's site)
 defaults:
   -

@@ -72,14 +72,20 @@ url-pretty: "mookiefumi.com"  # eg. "deanattali.com/beautiful-jekyll"
 
 # Output options (more information on Jekyll's site)
 timezone: "Europe/Madrid"
+encoding: utf-8
 markdown: kramdown
 highlighter: rouge
+kramdown:
+  input: GFM
+  hard_wrap: false
+  syntax_highlighter: rouge
 permalink: /:year-:month-:day-:title
-paginate: 10
+paginate: 5
 future: false
 
+
 # Plugins
-gems: [jekyll-paginate]
+gems: [jekyll-paginate, jekyll-redirect-from]
 
 # Default YAML values (more information on Jekyll's site)
 defaults:

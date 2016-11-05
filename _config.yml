@@ -58,15 +58,15 @@ footer-links-active:
 
 # How to display the link to the website in the footer
 # Remove this if you don't want a link in the footer
-url-pretty: "mookiefumi.com"  # eg. "deanattali.com/beautiful-jekyll"
+url-pretty: "mookiefumi.com"
 
 # --- Misc --- #
 
 # Fill in your Disqus shortname (NOT the userid) if you want to support Disqus comments
-#disqus: ""
+disqus: "mookiefumi"
 
 # Fill in your Google Analytics ID to track your website using GA
-#google_analytics: ""
+google_analytics: "UA-47937318-1"
 
 # --- Don't need to touch anything below here (but you can if you want) --- #
 
@@ -80,12 +80,11 @@ kramdown:
   hard_wrap: false
   syntax_highlighter: rouge
 permalink: /:year-:month-:day-:title
-paginate: 5
+paginate: 10
 future: false
 
-
 # Plugins
-gems: [jekyll-paginate, jekyll-redirect-from]
+gems: [jekyll-redirect-from, jekyll-paginate]
 
 # Default YAML values (more information on Jekyll's site)
 defaults:

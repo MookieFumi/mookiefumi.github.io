@@ -2,7 +2,7 @@
 layout: post
 title: Https en nuestra WebApi
 subtitle: Pasos a seguir para tener HTTPS en nuestra WebApi
-published: false
+published: true
 ---
 
 Ultimamente estamos desarrollando una WebApi que va a servir de backend a una aplicación móvil desarrollada en Xamarin y uno de los aspectos que más nos preocupaba era la securización de la misma ya que el método de autenticación es autenticación básica, es decir, el nombre de usuario y la contraseña viajan en texto plano (_Base64_). De hecho la recomendación es usar sólo autenticación básica con HTTPS.

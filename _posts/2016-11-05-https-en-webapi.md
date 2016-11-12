@@ -2,17 +2,18 @@
 layout: post
 title: Https en nuestra WebApi
 subtitle: Pasos a seguir para tener HTTPS en nuestra WebApi
-published: true
+published: false
 ---
 
 Ultimamente estamos desarrollando una WebApi que va a servir de backend a una aplicación móvil desarrollada en Xamarin y uno de los aspectos que más nos preocupaba era la securización de la misma ya que el método de autenticación es autenticación básica, es decir, el nombre de usuario y la contraseña viajan en texto plano (_Base64_). De hecho la recomendación es usar sólo autenticación básica con HTTPS.
 
 ### ¿Qué significa Https? 
-La definición exacta es protocolo seguro de transferencia de hipertexto (_**Hypertext Transfer Protocol Secure**_) y según podemos leer en la [Wikipedia](https://es.wikipedia.org/wiki/Hypertext_Transfer_Protocol_Secure) utiliza un cifrado basado en SSL/ TLS para crear un canal cifrado. Siempre que entramos en cualquier página de un banco, de cualquier red social, etc. vemos en la barra de direcciones del nevegador un icono de un candado y en él podemos la información en sí del certificado.
+La definición exacta es: protocolo seguro de transferencia de hipertexto (_**Hypertext Transfer Protocol Secure**_) y según podemos leer en la [Wikipedia](https://es.wikipedia.org/wiki/Hypertext_Transfer_Protocol_Secure) utiliza un cifrado basado en SSL/ TLS para crear el canal de comunicación. Siempre que entramos en cualquier página de un banco, de cualquier red social, en definitiva de cualquier web, etc. vemos en la barra de direcciones del navegador un icono de un candado y en el cual podemos ver la información del certificado.
 
 <img src="images/https-info.png" alt="https" class="img-thumbnail"/>
 
-Un certificado digital contiene por normal general, información del sitio web, información de identificación del emisor, el período de validez y una firma única. **Es esta última la que confirma que te estás comunicando con quien realmente te querías comunicar**. En la actualizad hay muchas autoridades de certificación, por ejemplo, VeriSign o la que hemos seleccionado nosotros GoDaddy. El motivo de la elección no ha sido otro que el sitio dónde tenemos contratados los dominios y por dejar en un único sitio este tipo de gestiones.
+### ¿Qué contiene el certificado? 
+Un certificado digital contiene por normal general, información del sitio web, información del emisor (identificación), período de validez del mismo y una firma única. **Es esta última la que confirma que te estás comunicando con quien realmente te querías comunicar**. En la actualizad hay muchas autoridades de certificación, por ejemplo, VeriSign o la que hemos seleccionado nosotros GoDaddy. El motivo de la elección no ha sido otro que el sitio dónde tenemos contratados los dominios y por dejar en un único sitio este tipo de gestiones.
 
 Para todo el proceso vamos a apoyarnos en una herramienta multiplaforma llamada [OpenSSL](https://www.openssl.org) que es un proyecto de software libre basado en SSLeay y desarrollado por Eric Young y Tim Hudson.
 
@@ -46,10 +47,10 @@ Email Address []:                                   mookiefumi@outlook.com
 > EL CSR generado tiene una clave pública que concuerda ("coincide") con la clave privada.
 
 * El siguiente paso es subir el CSR generado a la entidad certificadora, y es un proceso en el cual se confirman entre otros:
-	* Propiedad de dominio. Verifica que tienes control sobre este dominio.
-	* Cargar documentación. No siempre es necesario.
+    * **Propiedad de dominio**. Verificar que tienes control sobre el dominio. Nornalmente hay dos métodos para hacerlo, el primero por página HTML (crear una página HTML con el valor que el registrador te facilite) y el segundo por registro DNS (crear en el archivo de zona de DNS un registro de tipo TXT con registro de tipo DZC con el valor que el registrador te facilite).
+	* **Cargar documentación**. No siempre es necesario.
 
-* Una vez que la entidad certificadora ha validado la propiedad del dominio (nunca me ha llevado más de 15 minutos) lo siguiente es descargarlo y el formato con el que se descarga no suele ser nunca el formato con el que debemos añadirlo en el IIS o en Azure (**PFX**). En el caso de GoDaddy lo hemos descargado para IIS y hemos recibido dos archivos:
+* Una vez que la entidad certificadora ha validado la propiedad del dominio (nunca me ha llevado más de 15 minutos) lo siguiente es descargar el certificado y el formato con el que se descarga no suele ser nunca el formato con el que debemos añadirlo en el IIS o en Azure (**PFX**). En el caso de GoDaddy lo hemos descargado para IIS y hemos recibido dos archivos:
     * my-crt-file.crt
     * my-p7b-file.p7b
 

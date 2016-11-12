@@ -1,16 +1,9 @@
 ---
 layout: page
-title: About me
-subtitle: Why you'd want to go on a date with me
+title: Sobre mí
 ---
 
-My name is Inigo Montoya. I have the following qualities:
+Mi nombre es **Miguel Ángel Martín Hernández**, estudié el módulo de FPIII **Desarrollo de aplicaciones informáticas** en el Instituto de Formación Empresarial de la Cámara de Comercio de Madrid y después de mucho dibagar y perder el tiempo, decidí intentar tomarme algo más en serio todo lo que hago. Decidí estar en continuo aprendizaje, en continua observación y sobre todo gracias a Twitter empecé a mirar al exterior y descubrir que hay bastante gente con mis mismas inquietudes y de los cuales tengo muchísimo que aprender.
 
-- I rock a great mustache
-- I'm extremely loyal to my family
+> TODO En algún momento intentaré subir aquí lo que tengo metido en Linkedin
 
-What else do you need?
-
-### my history
-
-To be honest, I'm having some trouble remembering right now, so why don't you just watch [my movie](http://en.wikipedia.org/wiki/The_Princess_Bride_%28film%29) and it will answer **all** your questions.

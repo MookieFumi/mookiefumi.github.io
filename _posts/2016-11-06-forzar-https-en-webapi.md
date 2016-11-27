@@ -5,7 +5,7 @@ subtitle: Como forzar Https en los controladores de nuestras WebApi
 published: false
 ---
 
-En este artículo quiero mostrar como forzamos a los controladores de nuestra WebApi a utilizar Https aprovechando los puntos de extensibilidad que nos ofrece WebApi.
+El modo de autenticación de nuestra WebApi es autenticación básica, y como he comentado este tipo de autenficación "sólo es válida" si va con Https. Para ponernos en contexto y si mal no recuerdo, a día de hoy, Azure de forma predeterminada, tiene asegurado el dominio *.azurewebsites.net con un certificado SSL, por lo que cada sitio web levantemos estará disponible tanto por Http como por Https. Pero ¿Cómo podemos asegurarnos de que nuestros clientes usarán siempre nuestra API mediante Https?
 
 Antes de seguir
 

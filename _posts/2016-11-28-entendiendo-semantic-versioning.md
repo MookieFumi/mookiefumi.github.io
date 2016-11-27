@@ -12,11 +12,7 @@ Tengo que renocer que nunca he prestado demasiada importancia al tema de las ver
 * **Minor** se incrementa cuando añadimos funcionalidad sin romper compatibilidad.
 * **Patch** se incrementa cuando hemos corregido errores o bugs.
 
-Por lo tanto aplicando el formato comentado a la versión 3.9.1 de lodash:
-
-* Mayor: 3
-* Minor: 9
-* Patch: 1
+> Por lo tanto aplicando el formato comentado a la versión 3.9.1 de lodash: Mayor es 3, Minor es 9 y Patch es 1.
 
 ### Rangos
 Cuando gestionamos dependencias podemos usar rangos de versión para evitar actualizar nuestro componente cada vez que una dependencia se actualice.

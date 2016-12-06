@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Entendiendo Semantic Versioning
-published: true
+published: false
 ---
 
 Tengo que renocer que nunca he prestado demasiada importancia al tema de las versiones de los componentes que he utilizado tanto en los proyectos llevados a cabo nivel empresarial como en mis proyectos personales. Pero una vez metido en el desarrollo de Node.Js y revisando el archivo package.json que es el que contiene entre otras cosas las referencias a componentes externos (dependencias), me he dado cuenta de que no puedo estar más tiempo sin conocer y entender el sistema de versionado. Y en este caso quiero revisar [Semantic Versioning](http://semver.org) que vino para quedarse ya que resuelve el famoso "infierno de las dependencias" proponiendo un conjunto simple de reglas y requisitos de como se incrementan los números de versión.

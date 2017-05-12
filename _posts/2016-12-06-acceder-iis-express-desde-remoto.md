@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Acceder a IIS Express desde un equipo remoto
-published: false
+published: true
 ---
 
 Más de una vez hemos querido hacer que nuestro IIS Express sea accesible desde fuera de nuestra máquina de desarrollo para probar algo de forma puntual. Y como es costumbre no nos lo han puesto nada fácil por lo que deberemos seguir los siguientes pasos:
@@ -31,7 +31,5 @@ netsh http add urlacl url=http://192.168.0.12:51343/ user=todos
 ```
 netsh advfirewall firewall add rule name="IISExpress Exception" dir=in protocol=tcp localport=51343 profile=private remoteip=localsubnet action=allow
 ```
-
-Como valor añadido a este post, incluyo un gist con el contenido de un archivo de comandos que nos preguntará la dirección IP, el puerto y el nombre de la excepción del firewall y hará el trabajo por nosotros.
 
 Este post es una mera traducción del [artículo](http://johan.driessen.se/posts/Accessing-an-IIS-Express-site-from-a-remote-computer) de Johan Driessen.

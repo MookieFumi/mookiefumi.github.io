@@ -36,9 +36,9 @@ public static class SharedResourceKeys
 
 ## Queremos asegurarnos que todas las claves existen
 
-Aunque sabemos que con ASPNet Core y el middleware de localización si solicitamos al localizador una clave que no existe nos duelve lo mismo nosotros queremos asegurarnos que todas las constantes tienen su correspondiente recurso, al menos en la cultura por defecto y para ello hemos creado un test para asegurarnos de esto.
+Aunque sabemos que con ASPNet Core y el middleware de localización si solicitamos al localizador una clave que no existe nos duelve el mismo valor solicitado (clave), nosotros queremos asegurarnos que todas las constantes tienen su correspondiente recurso, al menos en la cultura por defecto y para ello hemos creado un test para asegurarnos de esto.
 
-Recurrimos a reflexión para recorrernos las propiedades de nuestra clase estática con los flags Public y Static y por cada uno de ellos llamar al localizador y comparar la propiedad ResourceNotFound ya que el tipo que nos devuelve al localizar una clave no es un string sino [LocalizedString](https://github.com/aspnet/Localization/blob/39aa9438abbaac7a25230dec7d2af4da2a8023bf/src/Microsoft.Extensions.Localization.Abstractions/LocalizedString.cs).
+En un test, recurrimos a reflexión para recorrernos las propiedades de nuestra clase estática con los flags Public y Static y por cada uno de ellos llamar al localizador y comparar la propiedad ResourceNotFound ya que el tipo que nos devuelve al localizar una clave no es un string sino [LocalizedString](https://github.com/aspnet/Localization/blob/39aa9438abbaac7a25230dec7d2af4da2a8023bf/src/Microsoft.Extensions.Localization.Abstractions/LocalizedString.cs).
 
 ```csharp
 public class StringLocalizerTest
@@ -72,7 +72,7 @@ public class StringLocalizerTest
 
 La clase llamada [ResourceManagerStringLocalizer](https://github.com/aspnet/Localization/blob/51549e8471c247f91d5ac57bd6f8f4c68508854b/src/Microsoft.Extensions.Localization/ResourceManagerStringLocalizer.cs) que es la implementación por defecto de IStringLocalizer la que se encarga de obtener los recursos de archivos resx.
 
-## Queremos que todos los recursos tengan una clave
+## Queremos asegurarnos que todos los recursos tienen una clave
 
 Igual que nos gusta asegurarnos que todas nuestras claves tengan un recurso al menos en la cultura por defecto, también nos interesa (a nosotros) asegurarnos que todos los recursos tienen una clave (gracias [Sergio Navarro](https://twitter.com/snavarropino)) de tal forma que exista una correlacción 1:1 entre nuestro almacén único de recursos y nuestra clase que almacen las claves.
 

@@ -3,9 +3,12 @@ layout: post
 title: Evitar magic string al internacionalizar una aplicación ASPNet Core
 published: false
 ---
-# Introducción
 
-En el [post sobre la internacionalización de una aplicación ASPNet Core](http://mookiefumi.com/2017-01-04-internacionalizacion-net-core) uno de los puntos más negativos que encontré es el uso de magic strings a la hora de localizar los recursos y en este post/ píldora quiero comentar la apromixamación que se me ha ocurrido para evitarlo.
+# Evitar magic string al internacionalizar una aplicación ASPNet Core
+
+## Introducción
+
+En el [post sobre la internacionalización de una aplicación ASPNet Core](http://mookiefumi.com/2017-01-04-internacionalizacion-net-core) uno de los puntos más negativos que encontré es el uso de magic strings a la hora de localizar los recursos y en este post/ píldora quiero comentar la aproximación que se me ha ocurrido para evitarlo.
 
 ## ¿Qué son las "magic strings"?
 
@@ -13,7 +16,7 @@ Son valores de cadenas que se especifican directamente dentro del código, y el 
 
 ## Poniendonos en situación
 
-Si nos centramos en el ejemplo de querer localizar algún recurso en el controlador tenemos la opción de inyectar IStringLocalizer/ IHtmlLocalizer y al usarlo tenemos que indicarle que clave es la que queremos recuperar. **Esa clave es nuestra "magic string"**. ¿Qué ocurre si queremos utilizar la clave Home en otro controlador? ¿Qué ocurre si le queremos cambiar el nombre a la clave mientras refactorizamos?
+Si nos centramos en el ejemplo de querer localizar algún recurso en el controlador tenemos la opción de inyectar IStringLocalizer/ IHtmlLocalizer y para solicitar al localizador un recurso debemos utilizar una cable. **Esa clave es nuestra "magic string"**.
 
 ```csharp
 public HomeController(IStringLocalizer<SharedResource> localizer)
@@ -22,7 +25,11 @@ public HomeController(IStringLocalizer<SharedResource> localizer)
 }
 ```
 
-## Evitándo las "magic strings" con el uso de constantes
+* ¿Qué ocurre si queremos utilizar la clave Home en otro controlador? ~~¿La repetimos en el resto de controladores?~~
+
+* ¿Qué ocurre si le queremos cambiar el nombre a la clave mientras refactorizamos? ~~Usaremos la técnica de buscar y reemplazar que tan buen resultado da.~~
+
+## Evitando las "magic strings" con el uso de constantes
 
 El mecanismo que suelo utilizar es el uso de una clase estática con constantes públicas y gracias al uso de nameof evito tener que escribir el literal como tal de la clave.
 
@@ -34,11 +41,11 @@ public static class SharedResourceKeys
 }
 ```
 
-## Queremos asegurarnos que todas las claves existen
+## Queremos asegurarnos que todas las claves tienen un recurso
 
-Aunque sabemos que con ASPNet Core y el middleware de localización si solicitamos al localizador una clave que no existe nos duelve el mismo valor solicitado (clave), nosotros queremos asegurarnos que todas las constantes tienen su correspondiente recurso, al menos en la cultura por defecto y para ello hemos creado un test para asegurarnos de esto.
+Aunque sabemos que con ASPNet Core y el middleware de localización si solicitamos al localizador una clave que no existe nos duelve el mismo valor solicitado (clave), nosotros queremos asegurarnos que todas las constantes tienen su correspondiente recurso, al menos en la cultura por defecto y para ello hemos creado un test.
 
-En un test, recurrimos a reflexión para recorrernos las propiedades de nuestra clase estática con los flags Public y Static y por cada uno de ellos llamar al localizador y comparar la propiedad ResourceNotFound ya que el tipo que nos devuelve al localizar una clave no es un string sino [LocalizedString](https://github.com/aspnet/Localization/blob/39aa9438abbaac7a25230dec7d2af4da2a8023bf/src/Microsoft.Extensions.Localization.Abstractions/LocalizedString.cs).
+En dicho test, recurrimos a reflexión para recorrernos las propiedades de nuestra clase estática con los flags Public y Static y por cada uno de ellos llamar al localizador y comparar la propiedad ResourceNotFound. Esta propiedad la tenemos ya que el tipo que nos devuelve el localizador al localizar un recurso no es un string sino [LocalizedString](https://github.com/aspnet/Localization/blob/39aa9438abbaac7a25230dec7d2af4da2a8023bf/src/Microsoft.Extensions.Localization.Abstractions/LocalizedString.cs).
 
 ```csharp
 public class StringLocalizerTest
@@ -76,7 +83,7 @@ La clase llamada [ResourceManagerStringLocalizer](https://github.com/aspnet/Loca
 
 Igual que nos gusta asegurarnos que todas nuestras claves tengan un recurso al menos en la cultura por defecto, también nos interesa (a nosotros) asegurarnos que todos los recursos tienen una clave (gracias [Sergio Navarro](https://twitter.com/snavarropino)) de tal forma que exista una correlacción 1:1 entre nuestro almacén único de recursos y nuestra clase que almacen las claves.
 
-Los "localizadores" implementan un método llamado GetAllStrings que por devuelve un IEnumerable de LocalizedString por lo que podemos hacer un test similar al anterior para asegurarnos de la correlación 1:1.
+Los "localizadores" implementan un método llamado GetAllStrings que devuelve un IEnumerable de LocalizedString por lo que podemos hacer un test similar al anterior para asegurarnos de la correlación 1:1.
 
 ```csharp
 [Fact]

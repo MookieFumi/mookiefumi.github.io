@@ -3,16 +3,23 @@ layout: post
 title: Internacionalizar una aplicación ASPNet Core
 published: true
 ---
-# Internacionalización: Globalización y localización
+# Internacionalizar una aplicación ASPNet Core
 
-## Introducción
+## Introducción, conceptos
 
-La **internacionalización (*I18n*)** implica la globalización y la localización.
+* **Internacionalización (*I18n*)**. Es el proceso de diseñar aplicaciones que soporten distintos idiomas y culturas/ regiones.
 
-* **Globalización (*G11n*)**. El proceso de crear una aplicación compatible con diferentes idiomas y regiones.
-* **Localización (*L10n*)**. Es el proceso de adaptación/ personalización de nuestra aplicación para soportar nuevas necesidades lingüisticas o culturales. Aunque a priori puede parecer que es solamente la traducción de unos recursos conviene recordar que estas adaptaciones también incluyen: formato de números y fechas, símbolos de moneda, etc.. Es decir, el proceso de personalización de una aplicación para un determinado idioma y región.
+* **Localización (*L10n*)**. Es el proceso de preparar/ **adaptar** nuestra aplicación a una cultura/ región específica. *Según la Wikipedia también se le puede denominar regionalización.*
 
-> Tenemos que tener absolutamente claro la diferencia existente entre Culture y UICulture. Con **Culture establecemos la cultura en tiempo de ejecución** y sirve principalmente para dar formato a fechas, números, símbolos de moneda, etc. y con **UICulture establecemos la cultura de la interfaz de usuario**, es decir, para traducir nuestros recursos.
+* **Globalización (*G11n*)**. Es una convección creada por IBM y Sun Microsystem para cubrir tanto la internacionalización como la localización.
+
+> Lo que está entre paréntesis (I18n, L10n, G11n) se denominan numerónimos que no es otra cosa que una palabra que contiene números con el fin de abreviar un término o concepto.
+
+<https://es.wikipedia.org/wiki/Internacionalizaci%C3%B3n_y_localizaci%C3%B3n>
+
+## Internacionalización en NET
+
+> La manera que tenemos en .NET de manejar diferentes culturas/ regionar/ idiomas es a través de las propiedades CurrentCulture y CurrentUICulture que se encuentran en System.Threading.Thread.CurrentThread, y tenemos que tener absolutamente claro la diferencia existente entre ambas. Con **Culture establecemos la cultura en tiempo de ejecución** y sirve principalmente para dar formato a fechas, números, símbolos de moneda, etc. y con **UICulture establecemos la cultura de la interfaz de usuario**, es decir, para traducir nuestros recursos.
 
 ## Internacionalización en NET Core
 
@@ -60,7 +67,14 @@ Features.Home.HomeController.es.resx
 Features.Home.HomeController.en.resx
 ```
 
-Y en el controlador inyectar **IStringLocalizer**. ¿Qué es IStringLocalizer? Es un artefacto creado para mejorar la productividad al desarrollar aplicaciones localizadas y utiliza tanto el ResourceManager como ResourceReader para proporcionar recursos en tiempo de ejecución. Si no encuentra la clave devuelve la misma solicitada, y con este enfoque, puede cambiar un poco la percepción en el desarrollo ya que de esta forma no necesitamos ningún archivo de recursos por defecto. A mí personalmente me gusta más el enfoque tradicional.
+Durante la configuración hemos especificado una cultura por defecto para nuestras peticiones por lo que el nombre del archivo de recursos para la cultura por defecto *(en esta caso es-ES)* puede no llevar el sufijo de la cultura.
+
+```script
+Features.Home.HomeController.resx
+Features.Home.HomeController.en.resx
+```
+
+Y en el controlador inyectar **IStringLocalizer**. ¿Qué es IStringLocalizer? Es un artefacto creado para mejorar la productividad al desarrollar aplicaciones localizadas y utiliza tanto el ResourceManager como ResourceReader para proporcionar recursos en tiempo de ejecución. Si el localizador no encuentra valor para la clave solicitada lo que devuelve es la misma clave solicitada.
 
 ```csharp
 public HomeController(IStringLocalizer<HomeController> localizer)
@@ -70,9 +84,9 @@ public HomeController(IStringLocalizer<HomeController> localizer)
 }
 ```
 
-En el controlador también podemos inyectar **IHtmlLocalizer** que es la implementación ad hoc para los recursos que contienen código HTML.
+En el controlador también podemos inyectar **IHtmlLocalizer** que es la implementación ad hoc para los recursos que contienen código HTML y lo que hace es escapar la salida HTML.
 
-> También es importante conocer que podemos inyectar en el controlador la factoría IStringLocalizerFactory que es la encargada de conseguir/ obtener estos localizadores. Personalmente me gusta más la opción de IStringLocalizer/ IHtmlLocalizer ya que así no tenemos que utilizar la llamada al método Create de la factoria.
+> También es importante conocer que podemos inyectar en el controlador la factoría IStringLocalizerFactory que es la encargada de conseguir/ obtener estos localizadores. Personalmente me gusta más la opción de IStringLocalizer/ IHtmlLocalizer ya que así no tenemos que utilizar la llamada al método Create de la factoria. A mi personalmente me gusta más la idea de ir por el genérico de IStringLocalizer, me resulta más cómodo y requiere un número menor de líneas de código.
 
 Conclusiones.
 
@@ -167,7 +181,7 @@ private static void RemoveAcceptLanguageProvider(RequestLocalizationOptions opti
 }
 ```
 
-También existe otro proveedor que aunque no se encuentra entre los de por defecto es muy chulo, es el llamado **RouteDataRequestCultureProvider**, que como por su nombre podemos sospechar la cultura pasará a ser parte de la ruta <http://localhost:5000/es-ES/About>. Para añadirlo bastaría con incluirlo entre los proveedores disponibles y modificar el enrutado de nuestra aplicación.
+También existe otro proveedor que aunque no se encuentra entre los de por defecto es muy chulo, es el llamado **RouteDataRequestCultureProvider**, que como por su nombre podemos sospechar la cultura pasará a ser parte de la ruta <http://localhost:5000/es-ES/Home/About>. Para añadirlo bastaría con incluirlo entre los proveedores disponibles y **modificar el enrutado de nuestra aplicación**, ya sea por la ruta por defecto (Convention routing) o por atributo (Attribute routing).
 
 ```csharp
 var requestProvider = new RouteDataRequestCultureProvider();
@@ -209,7 +223,7 @@ public void ConfigureServices(IServiceCollection services)
         .AddViewLocalization()
         .AddDataAnnotationsLocalization(options =>
         {
-            //Esto sólo lo incluiremos si queremos usar un almacén de traducciones diferente al de por defecto
+            //En este caso usamos el almacén centralizado de recursos (SharedResource)
             options.DataAnnotationLocalizerProvider = (type, factory) => factory.Create(typeof(SharedResource));
         });
 }

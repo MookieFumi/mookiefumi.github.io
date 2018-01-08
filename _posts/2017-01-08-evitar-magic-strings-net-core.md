@@ -1,9 +1,8 @@
 ---
 layout: post
 title: Evitar magic string al internacionalizar una aplicación ASPNet Core
-published: false
+published: true
 ---
-
 # Evitar magic string al internacionalizar una aplicación ASPNet Core
 
 ## Introducción
@@ -16,7 +15,7 @@ Son valores de cadenas que se especifican directamente dentro del código, y el 
 
 ## Poniendonos en situación
 
-Si nos centramos en el ejemplo de querer localizar algún recurso en el controlador tenemos la opción de inyectar IStringLocalizer/ IHtmlLocalizer y para solicitar al localizador un recurso debemos utilizar una cable. **Esa clave es nuestra "magic string"**.
+Si nos centramos en el ejemplo de querer localizar algún recurso en el controlador tenemos la opción de inyectar IStringLocalizer/ IHtmlLocalizer y para solicitar al localizador un recurso debemos utilizar una clave. **Esa clave es nuestra "magic string"**.
 
 ```csharp
 public HomeController(IStringLocalizer<SharedResource> localizer)
@@ -77,7 +76,7 @@ public class StringLocalizerTest
 
 ¿Quién es el encargado de proporcionarnos esta clave?
 
-La clase llamada [ResourceManagerStringLocalizer](https://github.com/aspnet/Localization/blob/51549e8471c247f91d5ac57bd6f8f4c68508854b/src/Microsoft.Extensions.Localization/ResourceManagerStringLocalizer.cs) que es la implementación por defecto de IStringLocalizer la que se encarga de obtener los recursos de archivos resx.
+La clase llamada [ResourceManagerStringLocalizer](https://github.com/aspnet/Localization/blob/51549e8471c247f91d5ac57bd6f8f4c68508854b/src/Microsoft.Extensions.Localization/ResourceManagerStringLocalizer.cs) es la implementación por defecto de IStringLocalizer que se encarga de obtener los recursos de archivos resx.
 
 ## Queremos asegurarnos que todos los recursos tienen una clave
 

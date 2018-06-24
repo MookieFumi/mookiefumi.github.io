@@ -57,7 +57,7 @@ emulator-5554	device
 
 En mi caso el dispositivo adjunto es el "**emulator-5554**" y será sobre el que trabaje.
 
-¿Dónde se encuentra la bbdd de nuestra aplicación? Este ejemplo es una aplicación **Xamarin Forms** y como las rutas varían en función de la plataforma dónde se ejecute esta configuración es específica y la tenemos en nuestro proyecto Android.
+¿Dónde se encuentra la bbdd de nuestra aplicación? Este ejemplo es una aplicación **Xamarin Forms** y como las rutas varían en función de la plataforma dónde se ejecute, esta configuración es específica y la tenemos en nuestro proyecto Android.
 
 ```csharp
 public class SQLiteClient : ISQLiteClient

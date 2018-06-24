@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Extrar base de datos SQLite de un terminal Android
+title: Extraer base de datos SQLite de un terminal Android
 published: true
 ---
 

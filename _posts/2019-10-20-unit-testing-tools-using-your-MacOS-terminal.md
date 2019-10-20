@@ -6,7 +6,7 @@ published: true
 
 ## Unit testing tools using your MacOS terminal
 
-I've been a MacOS user for many years and I've been working ~~/suffering~~ with **Visual Studio for Mac** & **Mono Studio** and let me say that their integrated tools to make unit testing are not enough so I had to include new tools to make my work easy.
+I've been a MacOS user for many years and I've been working ~~/suffering~~ with **Visual Studio for Mac** and **Mono Studio** and let me say that their integrated tools to make unit testing are not enough so I had to include new tools to make my work easy.
 
 When I run my tests in a terminal window or in Visual Studio for Mac the information they give me it´s only the final test result, i.e. how many tests are in red or how many tests are in green but I didn´t know which lines of code or which classes are covered by unit testing.
 

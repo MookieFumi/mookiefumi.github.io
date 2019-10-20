@@ -8,7 +8,7 @@ published: true
 
 I´ve been a MacOS user for many years and I ´ve been working with **Visual Studio for Mac** & **Mono Studio** and let me say that the tooling to work with unit testing is not enough so I had to include new tools to work easily.
 
-When I run my tests in a terminal window or in Visual Studio for Mac, the only information they give me it´s the final test result:
+When I run my tests in a terminal window or in Visual Studio for Mac, the information they give me it´s only the final test result:
 
 ```bash
 dotnet test NBAStats.Core.Test.csproj
@@ -23,7 +23,7 @@ Total tests: 11
  Total time: 1.4090 Seconds
 ```
 
-But, it´s not enough. So how can we get more information about our testing? There are some "new" tools that help us to get more information like:
+It´s good but maybe it´s not enough. So how can we get more information about our testing? There are some "new" tools that help us to get more information like:
 
 ### Coverlet
 
@@ -31,9 +31,7 @@ Coverlet is a cross platform code coverage framework for .NET, with support for 
 
 <https://github.com/tonerdo/coverlet>
 
-It has different integrations, VsTest, MSBuild and Global tool but let me show you the integration with MSBuild.
-
-To use it, we have to include the **coverlet.msbuild** package in the test project. So now we can execute the unit test collecting code coverage data.
+It has different integrations, VsTest, MSBuild and Dotnet Global tool but let me show you only the integration with MSBuild. To use it, we have to include the **coverlet.msbuild** package in our test project. So now we can execute the unit test collecting code coverage data.
 
 ```bash
 dotnet test NBAStats.Core.Test.csproj /p:CollectCoverage=true
@@ -90,7 +88,7 @@ Calculating coverage result...
 In my case, I usually don´t want to check the code coverage in my Views so I add an exclusion that exclude all the files in the Views namespace.
 
 ```bash
-dotnet test src/NBAStats.Core.Test/NBAStats.Core.Test.csproj /p:CollectCoverage=true /p:CoverletOutput=../coverage/ /p:CoverletOutputFormat=opencover /p:Exclude="[*]NBAStats.Core.Views.*"
+dotnet test src/NBAStats.Core.Test/NBAStats.Core.Test.csproj /p:CollectCoverage=true /p:CoverletOutput=../coverage/ /p:CoverletOutputFormat=opencover /p:Exclude="[*]*.Views.*"
 ```
 
 ### ReportGenerator

@@ -55,7 +55,7 @@ These are the behaviours that I want to cover with the unit test in the LoginPag
 * If the device doesn´t have internet connection we should show an alert.
 * If the login is valid the user will navigate to the main page.
 
-Use case: The login command is enable if the email and password are filled and here I usually check the positive case and the negative one.
+> Use case. The login command is enable if the email and password are filled and here I usually check the positive case and the negative one.
 
 ```csharp
 [Fact]
@@ -87,7 +87,7 @@ public void No_CanExecute_LoginCommand_If_Username_Or_Password_Are_Null_Or_Empty
 }
 ```
 
-Use case: If the login is not successful we should advise that something went wrong.
+> Use case. If the login is not successful we should advise that something went wrong.
 
 ```csharp
 [Fact]
@@ -102,7 +102,7 @@ public async Task Show_Toast_If_Login_Is_NotValid()
 }
 ```
 
-Use case: If the device doesn´t have internet connection we should show an alert.
+> Use case. If the device doesn´t have internet connection we should show an alert.
 
 ```csharp
 [Fact]
@@ -124,7 +124,7 @@ public async Task Show_Alert_If_Has_No_Internet_Connection()
 }
 ```
 
-Use case: If the login is valid the user will navigate to the main page.
+> Use case. If the login is valid the user will navigate to the main page.
 
 ```csharp
 [Fact]

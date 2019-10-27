@@ -32,7 +32,7 @@ I am going to use a LoginPage example with some use cases, it's a simple one (en
 
 What are the main parts of my ViewModels I usually cover with unit testing?
 
-* Code that have *business logic o presentation logic*, for example, enable or not a button when depends on a property value.
+* The code that has *business logic o presentation logic*, for example, enable or not a button when depends on a property value.
 
     E.g.: The login button is not enable until the username and password have value.
 
@@ -103,6 +103,7 @@ public void Cant_Execute_LoginCommand_If_Username_Or_Password_Are_Null_Or_Empty(
 [Fact]
 public async Task Show_Toast_If_Login_Is_NotValid()
 {
+    //The login method is configured to returns Not Valid if the username contains "aaa"
     _sut.Username = "aaanother@username";
     _sut.Password = _loginRequest.Password;
 

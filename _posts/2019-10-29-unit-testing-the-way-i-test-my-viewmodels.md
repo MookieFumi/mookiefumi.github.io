@@ -17,7 +17,7 @@ If you're a MacOS developer, I wrote some related posts with the tooling and the
 
 Nowadays the unit test is something required and we shouldn't negotiated if we have to do it or not, we've been applying new design patterns in order to test (*in this case*) our ViewModels, so we don't have more excuses. Are you testing your MVVM components like your ViewModels?
 
-Everytime I speak about unit testing, I remember the acronym F.I.R.S.T. Have you ever read something about it?
+Everytime I speak about unit testing, I remember the acronym **F.I.R.S.T**. It should be the key of every unit test. Have you ever read something about it?
 
 * **F**. Our unit test should be fast.
 * **I**. Our unit test should be isolated.

@@ -91,7 +91,7 @@ public void Can_Execute_LoginCommand_If_Username_And_Password_Are_Not_Empty_And_
 [InlineData("", "")]
 [InlineData(null, null)]
 //I check if the LoginCommand can be executed (false)
-//Theory/ Inline data are the way that XUnit can execute a test case with different parameters
+//Theory/ InlineData are the way that XUnit can execute a test case with different parameters
 public void Cant_Execute_LoginCommand_If_Username_Or_Password_Are_Null_Or_Empty(string username, string password)
 {
     _sut.Username = username;

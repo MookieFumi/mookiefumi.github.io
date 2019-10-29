@@ -4,7 +4,7 @@ title: Unit testing, the way I test my ViewModels
 published: true
 ---
 
-## ViewModel unit testing
+## Unit testing, the way I test my ViewModels
 
 If you're a MacOS developer, I wrote some posts related with the tooling and the code coverage. Please, check them: [Unit testing tools using your MacOS terminal](https://mookiefumi.com/2019-10-20-unit-testing-tools-using-your-MacOS-terminal) and [Unit testing tools using VSCode](https://mookiefumi.com/2019-10-23-unit-testing-tools-using-your-vscode).
 

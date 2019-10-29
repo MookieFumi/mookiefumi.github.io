@@ -27,9 +27,9 @@ Everytime I speak about unit testing, I remember the acronym **F.I.R.S.T**. It s
 
 Please, check [this link](https://github.com/ghsukumar/SFDC_Best_Practices/wiki/F.I.R.S.T-Principles-of-Unit-Testing) to read more about F.I.R.S.T.
 
-I am going to use a LoginPage example with some use cases, it's a simple one (enough, i hope) and it will help us to show you how you can do it. This is our LoginPage.
-
 ### The example
+
+I am going to use a LoginPage example with some use cases, it's a simple one (enough, i hope) and it will help us to show you how you can do it. This is our LoginPage.
 
 ![LoginPage](images/Screenshot2019-10-23_18.26.57.png)
 
@@ -61,9 +61,9 @@ I have in my tool belt some nuget packages that helps me to write tests but they
 
 ### Testing the use cases
 
-These are the behaviours that I want to cover with the unit test in the LoginPageViewModel, and please remember.
+These are the behaviours that I want to cover with the unit test in the LoginPageViewModel.
 
-* The login command is enable if the email and password are entered.
+* The login button is enable if the email and password are entered.
 * If the login is not successful we should advise that something went wrong.
 * If the device doesn't have internet connection we should show an alert.
 * If the login is valid the user will navigate to the main page.
@@ -72,6 +72,7 @@ These are the behaviours that I want to cover with the unit test in the LoginPag
 
 ```csharp
 [Fact]
+//I check if the LoginCommand can be executed (true)
 public void Can_Execute_LoginCommand_If_Username_And_Password_Are_Not_Empty_And_Null()
 {
     _sut.Username = "not-empty";
@@ -89,6 +90,8 @@ public void Can_Execute_LoginCommand_If_Username_And_Password_Are_Not_Empty_And_
 [InlineData("anyValue", null)]
 [InlineData("", "")]
 [InlineData(null, null)]
+//I check if the LoginCommand can be executed (false)
+//Theory/ Inline data are the way that XUnit can execute a test case with different parameters
 public void Cant_Execute_LoginCommand_If_Username_Or_Password_Are_Null_Or_Empty(string username, string password)
 {
     _sut.Username = username;

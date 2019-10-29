@@ -6,7 +6,7 @@ published: true
 
 ## Unit testing, the way I test my ViewModels
 
-If you're a MacOS developer, I wrote some posts related with the tooling and the code coverage. Please, check them: [Unit testing tools using your MacOS terminal](https://mookiefumi.com/2019-10-20-unit-testing-tools-using-your-MacOS-terminal) and [Unit testing tools using VSCode](https://mookiefumi.com/2019-10-23-unit-testing-tools-using-your-vscode).
+If you're a MacOS developer, I wrote some related posts with the tooling and the code coverage. Please, check them: [Unit testing tools using your MacOS terminal](https://mookiefumi.com/2019-10-20-unit-testing-tools-using-your-MacOS-terminal) and [Unit testing tools using VSCode](https://mookiefumi.com/2019-10-23-unit-testing-tools-using-your-vscode).
 
 > This article is part of the October Xamarin Best Practices Challenge, you can read about it in [Github of Claudio Sanchez](https://github.com/claudiosanchez/OctoberXamarinChallenge).
 

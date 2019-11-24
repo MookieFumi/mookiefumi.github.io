@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Prism. Auto-register your views/ pages
+title: Prism. Auto-register your views/ pages (Xamarin Forms)
 published: true
 ---
 

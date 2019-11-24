@@ -36,7 +36,7 @@ He estado trabajando como desarrollador de backend durante años y la tendencia 
 
 La principal ventaja de este tipo de agrupación es la fácil ubicación de los archivos que queramos modificar y también facilitar el acceso al código a los nuevos miembros del equipo ya que en cierta medida es más fácil no tocar partes del código que igual no debemos tocar.
 
-> También es muy cómodo, si trabajas en Visual Studio para Windows, utilizar la opción "Scope to" para focalizar nuestro trabajo en una sola característica.
+> También es muy cómodo, si trabajas en Visual Studio para Windows, utilizar la opción "Scope to" del explorador de soluciones para focalizar nuestro trabajo en una sola característica.
 
 ### Cómo registrar nuestros Vistas y ViewModels
 

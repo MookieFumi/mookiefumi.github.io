@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Feature folders with Prism (Xamarin Forms)
-published: false
+published: true
 ---
 
 ## Feature folders with Prism - Xamarin Forms

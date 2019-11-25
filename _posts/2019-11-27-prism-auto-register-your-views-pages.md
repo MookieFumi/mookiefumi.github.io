@@ -10,9 +10,9 @@ This is quick blog post and I want to share with you how I solve a recurrent iss
 
 At least in my projects all the Views/ ViewModels are registered in the same way.
 
-I know that the [Prism](https://prismlibrary.github.io) guys ([Brian Lagunas](https://twitter.com/brianlagunas), [Dan Siegel](https://twitter.com/DanJSiegel)) have include a new attribute to auto register the Views. This new attribute was included in the version [7.2.0.1367](https://github.com/PrismLibrary/Prism/releases/tag/v7.2.0.1367) and the name is **AutoRegisterForNavigation**. IMHO it's a good option but it's not my preferred one because the attributes usually are hidden in the code and if the teams is not a mature one maybe it's hard to find it or to tell what the magic happens.
+I know that the [Prism](https://prismlibrary.github.io) guys ([Brian Lagunas](https://twitter.com/brianlagunas), [Dan Siegel](https://twitter.com/DanJSiegel)) have include a new attribute to auto register the Views. This new attribute was included in the version [7.2.0.1367](https://github.com/PrismLibrary/Prism/releases/tag/v7.2.0.1367) and the name is **AutoRegisterForNavigation**. IMHO it's a good option but it's not my preferred one because the attributes usually are hidden (a little bit) in the code and if the team is not a mature one maybe it's hard to find it or to tell what the magic happens.
 
-I usually create two extension methods of **IContainerRegistry**, one to register my services and another one to register my Views/ ViewModels to clear my App.xaml.cs file. I really hate having too much code here.
+I usually create two extension methods of **IContainerRegistry**, one to register my services and another one to register my Views/ ViewModels in order to clear my App.xaml.cs file. I really hate having too much code here.
 
 ```csharp
 public partial class App : PrismApplication
@@ -47,10 +47,10 @@ public interface IRegisterablePage
 }
 ```
 
-And every page or even better, your View/ Page base class have to implement the marker interface.
+And every page or even better, your View/ Page base class has to implement the marker interface.
 
 ```csharp
-//Can be your view/ page base class
+//Could be your view/ page base class
 public partial class OrdersView : ContentPage, IRegisterablePage
 {
     public OrdersView()

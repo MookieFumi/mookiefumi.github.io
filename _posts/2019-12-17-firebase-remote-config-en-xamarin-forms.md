@@ -135,7 +135,7 @@ public class MyRemoteConfigurationService : IRemoteConfigurationService<RemoteCo
 
 ### Ejecutando nuestro ejemplo en ambas plataformas
 
-En el ejemplo podemos ver como se desactiva la opción de ver el detalle de un jugador en ambas plataformas y cambiando el valor desde Firebase Remote Config.
+En el ejemplo podemos ver como desactivamos la opción de ver el detalle de un jugador en Firebase Remote Config y como en ambas plataformas y sin necesidad de compilar ni distribuir, el detalle del jugador no se muestra.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/fMdo_CLRJmI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 

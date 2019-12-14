@@ -19,19 +19,20 @@ En resumen, creamos unos valores predeterminados en la aplicación que podemos s
 
 ### Configurar Remote Config en Firebase
 
-Podemos configurar Remote Config en <https://console.firebase.google.com/project/Your-Firebase-Project/config> y es extremadamente sencillo y la definimos mediante una clave de parámetro y un valor predeterminado que puede ser por ejemplo un json. En nuestro caso la clave de valor será features y el valor predeterminado el json:
+Podemos configurar Remote Config desde el portal de Firebase <https://console.firebase.google.com/project/Your-Firebase-Project/config> y es extremadamente sencillo ya que contamos con una interfaz gráfica muy completa. Añadimos una clave de parámetro y un valor predeterminado que puede ser por ejemplo un json (la interfaz gráfica tiene un asistente para validar el json). En nuestro caso la clave de valor será **Features** y el valor predeterminado el siguiente json:
 
 ```json
 {
-  "ShowPlayerDetail": false
+    //Mostrar o no el detalle de un jugador
+    "ShowPlayerDetail": false
 }
 ```
 
 Es decir, mediante esta parametrización podremos cambiar el comportamiento de nuestro aplicación ya que podremos mostrar o no el detalle del jugador seleccionado sin necesidad de compilar ni publicar la aplicación.
 
-### Añadir a nuestros proyectos Android y iOS los valores por defecto
+### Añadir a nuestros proyectos Android e iOS los valores por defecto
 
-En el caso de **Android** debemos añadir un archivo xml como AndroidResource con el contenido.
+En el caso de **Android** debemos añadir un archivo xml como Build Action -> AndroidResource con el siguiente contenido.
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -43,7 +44,7 @@ En el caso de **Android** debemos añadir un archivo xml como AndroidResource co
 </defaultsMap>
 ```
 
-En el caso de **iOS** debemos añadir un archivo plist con el mismo contenido que el de Android.
+En el caso de **iOS** debemos añadir un archivo plist con la misma clave (**Features**) y el mismo contenido que el de Android.
 
 ### Añadir paquetes nuget a nuestros proyectos
 

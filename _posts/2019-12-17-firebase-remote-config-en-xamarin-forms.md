@@ -133,6 +133,8 @@ public class MyRemoteConfigurationService : IRemoteConfigurationService<RemoteCo
 
 ### Ejecutando nuestro ejemplo en ambas plataformas
 
+En el ejemplo podemos ver como se desactiva la opción de ver el detalle de un jugador en ambas plataformas y cambiando el valor desde Firebase Remote Config.
+
 [![Xamarin Forms Firebase RemoteConfig](http://img.youtube.com/vi/fMdo_CLRJmI/0.jpg)](http://www.youtube.com/watch?v=fMdo_CLRJmI)
 
 ### Enlaces de interés

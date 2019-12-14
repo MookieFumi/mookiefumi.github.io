@@ -58,18 +58,19 @@ Para **iOS** el paquete nuget que he utilizado es:
 
 * Xamarin.Firebase.iOS.RemoteConfig (3.0.0).
 
-> Con versiones superiores a este paquete me ha dado muchos problemas por lo que he actualizado a la última versión.
+> Con versiones superiores a este paquete *(Xamarin.Firebase.iOS.RemoteConfig)* me ha dado muchos problemas por lo que NO he actualizado a la última versión.
 
 ### Crear interfaz e implementar en plataforma
 
-Y para manejar ambos parquetes desde nuestro proyectos .NetStandard definimos una interfaz para recuperar los valores en Firebase y otra para leer el valor de la clave.
+Y para manejar ambos parquetes desde nuestro proyecto .NetStandard definimos una interfaz para recuperar y activar los valores en Firebase y otra para leer el valor de la clave y convertirlo en nuestro objeto.
 
 ```csharp
 //Utilizamos un genérico para asignar el valor de la clave que queramos recuperar
-public interface IRemoteConfigurationService<TInput>
+public interface IRemoteConfigurationService
 {
     Task FetchAndActivateAsync();
     Task<TInput> GetAsync<TInput>(string key);
+    //Utilizamos un genérico para asignar el valor de la clave que queramos recuperar
 }
 ```
 
@@ -117,7 +118,7 @@ public class MyRemoteConfigurationService : IRemoteConfigurationService<RemoteCo
 
     public async Task FetchAndActivateAsync()
     {
-        var status = await RemoteConfig.SharedInstance.FetchAsync(60);
+        var status = await RemoteConfig.SharedInstance.FetchAsync(0);
         if (status == RemoteConfigFetchStatus.Success)
         {
             RemoteConfig.SharedInstance.ActivateFetched();
@@ -136,8 +137,9 @@ public class MyRemoteConfigurationService : IRemoteConfigurationService<RemoteCo
 
 En el ejemplo podemos ver como se desactiva la opción de ver el detalle de un jugador en ambas plataformas y cambiando el valor desde Firebase Remote Config.
 
-[![Xamarin Forms Firebase RemoteConfig](http://img.youtube.com/vi/fMdo_CLRJmI/0.jpg)](http://www.youtube.com/watch?v=fMdo_CLRJmI)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/fMdo_CLRJmI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ### Enlaces de interés
 
+* El repositorio está alojado en Github [Github](https://github.com/MookieFumi/XF-Firebase-RemoteConfig).
 * [Estrategias de carga](https://firebase.google.com/docs/remote-config/loading).

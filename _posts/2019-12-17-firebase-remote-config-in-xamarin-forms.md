@@ -10,9 +10,9 @@ published: true
 
 ### Introduction
 
-One of the most interesting services offered by Firebase is [Remote Config](https://firebase.google.com/docs/remote-config), it is a cloud service through we can change the behavior and appearance of our application without generating a new version of the application and without having to distribute it.
+One of the most interesting services offered by Firebase is [Remote Config](https://firebase.google.com/docs/remote-config),it is a cloud service that lets you change the behavior and appearance of your app without requiring users to download an app update. When using Remote Config, you create in-app default values that control the behavior and appearance of your app. Then, you can later use the Firebase console or the Remote Config REST API to override in-app default values for all app users or for segments of your user base. Your app controls when updates are applied, and it can frequently check for updates and apply them with a negligible impact on performance.
 
-So, we create some default values in the application that we can overwrite them through this service. 
+So, we can create some default values in the application that we can overwrite them through this service. For example:
 
 * If we want to enable or disable some app features (*this is the example of this blog post*).
 * If we want to show more or less info in the app screens.
@@ -60,17 +60,17 @@ In the **iOS** platform we have to add a plist file with **Build Action -> Bundl
 
 ### Add nuget packages in our projects
 
-Although there is a nuget package to handle Firebase Remote Config from our .Net Standard project, I have not been able to make it work, so I had to create an interface and implement it on the different platforms based on the use of different nuget packages.
+Although there is a nuget package to handle Firebase Remote Config from our .Net Standard project, we have not been able to make it work, so we had to create an interface and implement it on the different platforms based on the use of different nuget packages.
 
-For the **Android** platform the nuget package I have used is:
+For the **Android** platform the nuget package we have used is:
 
 * [Xamarin.Firebase.RemoteConfig](https://github.com/xamarin/GooglePlayServicesComponents) (71.1610.0).
 
-For the **iOS** platform the nuget package I have used is:
+For the **iOS** platform the nuget package we have used is:
 
 * [Xamarin.Firebase.iOS.RemoteConfig](https://github.com/xamarin/GoogleApisForiOSComponents) (3.0.0).
 
-> With higher versions to 3.0.0 of *(Xamarin.Firebase.iOS.RemoteConfig)* I had many issues so I had to work with an old one.
+> With higher versions to 3.0.0 of *(Xamarin.Firebase.iOS.RemoteConfig)* we had many issues so we had to work with an old one.
 
 ### Create an interface and implement it in both platforms
 

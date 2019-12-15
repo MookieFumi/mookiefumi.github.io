@@ -156,3 +156,4 @@ En el ejemplo podemos ver como desactivamos la opción de ver el detalle de un j
 * [Casos de uso](https://firebase.google.com/docs/remote-config/use-cases).
 * [Estrategias de carga](https://firebase.google.com/docs/remote-config/loading).
 * [Throttling](https://firebase.google.com/docs/remote-config/use-config-android#throttling).
+* [Propagar las modificaciones en tiempo real](https://firebase.google.com/docs/remote-config/propagate-updates-realtime).

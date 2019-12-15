@@ -38,7 +38,7 @@ Podemos configurar Firebase Remote Config desde el portal de Firebase <https://c
 
 > En este caso en concreto definimos una clave llamada **ShowPlayerDetail** para mostrar o no el detalle de un jugador en nuestra app.
 
-<img src="images/2019-12-15-17.10.14.png" width="200" /><img src="images/2019-12-15-17.10.58.png" width="200" />
+<img src="images/2019-12-15-17.10.14.png" width="300" /><img src="images/2019-12-15-17.10.58.png" width="300" />
 
 ### Añadir a nuestros proyectos Android e iOS los valores por defecto
 
@@ -152,7 +152,7 @@ En el ejemplo podemos ver como desactivamos la opción de ver el detalle de un j
 
 ### Enlaces de interés
 
-* El repositorio está alojado en Github [Github](https://github.com/MookieFumi/XF-Firebase-RemoteConfig).
+* Si quieres echar un vistazo al código el repositorio está alojado en [Github](https://github.com/MookieFumi/XF-Firebase-RemoteConfig).
 * [Casos de uso](https://firebase.google.com/docs/remote-config/use-cases).
 * [Estrategias de carga](https://firebase.google.com/docs/remote-config/loading).
 * [Throttling](https://firebase.google.com/docs/remote-config/use-config-android#throttling).

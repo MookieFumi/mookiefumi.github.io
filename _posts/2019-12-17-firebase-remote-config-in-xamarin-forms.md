@@ -30,7 +30,7 @@ In the [official documentation](https://firebase.google.com/docs/remote-config/u
 
 ### Setup Firebase Remote Config
 
-We can setup Firebase Remote Config through the Firebase portal<https://console.firebase.google.com/project/Your-Firebase-Project/config> and it is an easy process because the portal GUI is nice and friendly. To do it, we add a new parameter key and the default value and of course it can be a json (the GUI has a tool to validate the format of the json content). In the example case the key will be **Features** and the default value a json:
+We can setup Firebase Remote Config through the Firebase portal <https://console.firebase.google.com/project/Your-Firebase-Project/config> and it is an easy process because the portal GUI is nice and friendly. To do it, we add a new parameter key and the default value and of course it can be a json (the GUI has a tool to validate the format of the json content). In the example case the key will be **Features** and the default value a json:
 
 ```json
 {
@@ -70,13 +70,13 @@ For the **iOS** platform the nuget package we have used is:
 
 * [Xamarin.Firebase.iOS.RemoteConfig](https://github.com/xamarin/GoogleApisForiOSComponents) (3.0.0).
 
-> With higher versions to 3.0.0 of *(Xamarin.Firebase.iOS.RemoteConfig)* we had many issues so we had to work with an old one.
+> With higher versions to 3.0.0 of *Xamarin.Firebase.iOS.RemoteConfig* we had many issues so we had to work with an old one.
 
 ### Create an interface and implement it in both platforms
 
-To handle both nuget packages from our .NetStandard project we Y para manejar ambos paquetes desde nuestro proyecto .NetStandard define an interface to fetch and activate the values from Firebase (*FetchAndActivateAsync*) and to get the value of the requested key (*GetAsync*).
+To handle both nuget packages from our .NetStandard project we define an interface with two methods: one to fetch and activate the values from Firebase (*FetchAndActivateAsync*) and the other to get the value of the requested key (*GetAsync*).
 
-> Be careful! This is an example implementation, and it´s coded to run in the current example, in another use cases is better to fetch and activate the values not in the same method and depends on your scenario.
+> Be careful! This is an example implementation, and it´s coded to run in the current example and context, in another use cases is better to split the fetch methods and the activate method and depends on your scenario.
 
 ```csharp
 public interface IRemoteConfigurationService
@@ -116,7 +116,7 @@ public class MyRemoteConfigurationService : IRemoteConfigurationService
 }
 ```
 
-> The ActivateFetched method is deprecated in next versions (use the Activate method).
+> The ActivateFetched method is deprecated in next versions (please use the Activate method).
 
 This is the **iOS** implementation.
 
@@ -150,7 +150,7 @@ public class MyRemoteConfigurationService : IRemoteConfigurationService<RemoteCo
 
 ### Executing our example in both platforms
 
-In the example we can see that if we deactivate the option to see a player detail in Firebase Remote Config how in both platforms and without build or release a new version the behavior has changed.
+In the example we can see that if we deactivate the option to see a player detail in Firebase Remote Config how in both platforms and without build or release a new version the behavior is changed.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/fMdo_CLRJmI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 

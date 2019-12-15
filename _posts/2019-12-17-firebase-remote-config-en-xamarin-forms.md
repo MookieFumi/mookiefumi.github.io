@@ -13,8 +13,6 @@ Uno de los servicios más interesantes que ofrece Firebase es [Remote Config](ht
 En resumen, creamos unos valores predeterminados en la aplicación que podemos sobreescribirlos mediante este servicio, y como posibles casos de uso:
 
 * Si queremos activar o desactivar características de la aplicación (*este será el ejemplo con el que vamos a hacer este post*).
-![Firebase Remote Config Example](images/2019-12-15-17.10.14.png)
-![Firebase Remote Config Example](images/2019-12-15-17.10.58.png)
 * Si queremos mostrar más o menos información en las pantallas de nuestra app.
 * Si queremos modificar el tema o los colores de nuestra app.
 
@@ -39,6 +37,8 @@ Podemos configurar Firebase Remote Config desde el portal de Firebase <https://c
 ```
 
 > En este caso en concreto definimos una clave llamada **ShowPlayerDetail** para mostrar o no el detalle de un jugador en nuestra app.
+
+<img src="images/2019-12-15-17.10.14.png" width="200" /><img src="images/2019-12-15-17.10.58.png" width="200" />
 
 ### Añadir a nuestros proyectos Android e iOS los valores por defecto
 

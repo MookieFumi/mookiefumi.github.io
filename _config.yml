@@ -11,7 +11,7 @@ baseurl: ""
 title: Csharpeando#
 
 # Short description of your site
-description: Historias de un programador .NET "full-stack"!
+description: Historias de un desarrollador en .NET/ Kotlin
 
 # --- Navigation bar options --- #
 
@@ -35,9 +35,9 @@ avatar: "/img/avatar-icon.jpg"
 author:
   name: Miguel Angel Martin Hrdez
   email: "mookiefumi@outlook.com"
-  github: MookieFumi    # eg. daattali
-  twitter: MookieFumi   # eg. daattali
-  #linkedin: yourlink  # eg. "pub/dean-attali/8/946/143"
+  github: MookieFumi
+  twitter: MookieFumi
+  linkedin: mookiefumi  # eg. "pub/dean-attali/8/946/143"
   #stackoverflow: yourlink  # eg. "3943160/daattali"
  
 # Select which links to show in the footer
@@ -47,7 +47,7 @@ footer-links-active:
   email: true
   twitter: true
   github: true
-  linkedin: false
+  linkedin: true
   stackoverflow: false
 
 # How to display the link to the website in the footer

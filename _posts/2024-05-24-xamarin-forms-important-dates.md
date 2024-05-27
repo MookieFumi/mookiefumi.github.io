@@ -4,13 +4,13 @@ title: Fechas importantes para Xamarin Forms
 published: true
 ---
 
-## Fechas importantes en Xamarin Forms
+## Fechas importantes en Xamarin
 
-Actualmente como tech lead en desarrollo de aplicaciones móviles colaboro con diferentes equipos de desarrollo y tecnologías, desde el equipo de aplicaciones móviles cross-platform (Xamarin Forms) hasta el equipo de aplicaciones móviles en nativo (Kotlin) y llevo un tiempo pendiente y trabajando respecto a la preparación de la migración de los proyectos en Xamarin Forms (exactamente son 3 con una base bastante sólida de código compartido) a Microsoft MAUI pero me gustaría poder exponer por aquí un poco el timeline que hace unos meses ha ofrecido Microsoft respecto a este tema.
+Actualmente, como líder técnico en desarrollo de aplicaciones móviles, colaboro con diversos equipos y tecnologías. Trabajo tanto con un equipo de aplicaciones móviles cross-platform (usando Xamarin Forms) como con un equipo de aplicaciones móviles nativas (usando Kotlin). Desde hace un tiempo, he estado preparando la migración de tres proyectos de Xamarin a Microsoft MAUI, los cuales tienen una sólida base de código compartido y por ello me gustaría compartir el tineline que Microsoft presentó hace unos meses sobre este tema.
 
-### Introducción
+Fue, hace aproximadamente 4 meses (Enero 2025), David Ortinau (*.NET Product Manager en Microsoft*) [anunciaba a través de las redes sociales](https://www.linkedin.com/posts/davidortinau_xamarin-to-net-upgrade-survey-activity-7153471606655193088-m0SG) unas fechas importantes respecto a Xamarin y que afectan tanto a los desarrolladores como a los desarrollos y despliegues en tienda (Google Play/ Apple Play Store).
 
-Hace aproximadamente 4 meses David Ortinau (.NET Product Manager en Microsoft) [anunciaba a través de las redes sociales](https://www.linkedin.com/posts/davidortinau_xamarin-to-net-upgrade-survey-activity-7153471606655193088-m0SG) unas fechas importantes respecto a Xamarin Forms y que afectan tanto a los desarrolladores en Windows como en MacOS aunque especialmente estos últimos tenemos algún incoveniente más que a continuación intentaré detallar y explicar con algo más de detalle.
+![Xamarin timeline](images/xamarin-timeline.jpg "Xamarin timeline")
 
 ### Timeline.
 
@@ -54,9 +54,9 @@ Se espera que **agosto de 2025 sea el último momento en que la Google Play Stor
 Ante los próximos cambios en el soporte y las fechas límite mencionadas, es importante considerar las siguientes opciones para seguir desarrollando y publicando nuestras aplicaciones en los markets tanto de Google como de Apple.
 
 * **Migración a .NET MAUI**: .NET MAUI (Multi-platform App UI) es la evolución de Xamarin.Forms y está diseñado para permitir el desarrollo de aplicaciones multiplataforma con una única base de código en .NET. 
-  > Es la opción que hemos elegido para mantener el stack de desarrollo y poder seguir evolucionando nuestras aplicaciones.
+  * Es la opción que hemos elegido para mantener el stack de desarrollo y poder seguir evolucionando nuestras aplicaciones.
 
-  > Hemos tenido que analizar a vista de pájaro todas y cada una de las dependencias tanto del proyecto compartido como de los proyectos nativos y **cabe destacar la sustitución de Prism como framework "hormonado" para manejar nuestros ViewModels** debido a su cambio en la licencia y **hemos optado por la opción de CommunityToolkit** que parece que es la opción común y por la que vamos a apostar.
+  * Hemos tenido que analizar a vista de pájaro todas y cada una de las dependencias tanto del proyecto compartido como de los proyectos nativos y **cabe destacar la sustitución de Prism como framework "hormonado" para manejar nuestros ViewModels** debido a su cambio en la licencia y **hemos optado por la opción de CommunityToolkit** que parece que es la opción común y por la que vamos a apostar.
 
 * **Uso de Visual Studio Code con C# Dev Kit**: Microsoft está impulsando el uso de Visual Studio Code con el nuevo C# Dev Kit y extensiones relacionadas como una alternativa para el desarrollo de aplicaciones en .NET y C#. Puedes utilizar Visual Studio Code en cualquier sistema operativo, incluido macOS, y aprovechar las capacidades de desarrollo multiplataforma.
 
@@ -68,3 +68,10 @@ Ante los próximos cambios en el soporte y las fechas límite mencionadas, es im
 Quiero empezar a hacer una prueba de concepto, super ridícula, que sea una aplicación en Microsoft MAUI e intentar hacer la misma en algo en lo que no me encuentro tan cómodo como es Kotlin Multiplatform y poder después de esto poder comparar ambos frameworks de desarrollo con despliegue a Android y iOS.
 
 > Intentaré dejar por aquí documentado todo el proceso de ambos PoCs.
+
+### Enlaces de interés
+
+| Info    | Enlace |
+| -------- | ------- |
+| .NET and .NET Core Support Policy  | https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core    |
+| Xamarin Support Policy | https://dotnet.microsoft.com/en-us/platform/support/policy/xamarin     |

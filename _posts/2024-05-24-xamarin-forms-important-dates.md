@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Fechas importantes para Xamarin Forms
+title: Fechas importantes en Xamarin
 published: true
 ---
 

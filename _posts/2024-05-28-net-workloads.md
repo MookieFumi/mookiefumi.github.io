@@ -8,15 +8,15 @@ published: true
 
 En el post de [.NET MAUI 101](https://mookiefumi.com/2024-05-27-maui-101) expuse algo de info respecto a los workloads que me gustaría ampliar pero conviene recordar lo siguiente.
 
-En .NET, un "workload" es **un conjunto de herramientas y bibliotecas que se instalan y configuran juntos para permitir el desarrollo de aplicaciones específicas**. Los workloads están diseñados para simplificar la instalación y configuración de entornos de desarrollo para diferentes tipos de proyectos.
+En .NET, un "workload" es **un conjunto de herramientas y bibliotecas que se instalan y configuran juntos para permitir el desarrollo de aplicaciones específicas**. Los workloads están diseñados para simplificar la instalación y configuración de entornos de desarrollo.
 
 Según la documentación oficial, los beneficios de los workloads son:
 
-* **Facilidad de instalación**: Instalan todo lo necesario de una sola vez.
-* **Consistencia**: Garantizan que todos los desarrolladores de un equipo tienen las mismas herramientas y versiones.
-* **Gestión de dependencias**: Simplifican la gestión de dependencias.
+* **Facilidad de instalación**: Se instala todo lo necesario de una sola vez.
+* **Consistencia**: Se garantiza que todos los desarrolladores trabajan con las mismas herramientas y versiones.
+* **Gestión de dependencias**: Se simplifica enormemente la gestión de dependencias.
 
-> Los workloads se instalan de forma global, por lo que una vez instalado estará disponible en cualquier proyecto sin importaren en que carpeta/ directorio estés trabajando.
+> Los workloads se instalan de forma global, por lo que una vez instalado estará disponible en cualquier proyecto sin importar en en que carpeta/ directorio estés trabajando.
 
 # Comandos básicos
 
@@ -34,13 +34,13 @@ maui                       8.0.21/8.0.100         SDK 8.0.200
 
 * **Manifest version**: Muestra la versión del manifiesto del workload instalado.
 
-* **Installation source**: Indica la fuente de instalación del workload.
+* **Installation source**: Indica lel origen de instalación del workload.
 
 ### Manifest version
 
-* Un manifiesto es un archivo de configuración (json) que describe las dependencias, componentes y configuraciones necesarias para el workload. [En este enlace tienes más info al respecto de .NET SDK Worload Manifest](https://github.com/dotnet/designs/blob/main/accepted/2020/workloads/workload-manifest.md).
+* Un manifiesto es un archivo de configuración (json) que contiene las dependencias, componentes y configuraciones necesarias para el workload. [En este enlace tienes más info al respecto de .NET SDK Worload Manifest](https://github.com/dotnet/designs/blob/main/accepted/2020/workloads/workload-manifest.md).
 * Que aparezcan dos versiones en Manifest version puede indicar múltiples componentes del mismo workload o coexistencia de versiones.
-* Si hacemos el ejercicio de localizar el manifiesto de por ejemplo "maui-ios" vemos las dependencias que tiene:
+* Si hacemos el ejercicio de localizar el manifiesto de por ejemplo **"maui-ios"** vemos las dependencias que tiene:
     * ios
         * Microsoft.iOS.Sdk.net8
 		* Microsoft.iOS.Sdk.net7
@@ -80,13 +80,12 @@ maui                       8.0.21/8.0.100         SDK 8.0.200
 Los componentes de .NET se instalan en el directorio de herramientas del SDK de .NET, que normalmente se encuentra en **```/usr/local/share/dotnet/```**.
 
 Y dentro de este directorio tenemos otras carpetas:
-
-* **```/usr/local/share/dotnet/sdk```**. Contiene las diferentes versiones que tengamos instalados del SDK de .NET.
+* **```/usr/local/share/dotnet/sdk```**. Contiene las diferentes versiones que tengamos instaladas del SDK de .NET.
 * **```/usr/local/share/dotnet/packs```**. Contiene los diferentes packs necesarios para los workloads, tales como frameworks o runtime packs.
 
 ## ¿Cómo instalo un workload?
 
-Es posible que tengas que ejecutar este comando con permisos elevados.
+Es posible que tengas que ejecutar este comando con permisos elevados (sudo).
 
 **```dotnet workload install maui```**
 
@@ -114,7 +113,7 @@ Commands:
                                 uninstallations.
 ```
 
-## ¿Cómo puedo obtener información ampliada respecto a los workloads que tengo instalados?
+## ¿Cómo puedo obtener más información de los workloads que tengo instalados?
 
 **```dotnet workload --info```**
 ```

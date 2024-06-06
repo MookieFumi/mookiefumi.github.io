@@ -6,20 +6,20 @@ published: true
 
 # ¿Cómo puedo implementar el patrón MVVM con CommunityToolkit?
 
-En el [post anterior](https://mookiefumi.com/2024-06-04-maui-mvvm) en el que hacía una pequeña introducción al patrón MVVM comenté que había 2 formas de implementar dicho patrón, una en "crudo" que es la que mostré en dicho post y otra por ejemplo la que nos ofrece el **Community Toolkit para .NET**.
+En el [artículo anterior](https://mookiefumi.com/2024-06-04-maui-mvvm) en el que hacía una pequeña introducción al patrón MVVM comenté que había varias formas de implementarlo, una en "crudo" que es la que mostré en dicho artículo y otra por ejemplo la que nos ofrece el **Community Toolkit para .NET**.
 
-En este post veremos los pasos necesarios para implementar dicho patrón a través de este llamado "kit de herramientas" e intentaré ir resumiento es lo que nos aporta si lo incluímos en nuestro proyecto.
+En este artículo veremos los pasos necesarios para implementar dicho patrón a través de este llamado "kit de herramientas" e intentaré ir resumiento lo que nos aporta si lo incluímos en nuestro proyecto.
 
-La base del código será la misma que en el ejemplo anterior y lo que haré literalmente será sustituir una implementación por otra y dejaré todas las modificaciones en una rama distinta para que se vean las diferencias de forma explícita. Al final del post dejará el enlace al repositorio en GitHub.
+> La base del código será la misma que en el ejemplo anterior y lo que haré literalmente será sustituir una implementación por otra y dejaré todas las modificaciones en una rama distinta para que se vean las diferencias de forma explícita. Al final del artículo dejaré el enlace al repositorio en GitHub.
 
 ## Pasos a seguir
 
 * Deberemos añadir el [paquete nuget CommunityToolkit.Mvvm](https://www.nuget.org/packages/CommunityToolkit.Mvvm) en nuestro proyecto
 * Nuestro **BaseViewModel** debe heredar de [**ObservableObject**](https://learn.microsoft.com/en-us/dotnet/communitytoolkit/mvvm/observableobject) que es la clase base que implementa la interface INotifyPropertyChanged.
-* Las **propiedades** de nuestros ViewModels en el set deben llamar al método **SetProperty**, el cual es un método que nos ayuda a establecer los valores y generar de forma automática los eventos de cambios.
-* Los **comandos** de nuestros ViewModels deberemos cambiarlos a [RelayCommand, RelayCommand<T>](https://learn.microsoft.com/es-es/dotnet/communitytoolkit/mvvm/relaycommand), [AsyncRelayCommand o AsyncRelayCommand<T>](https://learn.microsoft.com/es-es/dotnet/communitytoolkit/mvvm/asyncrelaycommand) que son implementaciones de ICommand que exponen un método o un delegado a la View de forma síncronza o asíncrona según nuestras necesidades.
+* Las **propiedades** de nuestros ViewModels en el set deben llamar al método **SetProperty**, el cual nos ayuda a establecer los valores y generar de forma automática los eventos de cambios.
+* Los **comandos** de nuestros ViewModels deberemos cambiarlos a [RelayCommand](https://learn.microsoft.com/es-es/dotnet/communitytoolkit/mvvm/relaycommand) o  [AsyncRelayCommand](https://learn.microsoft.com/es-es/dotnet/communitytoolkit/mvvm/asyncrelaycommand) que son implementaciones de ICommand que exponen un método o un delegado a la View de forma síncronza o asíncrona según nuestras necesidades.
 
-Viendo el código, la verdad, hasta ahora mismo hemos ganado relativamente poco, quizás lo más llamativo que veo es que nuestros comandos ahora están tipados y no nos vemos obligados a hacer cast del object.
+Viendo el código, la verdad, hasta ahora mismo hemos ganado relativamente poco, quizás lo más llamativo que veo es que nuestros comandos ahora están tipados y no nos vemos obligados a hacer cast del object a la hora de ejecutar nuestros comandos.
 
 ```csharp
 //Antes

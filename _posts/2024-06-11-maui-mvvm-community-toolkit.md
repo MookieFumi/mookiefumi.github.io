@@ -1,6 +1,6 @@
 ---
 layout: post
-title: .NET MAUI MVVM con Community Toolkit 101
+title: .NET MAUI MVVM con Community Toolkit
 published: true
 ---
 

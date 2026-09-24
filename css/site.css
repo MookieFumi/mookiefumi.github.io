@@ -110,6 +110,8 @@ h4 {
 .topic-testing { --topic-fill: var(--topic-testing-fill); --topic-text: var(--topic-testing-text); }
 .topic-aspnet { --topic-fill: var(--topic-aspnet-fill); --topic-text: var(--topic-aspnet-text); }
 .topic-desarrollo { --topic-fill: var(--topic-desarrollo-fill); --topic-text: var(--topic-desarrollo-text); }
+.topic-ia { --topic-fill: var(--topic-ia-fill); --topic-text: var(--topic-ia-text); }
+.topic-k8s { --topic-fill: var(--topic-k8s-fill); --topic-text: var(--topic-k8s-text); }
 
 .chip {
   display: inline-flex;
@@ -136,9 +138,10 @@ a.chip:hover {
   background: color-mix(in srgb, var(--topic-fill, var(--brand-violet)) 22%, transparent);
 }
 
+/* Etiqueta blanca sobre portadas: el color del tema algo oscurecido para que el texto pequeño tenga contraste suficiente */
 .chip-solid {
   background: #FFFFFF;
-  color: var(--topic-fill);
+  color: color-mix(in srgb, var(--topic-fill) 78%, #000000);
 }
 
 /* --- Cabecera --- */
@@ -278,6 +281,7 @@ a.chip:hover {
 
 .home-intro p {
   margin: 0;
+  max-width: 60ch;
   color: var(--color-text-muted);
   font-size: 17px;
 }
@@ -323,7 +327,9 @@ a.chip:hover {
 .topic-xamarin.featured::after,
 .topic-testing.featured::after,
 .topic-aspnet.featured::after,
-.topic-desarrollo.featured::after {
+.topic-desarrollo.featured::after,
+.topic-ia.featured::after,
+.topic-k8s.featured::after {
   color: rgba(255, 255, 255, 0.22);
 }
 
@@ -929,6 +935,14 @@ a.chip:hover {
   display: block;
 }
 
+.topic-empty {
+  margin: 0;
+  padding: 14px 0;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
 .topic-posts {
   list-style: none;
   margin: 0;
@@ -1064,7 +1078,7 @@ a.chip:hover {
 
 a.chip-solid:hover {
   background: #FFFFFF;
-  color: var(--topic-fill);
+  color: color-mix(in srgb, var(--topic-fill) 78%, #000000);
 }
 
 /* --- Ajustes para móvil --- */

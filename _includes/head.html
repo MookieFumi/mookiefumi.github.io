@@ -11,6 +11,16 @@
   <meta name="description" content="{{ page.subtitle }}">
   {% endif %}
 
+  <link rel="icon" href="{{ '/favicon.svg' | prepend: site.baseurl }}" type="image/svg+xml">
+  <link rel="icon" href="{{ '/favicon-32x32.png' | prepend: site.baseurl }}" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | prepend: site.baseurl }}">
+  <meta name="theme-color" content="#F6F5FB" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#120F22" media="(prefers-color-scheme: dark)">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=JetBrains+Mono:wght@400;600&family=Literata:ital,opsz,wght@0,7..72,400..700;1,7..72,400&display=swap">
+
   <link rel="alternate" type="application/rss+xml" title="{{ site.title }} - {{ site.description }}" href="{{ site.baseurl }}/feed.xml" />
   
  <!-- everything has to be repeated twice because on 2016-02-01 GitHub pages migrated to jekyll 3; see bug https://github.com/jekyll/jekyll/issues/4439 -->

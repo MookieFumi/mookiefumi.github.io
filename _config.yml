@@ -17,6 +17,7 @@ description: Historias de un desarrollador en .NET/ Kotlin
 
 # List of links in the navigation bar
 navbar-links:
+  Temas: "temas"
   Sobre mí: "aboutme"
   # Resources:
   #   - Beautiful Jekyll: "http://deanattali.com/beautiful-jekyll/"
@@ -78,7 +79,7 @@ paginate: 10
 future: true
 
 # Plugins
-gems: [jekyll-redirect-from, jekyll-paginate]
+plugins: [jekyll-redirect-from, jekyll-paginate]
 
 # Default YAML values (more information on Jekyll's site)
 defaults:

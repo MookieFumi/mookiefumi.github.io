@@ -1,0 +1,4 @@
+{%- assign chip_topic = site.data.topics | where: "slug", include.slug | first -%}
+{%- if chip_topic -%}
+<a class="chip topic-{{ chip_topic.slug }}{% if include.solid %} chip-solid{% endif %}" href="{{ site.baseurl }}/temas#{{ chip_topic.slug }}">{{ chip_topic.name }}</a>
+{%- endif -%}

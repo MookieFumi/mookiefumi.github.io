@@ -1,6 +1,7 @@
 ---
 layout: post
 title: .NET Workloads 101
+topic: maui
 published: true
 ---
 

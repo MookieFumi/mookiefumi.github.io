@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Extraer base de datos SQLite de un terminal Android
+topic: xamarin
 published: true
 ---
 

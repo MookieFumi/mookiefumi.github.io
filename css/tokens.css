@@ -41,6 +41,8 @@
   --topic-testing-text: #0B7F58;
   --topic-aspnet-fill: #E0457B;
   --topic-aspnet-text: #C12E62;
+  --topic-desarrollo-fill: #E8590C;
+  --topic-desarrollo-text: #C2410C;
 
   /* Tipografía */
   --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
@@ -72,6 +74,7 @@
     --topic-xamarin-text: #6AA4FF;
     --topic-testing-text: #3FCB94;
     --topic-aspnet-text: #FF7AA5;
+    --topic-desarrollo-text: #FF8A4C;
   }
 }
 
@@ -94,4 +97,5 @@
   --topic-xamarin-text: #6AA4FF;
   --topic-testing-text: #3FCB94;
   --topic-aspnet-text: #FF7AA5;
+  --topic-desarrollo-text: #FF8A4C;
 }

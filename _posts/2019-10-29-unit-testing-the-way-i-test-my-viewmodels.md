@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Unit testing, the way I test my ViewModels
+topic: testing
 published: true
 ---
 

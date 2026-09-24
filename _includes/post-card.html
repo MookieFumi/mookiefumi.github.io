@@ -1,0 +1,15 @@
+{%- assign card = include.post -%}
+{%- assign card_topic = site.data.topics | where: "slug", card.topic | first -%}
+{%- assign cover_variant = card.date | date: "%-d" | modulo: 3 -%}
+<li>
+  <a class="post-card topic-{{ card.topic | default: 'maui' }}" href="{{ card.url | prepend: site.baseurl }}">
+    <div class="cover cover-{{ cover_variant }}" aria-hidden="true">
+      {% if card_topic %}<span class="chip chip-solid">{{ card_topic.name }}</span>{% endif %}
+    </div>
+    <div class="post-card-body">
+      <h3>{{ card.title }}</h3>
+      <p>{% include excerpt.html post=card words=22 %}</p>
+      <span class="meta">{% include date-es.html date=card.date short=true %} · {% include reading-time.html content=card.content %}</span>
+    </div>
+  </a>
+</li>

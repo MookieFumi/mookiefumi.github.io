@@ -2,17 +2,22 @@
 layout: base
 ---
 
-{% include header.html type="page" %}
+<div class="container-narrow">
+  <header class="page-hero">
+    {% if page.avatar and site.avatar %}
+    <img class="page-avatar" src="{{ site.avatar | prepend: site.baseurl }}" alt="{{ site.author.name }}" width="120" height="120">
+    {% endif %}
+    <h1>{{ page.title | remove: '#' }}</h1>
+    {% if page.subtitle %}<p>{{ page.subtitle }}</p>{% endif %}
+  </header>
 
-<div class="container" role="main">
-  <div class="row">
-    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-      {{ content }}
-	    {% if page.comments %}
-        <div class="disqus-comments">
-	        {% include disqus.html %}
-        </div>
-	    {% endif %}
-    </div>
+  <div class="prose">
+    {{ content }}
   </div>
+
+  {% if page.comments %}
+  <div class="comments">
+    {% include disqus.html %}
+  </div>
+  {% endif %}
 </div>

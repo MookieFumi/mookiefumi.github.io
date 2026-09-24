@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Meetup Prism 101 - Introduction
+topic: xamarin
 published: true
 ---
 

@@ -1,49 +1,53 @@
 ---
-layout: page
+layout: base
 ---
 
-<div class="posts-list">
-  {% for post in paginator.posts %}
-  <article class="post-preview">
-    <a href="{{ post.url | prepend: site.baseurl }}">
-	  <h2 class="post-title">{{ post.title }}</h2>
-	
-	  {% if post.subtitle %}
-	  <h3 class="post-subtitle">
-	    {{ post.subtitle }}
-	  </h3>
-	  {% endif %}  
-    </a>
+<div class="container">
 
-    <p class="post-meta">
-      {% assign months = "Enero|Febrero|Marzo|Abril|Mayo|Junio|Julio|Agosto|Septiembre|Octubre|Noviembre|Diciembre" | split: "|" %}
-      {% assign m = post.date | date: "%-m" | minus: 1 %}
-      {% assign day = post.date | date: "%d" %}
-      {% assign month = months[m] %}
-      {% assign year = post.date | date: "%Y" %}
-      Publicado el {{ day }} de {{ month }} de {{ year }}
-    </p>
-  
-    <div class="post-entry">
-      {{ post.content | truncatewords: 100 | strip_html | xml_escape}}
-	  <a href="{{ post.url | prepend: site.baseurl }}" class="post-read-more">[Leer más]</a>
+  {% if paginator.page == 1 %}
+  <section class="home-intro">
+    {% if site.avatar %}<img src="{{ site.avatar | prepend: site.baseurl }}" alt="{{ site.author.name }}" width="72" height="72">{% endif %}
+    <div>
+      <h1>Hola, soy Miguel Ángel</h1>
+      <p>{{ site.description }}. Aquí cuento lo que voy aprendiendo.</p>
+      <div class="topic-list">
+        {% for topic in site.data.topics %}{% include topic-chip.html slug=topic.slug %}{% endfor %}
+      </div>
     </div>
-  
-   </article>
-  {% endfor %}
-</div>
+  </section>
 
-{% if paginator.total_pages > 1 %}
-<ul class="pager main-pager">
-  {% if paginator.previous_page %}
-  <li class="previous">
-    <a href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">&larr; Nuevos Posts</a>
-  </li>
+  {% assign featured = paginator.posts | first %}
+  {% assign featured_topic = site.data.topics | where: "slug", featured.topic | first %}
+  <a class="featured topic-{{ featured.topic | default: 'maui' }}" href="{{ featured.url | prepend: site.baseurl }}">
+    <span class="eyebrow">Último artículo{% if featured_topic %} · {{ featured_topic.name }}{% endif %}</span>
+    <h2>{{ featured.title }}</h2>
+    <p>{% include excerpt.html post=featured words=34 %}</p>
+    <span class="meta">{% include date-es.html date=featured.date %} · {% include reading-time.html content=featured.content %} de lectura</span>
+    <span class="cta">Leer artículo →</span>
+  </a>
   {% endif %}
-  {% if paginator.next_page %}
-  <li class="next">
-    <a href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}">Posts Viejunos &rarr;</a>
-  </li>
+
+  <h2 class="section-title">
+    {% if paginator.page == 1 %}Más artículos{% else %}Artículos · página {{ paginator.page }}{% endif %}
+    <a href="{{ site.baseurl }}/temas">Ver por temas →</a>
+  </h2>
+
+  <ul class="post-grid">
+    {% for post in paginator.posts %}
+      {% if paginator.page == 1 and forloop.first %}{% continue %}{% endif %}
+      {% include post-card.html post=post %}
+    {% endfor %}
+  </ul>
+
+  {% if paginator.total_pages > 1 %}
+  <nav class="pager" aria-label="Paginación">
+    {% if paginator.previous_page %}
+    <a class="prev" href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">← Más recientes</a>
+    {% endif %}
+    {% if paginator.next_page %}
+    <a class="next" href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}">Anteriores →</a>
+    {% endif %}
+  </nav>
   {% endif %}
-</ul>
-{% endif %}
+
+</div>

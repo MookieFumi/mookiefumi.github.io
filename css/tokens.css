@@ -1,0 +1,101 @@
+/* --- Csharpeando# · identidad visual "Almohadilla" --- */
+/* Tokens de diseño. El resto de hojas de estilo deben usar estas variables
+   en lugar de colores o fuentes escritos a mano.
+
+   Tema:
+   - Sin atributo data-theme en <html> se sigue la preferencia del sistema.
+   - data-theme="light" o data-theme="dark" fuerzan un tema concreto. */
+
+:root {
+  /* Marca (iguales en ambos temas) */
+  --brand-violet: #5B2EE0;
+  --brand-yellow: #FFC940;
+  --brand-ink: #1B1633;
+
+  /* Superficies y texto */
+  --color-bg: #F6F5FB;
+  --color-surface: #FFFFFF;
+  --color-border: #E6E3F2;
+  --color-text: #1B1633;
+  --color-text-muted: #6B6785;
+
+  /* Interacción */
+  --color-link: #5B2EE0;
+  --color-link-hover: #4A22C4;
+  --color-selection-bg: #5B2EE0;
+  --color-selection-text: #FFFFFF;
+  --color-focus: #FFC940;
+
+  /* Código */
+  --color-code-bg: #1B1633;
+  --color-code-text: #E9E6F7;
+  --color-inline-code-bg: #ECE8FB;
+  --color-inline-code-text: #4A22C4;
+
+  /* Temas de los posts: -fill para portadas y etiquetas, -text para texto sobre el fondo */
+  --topic-maui-fill: #5B2EE0;
+  --topic-maui-text: #5B2EE0;
+  --topic-xamarin-fill: #2F7CF6;
+  --topic-xamarin-text: #1F63D6;
+  --topic-testing-fill: #0E9F6E;
+  --topic-testing-text: #0B7F58;
+  --topic-aspnet-fill: #E0457B;
+  --topic-aspnet-text: #C12E62;
+  --topic-desarrollo-fill: #E8590C;
+  --topic-desarrollo-text: #C2410C;
+
+  /* Tipografía */
+  --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Literata", Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", "Cascadia Code", Consolas, ui-monospace, monospace;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --color-bg: #120F22;
+    --color-surface: #1C1832;
+    --color-border: #2C2748;
+    --color-text: #ECE9F8;
+    --color-text-muted: #A39EC0;
+    --color-link: #A58BFF;
+    --color-link-hover: #C3B2FF;
+    --color-selection-bg: #A58BFF;
+    --color-selection-text: #120F22;
+    --color-code-bg: #0C0A18;
+    --color-code-text: #E9E6F7;
+    --color-inline-code-bg: #262043;
+    --color-inline-code-text: #C3B2FF;
+    --topic-maui-text: #A58BFF;
+    --topic-xamarin-text: #6AA4FF;
+    --topic-testing-text: #3FCB94;
+    --topic-aspnet-text: #FF7AA5;
+    --topic-desarrollo-text: #FF8A4C;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-bg: #120F22;
+  --color-surface: #1C1832;
+  --color-border: #2C2748;
+  --color-text: #ECE9F8;
+  --color-text-muted: #A39EC0;
+  --color-link: #A58BFF;
+  --color-link-hover: #C3B2FF;
+  --color-selection-bg: #A58BFF;
+  --color-selection-text: #120F22;
+  --color-code-bg: #0C0A18;
+  --color-code-text: #E9E6F7;
+  --color-inline-code-bg: #262043;
+  --color-inline-code-text: #C3B2FF;
+  --topic-maui-text: #A58BFF;
+  --topic-xamarin-text: #6AA4FF;
+  --topic-testing-text: #3FCB94;
+  --topic-aspnet-text: #FF7AA5;
+  --topic-desarrollo-text: #FF8A4C;
+}

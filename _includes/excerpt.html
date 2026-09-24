@@ -1,0 +1,10 @@
+{%- comment -%}
+  Extracto de un post: usa el subtítulo si existe; si no, solo el texto de los
+  párrafos (sin títulos, listas ni código) para no repetir el título del post.
+{%- endcomment -%}
+{%- if include.post.subtitle -%}
+{{ include.post.subtitle }}
+{%- else -%}
+{%- capture paragraphs -%}{%- assign chunks = include.post.content | split: '<p>' -%}{%- for chunk in chunks offset: 1 limit: 4 -%}{{ chunk | split: '</p>' | first }} {% endfor -%}{%- endcapture -%}
+{{ paragraphs | strip_html | strip_newlines | truncatewords: include.words }}
+{%- endif -%}

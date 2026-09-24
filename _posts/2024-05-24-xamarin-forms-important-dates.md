@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Fechas importantes en Xamarin
+topic: xamarin
 published: true
 ---
 

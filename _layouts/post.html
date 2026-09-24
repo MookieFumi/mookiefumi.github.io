@@ -2,33 +2,74 @@
 layout: base
 ---
 
-{% include header.html type="post" %}
+{% assign topic = site.data.topics | where: "slug", page.topic | first %}
 
-<div class="container">
-  <div class="row">
-    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-      <article role="main" class="blog-post">
-	      {{ content }}
-	    </article>
-	  	  
-      <ul class="pager blog-pager">
-        {% if page.previous.url %}
-        <li class="previous">
-          <a href="{{ page.previous.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{page.previous.title}}">&larr; Previous Post</a>
-        </li>
-        {% endif %}
-        {% if page.next.url %}
-        <li class="next">
-          <a href="{{ page.next.url | prepend: site.baseurl | replace: '//', '/' }}" data-toggle="tooltip" data-placement="top" title="{{page.next.title}}">Next Post &rarr;</a>
-        </li>
-        {% endif %}
-      </ul>
-      
-	    {% if page.comments %}
-        <div class="disqus-comments">
-	        {% include disqus.html %}
-        </div>
-	    {% endif %}
+{% comment %} Muchos posts empiezan con un "# Título" igual al del post: se quita para no repetirlo {% endcomment %}
+{% assign body = content %}
+{% assign first_block = content | strip | split: '</h1>' | first %}
+{% if first_block contains '<h1' %}
+  {% assign first_block_text = first_block | strip_html | strip %}
+  {% assign first_block_start = content | strip | slice: 0, 3 %}
+  {% if first_block_start == '<h1' and first_block_text == page.title %}
+    {% assign first_block_full = first_block | append: '</h1>' %}
+    {% assign body = content | remove_first: first_block_full %}
+  {% endif %}
+{% endif %}
+
+<article class="topic-{{ page.topic | default: 'maui' }}">
+  <header class="post-hero topic-{{ page.topic | default: 'maui' }}">
+    <div class="container-narrow">
+      {% if topic %}{% include topic-chip.html slug=page.topic solid=true %}{% endif %}
+      <h1>{{ page.title }}</h1>
     </div>
+  </header>
+
+  <div class="container-narrow">
+    <div class="post-intro">
+      {% if page.subtitle %}<p class="subtitle">{{ page.subtitle }}</p>{% endif %}
+      <div class="byline">
+        {% if site.avatar %}<img src="{{ site.avatar | prepend: site.baseurl }}" alt="" width="40" height="40">{% endif %}
+        <div>
+          <strong>{{ site.author.name }}</strong>
+          <span class="meta"><time datetime="{{ page.date | date_to_xmlschema }}">{% include date-es.html date=page.date %}</time> · {% include reading-time.html content=content %} de lectura</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="prose">
+      {{ body }}
+    </div>
+
+    <aside class="author-card" aria-label="Sobre el autor">
+      {% if site.avatar %}<img src="{{ site.avatar | prepend: site.baseurl }}" alt="" width="64" height="64">{% endif %}
+      <div>
+        <h2>{{ site.author.name }}</h2>
+        <p>{{ site.description }}. Escribo sobre lo que voy aprendiendo con .NET MAUI, Xamarin, testing y ASP.NET Core.</p>
+        {% include social-links.html %}
+      </div>
+    </aside>
+
+    {% if page.previous.url or page.next.url %}
+    <nav class="post-nav" aria-label="Más artículos">
+      {% if page.previous.url %}
+      <a class="prev topic-{{ page.previous.topic | default: 'maui' }}" href="{{ page.previous.url | prepend: site.baseurl }}">
+        <span class="label">← Anterior</span>
+        <strong>{{ page.previous.title }}</strong>
+      </a>
+      {% endif %}
+      {% if page.next.url %}
+      <a class="next topic-{{ page.next.topic | default: 'maui' }}" href="{{ page.next.url | prepend: site.baseurl }}">
+        <span class="label">Siguiente →</span>
+        <strong>{{ page.next.title }}</strong>
+      </a>
+      {% endif %}
+    </nav>
+    {% endif %}
+
+    {% if page.comments %}
+    <div class="comments">
+      {% include disqus.html %}
+    </div>
+    {% endif %}
   </div>
-</div>
+</article>

@@ -1,0 +1,12 @@
+# Temas del blog. El slug se usa en el front matter de cada post (topic: slug),
+# en las clases CSS (.topic-slug) y como ancla en /temas.
+- slug: maui
+  name: .NET MAUI
+- slug: xamarin
+  name: Xamarin
+- slug: testing
+  name: Testing
+- slug: aspnet
+  name: ASP.NET Core
+- slug: desarrollo
+  name: Desarrollo

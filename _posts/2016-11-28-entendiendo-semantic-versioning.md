@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Entendiendo Semantic Versioning
+topic: desarrollo
 published: true
 ---
 

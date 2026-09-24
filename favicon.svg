@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Csharpeando#">
+  <rect width="64" height="64" rx="14" fill="#5B2EE0"/>
+  <g fill="#FFC940">
+    <polygon points="27,12 34,12 27,52 20,52"/>
+    <polygon points="41,12 48,12 41,52 34,52"/>
+    <rect x="13" y="22" width="38" height="7" rx="1"/>
+    <rect x="13" y="35" width="38" height="7" rx="1"/>
+  </g>
+</svg>

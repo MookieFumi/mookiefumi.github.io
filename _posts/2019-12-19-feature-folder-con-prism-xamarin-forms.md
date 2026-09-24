@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Feature folders con Prism (Xamarin Forms)
+topic: xamarin
 published: true
 ---
 

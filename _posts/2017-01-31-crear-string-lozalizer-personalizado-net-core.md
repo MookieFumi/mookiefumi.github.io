@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Proveedor de cultura personalizado en una aplicación ASPNet Core
+topic: aspnet
 published: false
 ---
 

@@ -3,9 +3,9 @@
 /* --- General --- */
 
 body {
-  font-family: 'Raleway', 'Lora', 'Times New Roman', serif;
+  font-family: var(--font-body);
   font-size: 18px;
-  color: #404040;
+  color: var(--color-text);
   position: relative;
   background: #FFF;
 }
@@ -17,7 +17,7 @@ p {
 
 p a {
   /* text-decoration: underline */
-  color: #008AFF;
+  color: var(--color-link);
 }
 
 h1,
@@ -26,17 +26,17 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Raleway', 'Lora', 'Times New Roman', serif;
+  font-family: var(--font-display);
   font-weight: 800;
 }
 
 a {
-  color: #008AFF;
+  color: var(--color-link);
 }
 
 a:hover,
 a:focus {
-  color: #0085a1;
+  color: var(--color-link-hover);
 }
 
 blockquote {
@@ -63,7 +63,7 @@ hr.small {
 }
 
 .main-explain-area {
-  font-family: 'Raleway', 'Lora', 'Times New Roman', serif;
+  font-family: var(--font-display);
   padding: 15px inherit;
 }
 
@@ -72,15 +72,15 @@ hr.small {
 }
 
 ::-moz-selection {
-  color: white;
+  color: var(--color-selection-text);
   text-shadow: none;
-  background: #0085a1;
+  background: var(--color-selection-bg);
 }
 
 ::selection {
-  color: white;
+  color: var(--color-selection-text);
   text-shadow: none;
-  background: #0085a1;
+  background: var(--color-selection-bg);
 }
 
 img::selection {
@@ -113,7 +113,7 @@ img {
 .navbar-custom {
   background: #F5F5F5;
   border-bottom: 1px solid #EAEAEA;
-  font-family: 'Raleway', 'Lora', 'Times New Roman', serif;
+  font-family: var(--font-display);
 }
 
 .navbar-custom .nav li a {
@@ -128,11 +128,31 @@ img {
   color: #404040;
 }
 
+.navbar-custom .navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 22px;
+  letter-spacing: -0.03em;
+  color: var(--brand-ink);
+}
+
+.navbar-custom .navbar-brand .brand-mark {
+  width: 32px;
+  height: 32px;
+  flex: none;
+}
+
+.navbar-custom .navbar-brand .brand-hash {
+  color: var(--brand-violet);
+}
+
 .navbar-custom .navbar-brand:hover,
 .navbar-custom .navbar-brand:focus,
 .navbar-custom .nav li a:hover,
 .navbar-custom .nav li a:focus {
-  color: #0085a1;
+  color: var(--color-link);
 }
 
 @media only screen and (min-width: 768px) {
@@ -277,7 +297,7 @@ footer .list-inline {
 }
 
 footer .copyright {
-  font-family: 'Raleway', 'Lora', 'Times New Roman', serif;
+  font-family: var(--font-display);
   text-align: center;
   margin-bottom: 0;
 }
@@ -348,7 +368,7 @@ footer .theme-by {
 }
 
 .post-preview .post-entry {
-  font-family: 'Raleway', 'Lora', 'Times New Roman', serif;
+  font-family: var(--font-body);
   font-size: 14px;
   line-height: 2;
   text-align: justify;
@@ -424,7 +444,7 @@ footer .theme-by {
   font-size: 27px;
   line-height: 1.1;
   display: block;
-  font-family: 'Raleway', 'Lora', 'Times New Roman', serif;
+  font-family: var(--font-body);
   font-weight: 300;
   margin: 10px 0 0;
 }
@@ -454,7 +474,7 @@ footer .theme-by {
   padding: 5px 10px;
   font-size: 11px;
   color: #EEE;
-  font-family: 'Raleway', 'Lora', 'Times New Roman', serif;
+  font-family: var(--font-display);
   right: 0;
   bottom: 0;
   display: none;
@@ -536,7 +556,7 @@ footer .theme-by {
 /* --- Pager --- */
 
 .pager li a {
-  font-family: 'Raleway', 'Lora', 'Times New Roman', serif;
+  font-family: var(--font-display);
   text-transform: uppercase;
   font-size: 14px;
   font-weight: 800;
@@ -624,13 +644,13 @@ code,
 kbd,
 pre,
 samp {
-  font-family: monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 15px;
 }
 
 pre {
-  background-color: #333;
-  color: white;
+  background-color: var(--color-code-bg);
+  color: var(--color-code-text);
 }
 
 .blog-post {

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Evitar magic string al internacionalizar una aplicación ASPNet Core
+topic: aspnet
 published: true
 ---
 # Evitar magic string al internacionalizar una aplicación ASPNet Core

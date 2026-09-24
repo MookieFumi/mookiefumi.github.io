@@ -1,0 +1,38 @@
+---
+layout: base
+title: Temas
+subtitle: Todos los artículos agrupados por tema
+comments: false
+---
+
+<div class="container-narrow">
+  <header class="page-hero">
+    <h1>Temas</h1>
+    <p>{{ page.subtitle }}.</p>
+  </header>
+
+  <div class="topics-index">
+    {% for topic in site.data.topics %}
+    {% assign topic_posts = site.posts | where: "topic", topic.slug %}
+    {% if topic_posts.size > 0 %}
+    <section class="topic-section topic-{{ topic.slug }}" id="{{ topic.slug }}">
+      <header>
+        <span class="topic-badge" aria-hidden="true">#</span>
+        <div>
+          <h2>{{ topic.name }}</h2>
+          <span class="meta">{{ topic_posts.size }} {% if topic_posts.size == 1 %}artículo{% else %}artículos{% endif %}</span>
+        </div>
+      </header>
+      <ul class="topic-posts">
+        {% for post in topic_posts %}
+        <li>
+          <a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+          <span class="meta">{% include date-es.html date=post.date short=true %}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endif %}
+    {% endfor %}
+  </div>
+</div>

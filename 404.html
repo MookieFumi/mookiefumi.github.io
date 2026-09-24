@@ -1,13 +1,14 @@
 ---
 layout: default
-title: 404 - Page not found
+title: Página no encontrada
 permalink: /404.html
+comments: false
 ---
 
-<div class="text-center">
-  <h1>Whoops, this page doesn't exist.</h1>
-  <h1>Move along. (404 error)</h1>
-  <br/>
-
-  <img src="{{ site.baseurl }}/img/404-southpark.jpg" />
+<div class="not-found">
+  <span class="big-hash" aria-hidden="true">#</span>
+  <h1>Esta página no existe</h1>
+  <p>Error 404. Puede que el enlace esté roto o que el artículo haya cambiado de dirección.</p>
+  <p><a href="{{ site.baseurl }}/">Volver a la portada</a> · <a href="{{ site.baseurl }}/temas">Ver todos los temas</a></p>
+  <img src="{{ site.baseurl }}/img/404-southpark.jpg" alt="Personajes de South Park">
 </div>

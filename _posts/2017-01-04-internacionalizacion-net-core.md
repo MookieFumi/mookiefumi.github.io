@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Internacionalizar una aplicación ASPNet Core
+topic: aspnet
 published: true
 ---
 # Internacionalizar una aplicación ASPNet Core

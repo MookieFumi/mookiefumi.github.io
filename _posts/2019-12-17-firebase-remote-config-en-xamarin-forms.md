@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Firebase Remote Config en Xamarin Forms
+topic: xamarin
 published: true
 ---
 

@@ -1,0 +1,29 @@
+/* --- Resaltado de código (rouge) con la paleta Almohadilla --- */
+/* Los bloques de código usan fondo tinta en ambos temas, así que un solo juego de colores basta. */
+
+.highlight .c, .highlight .ch, .highlight .cm, .highlight .cp,
+.highlight .cpf, .highlight .c1, .highlight .cs { color: #8C86A8; font-style: italic; } /* Comentarios */
+.highlight .err { color: #FF7AA5; }
+.highlight .k, .highlight .kd, .highlight .kn, .highlight .kp,
+.highlight .kr, .highlight .kv, .highlight .ow { color: #B79CFF; } /* Palabras clave */
+.highlight .kc, .highlight .kt { color: #FFC940; } /* Tipos y constantes */
+.highlight .nc, .highlight .ne, .highlight .nn { color: #FFC940; } /* Clases, espacios de nombres */
+.highlight .nf, .highlight .fm, .highlight .nd { color: #8FC7FF; } /* Funciones, atributos [Decorator] */
+.highlight .na { color: #FFC940; } /* Atributos XML */
+.highlight .nt { color: #FF7AA5; } /* Etiquetas XML */
+.highlight .nb, .highlight .bp { color: #8FC7FF; }
+.highlight .n, .highlight .nx, .highlight .nv, .highlight .vi,
+.highlight .vg, .highlight .vc, .highlight .py, .highlight .p,
+.highlight .o, .highlight .w { color: #E9E6F7; }
+.highlight .s, .highlight .s1, .highlight .s2, .highlight .sa,
+.highlight .sb, .highlight .sc, .highlight .sd, .highlight .sh,
+.highlight .si, .highlight .sx, .highlight .sr, .highlight .ss { color: #7EE0B5; } /* Cadenas */
+.highlight .se, .highlight .dl { color: #FFB38A; }
+.highlight .m, .highlight .mb, .highlight .mf, .highlight .mh,
+.highlight .mi, .highlight .il, .highlight .mo, .highlight .ld { color: #FF9E7A; } /* Números */
+.highlight .gd { color: #FF7AA5; }
+.highlight .gi { color: #7EE0B5; }
+.highlight .gh, .highlight .gu { color: #B79CFF; font-weight: bold; }
+.highlight .ge { font-style: italic; }
+.highlight .gs { font-weight: bold; }
+.highlight .hll { background-color: rgba(183, 156, 255, 0.15); }

@@ -43,6 +43,10 @@
   --topic-aspnet-text: #C12E62;
   --topic-desarrollo-fill: #E8590C;
   --topic-desarrollo-text: #C2410C;
+  --topic-ia-fill: #B829C9;
+  --topic-ia-text: #9D1FAE;
+  --topic-k8s-fill: #0A84A0;
+  --topic-k8s-text: #0B6F86;
 
   /* Tipografía */
   --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
@@ -75,6 +79,8 @@
     --topic-testing-text: #3FCB94;
     --topic-aspnet-text: #FF7AA5;
     --topic-desarrollo-text: #FF8A4C;
+    --topic-ia-text: #E879F9;
+    --topic-k8s-text: #3CCFEF;
   }
 }
 
@@ -98,4 +104,6 @@
   --topic-testing-text: #3FCB94;
   --topic-aspnet-text: #FF7AA5;
   --topic-desarrollo-text: #FF8A4C;
+  --topic-ia-text: #E879F9;
+  --topic-k8s-text: #3CCFEF;
 }

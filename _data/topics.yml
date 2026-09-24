@@ -2,6 +2,10 @@
 # en las clases CSS (.topic-slug) y como ancla en /temas.
 - slug: maui
   name: .NET MAUI
+- slug: ia
+  name: IA
+- slug: k8s
+  name: k8s
 - slug: xamarin
   name: Xamarin
 - slug: testing

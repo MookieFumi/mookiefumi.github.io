@@ -278,6 +278,7 @@ a.chip:hover {
 
 .home-intro p {
   margin: 0;
+  max-width: 60ch;
   color: var(--color-text-muted);
   font-size: 17px;
 }

@@ -8,8 +8,8 @@ layout: base
   <section class="home-intro">
     {% if site.avatar %}<img src="{{ site.avatar | prepend: site.baseurl }}" alt="{{ site.author.name }}" width="72" height="72">{% endif %}
     <div>
-      <h1>Hola, soy Miguel Ángel</h1>
-      <p>{{ site.description }}. Aquí cuento lo que voy aprendiendo.</p>
+      <h1>Hola, soy Miguel</h1>
+      <p>Entre .NET, IA, despliegues y equipos, me toca revisar muchos temas. Aquí repaso los que creo que merecen la pena.</p>
       <div class="topic-list">
         {% for topic in site.data.topics %}{% include topic-chip.html slug=topic.slug %}{% endfor %}
       </div>

@@ -60,8 +60,9 @@ url-pretty: "mookiefumi.com"
 # Fill in your Disqus shortname (NOT the userid) if you want to support Disqus comments
 disqus: "mookiefumi"
 
-# Fill in your Google Analytics ID to track your website using GA
-google_analytics: "UA-47937318-1"
+# Fill in your Cloudflare Web Analytics token to track your website
+# (Analytics & Logs > Web Analytics in the Cloudflare dashboard, JS-snippet mode)
+cloudflare_analytics_token: "8607a246a64647feb5441c86af7234bc"
 
 # --- Don't need to touch anything below here (but you can if you want) --- #
 

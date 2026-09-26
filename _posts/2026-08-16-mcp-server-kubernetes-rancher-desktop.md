@@ -6,7 +6,7 @@ topic: k8s
 published: true
 ---
 
-En el [post anterior](/2026-09-25-mcp-server-sdk-dotnet) creamos un MCP Server con el SDK oficial de .NET que consume una API de ejemplo (`GET /weatherforecast`), todo orquestado con Aspire. En este laboratorio vamos a llevar esa misma solución a un **clúster de Kubernetes local**, exponerla con un Ingress y conectarla desde Visual Studio Code.
+En el [post anterior](/2026-08-15-mcp-server-sdk-dotnet) creamos un MCP Server con el SDK oficial de .NET que consume una API de ejemplo (`GET /weatherforecast`), todo orquestado con Aspire. En este laboratorio vamos a llevar esa misma solución a un **clúster de Kubernetes local**, exponerla con un Ingress y conectarla desde Visual Studio Code.
 
 No es un camino de rosas, y precisamente por eso merece la pena contarlo: por el camino aparecen dos problemas muy habituales al trabajar con Kubernetes en local, que veremos en detalle junto con su solución y algunas alternativas.
 

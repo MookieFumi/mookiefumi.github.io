@@ -1,0 +1,11 @@
+flowchart LR
+    EX["/opsx-explore"] --> PR["/opsx-propose"]
+    PR --> AP["/opsx-apply"]
+    AP --> AR["/opsx-archive"]
+    UP["/opsx-update"] -.-> PR
+    AP -.-> UP
+    SY["/opsx-sync"] -.-> AR
+    AR --> SPEC[("openspec/specs")]
+    style EX stroke-dasharray: 5 5
+    style UP stroke-dasharray: 5 5
+    style SY stroke-dasharray: 5 5

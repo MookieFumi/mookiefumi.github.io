@@ -1,0 +1,8 @@
+flowchart LR
+    VS[VS Code] -->|login| ENTRA[Microsoft Entra ID]
+    APP[Application] -->|client credentials| ENTRA
+    VS -->|127.0.0.1/mcp| T[Traefik]
+    APP -->|127.0.0.1/mcp| T
+    T --> MCP[brent-mcp]
+    MCP -->|downloads keys| ENTRA
+    MCP -->|service discovery| API[brent-api]

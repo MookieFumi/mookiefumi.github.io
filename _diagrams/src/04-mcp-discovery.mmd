@@ -1,0 +1,14 @@
+sequenceDiagram
+    autonumber
+    participant C as MCP client
+    participant MCP as MCP server
+    participant AS as Authorization server
+    C->>MCP: Request without a token
+    MCP->>C: 401 with WWW-Authenticate and resource_metadata
+    C->>MCP: GET protected resource metadata
+    MCP->>C: authorization_servers and scopes_supported
+    C->>AS: GET authorization server metadata
+    AS->>C: Authorization and token endpoints
+    C->>AS: Authorization code + PKCE with resource set to the MCP server URL
+    AS->>C: access_token
+    C->>MCP: Request with Bearer access_token

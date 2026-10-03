@@ -1,0 +1,6 @@
+flowchart LR
+    U[User] -->|uses| C[Client]
+    C -->|1. requests a token| AS[Authorization server]
+    AS -->|2. issues an access token| C
+    C -->|3. calls with the token| RS[Resource server / API]
+    RS -.->|validates with public keys| AS

@@ -1,0 +1,17 @@
+sequenceDiagram
+    autonumber
+    actor U as User
+    participant C as Client
+    participant AS as Authorization server
+    participant API as API
+    C->>C: Generate code_verifier and code_challenge
+    C->>AS: Redirect to /authorize with client_id, redirect_uri, scope and code_challenge
+    AS->>U: Login and consent
+    U->>AS: Credentials
+    AS->>C: Redirect to redirect_uri with a code
+    C->>AS: POST /token with the code and the code_verifier
+    AS->>AS: Check the code_verifier against the code_challenge
+    AS->>C: access_token, refresh_token and id_token
+    C->>API: Request with Bearer access_token
+    API->>API: Validate signature, iss, aud and exp
+    API->>C: Response

@@ -11,8 +11,8 @@ En el [primer post](/2026-09-01-openspec-1-del-init-al-change) instalamos OpenSp
 Ahora cerramos el ciclo: implementamos, archivamos y vemos cómo queda la spec. Después repasamos el perfil ampliado, el mantenimiento y el resto de la CLI, y terminamos con una chuleta de todos los comandos y con cómo llevar OpenSpec a un equipo.
 
 <figure class="diagram">
-  <img class="diagram-light" width="928" height="196" src="{{ '/img/diagrams/07-openspec-ciclo-light.svg' | prepend: site.baseurl }}" alt="Ciclo de un change en OpenSpec: explore, propose, apply y archive en secuencia, con update y sync como pasos opcionales; al archivar, los deltas pasan a openspec/specs.">
-  <img class="diagram-dark" width="928" height="196" src="{{ '/img/diagrams/07-openspec-ciclo-dark.svg' | prepend: site.baseurl }}" alt="Ciclo de un change en OpenSpec: explore, propose, apply y archive en secuencia, con update y sync como pasos opcionales; al archivar, los deltas pasan a openspec/specs.">
+  <img class="diagram-light" width="510" height="690" src="{{ '/img/diagrams/07-openspec-ciclo-light.svg' | prepend: site.baseurl }}" alt="Ciclo de un change en OpenSpec: explore, propose, apply y archive en secuencia, con update y sync como pasos opcionales; al archivar, los deltas pasan a openspec/specs.">
+  <img class="diagram-dark" width="510" height="690" src="{{ '/img/diagrams/07-openspec-ciclo-dark.svg' | prepend: site.baseurl }}" alt="Ciclo de un change en OpenSpec: explore, propose, apply y archive en secuencia, con update y sync como pasos opcionales; al archivar, los deltas pasan a openspec/specs.">
 </figure>
 
 Seguimos en el mismo ciclo: ya hemos explorado y propuesto, y toca implementar y archivar. Las cajas con borde discontinuo son pasos opcionales.

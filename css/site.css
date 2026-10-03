@@ -1133,6 +1133,8 @@ a.chip-solid:hover {
   display: block;
   margin-inline: auto;
   max-width: 100%;
+  border: 0;
+  border-radius: 0;
 }
 
 .diagram figcaption {

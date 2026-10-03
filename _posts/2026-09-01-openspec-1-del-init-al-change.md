@@ -23,8 +23,8 @@ Esto lo hace muy adecuado para código existente (*brownfield*): no hay que docu
 Si vienes del mundo .NET, la analogía con EF Core ayuda: la spec es el *model snapshot*, cada change es una migración que describe solo la diferencia, y archivar es aplicarla.
 
 <figure class="diagram">
-  <img class="diagram-light" width="928" height="196" src="{{ '/img/diagrams/07-openspec-ciclo-light.svg' | prepend: site.baseurl }}" alt="Ciclo de un change en OpenSpec: explore, propose, apply y archive en secuencia, con update y sync como pasos opcionales; al archivar, los deltas pasan a openspec/specs.">
-  <img class="diagram-dark" width="928" height="196" src="{{ '/img/diagrams/07-openspec-ciclo-dark.svg' | prepend: site.baseurl }}" alt="Ciclo de un change en OpenSpec: explore, propose, apply y archive en secuencia, con update y sync como pasos opcionales; al archivar, los deltas pasan a openspec/specs.">
+  <img class="diagram-light" width="510" height="690" src="{{ '/img/diagrams/07-openspec-ciclo-light.svg' | prepend: site.baseurl }}" alt="Ciclo de un change en OpenSpec: explore, propose, apply y archive en secuencia, con update y sync como pasos opcionales; al archivar, los deltas pasan a openspec/specs.">
+  <img class="diagram-dark" width="510" height="690" src="{{ '/img/diagrams/07-openspec-ciclo-dark.svg' | prepend: site.baseurl }}" alt="Ciclo de un change en OpenSpec: explore, propose, apply y archive en secuencia, con update y sync como pasos opcionales; al archivar, los deltas pasan a openspec/specs.">
 </figure>
 
 Un change se piensa (opcional), se propone, se implementa y se archiva; al archivar, sus deltas se fusionan en la spec viva. Las cajas con borde discontinuo son pasos opcionales.

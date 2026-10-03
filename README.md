@@ -48,6 +48,8 @@ Los diagramas se escriben en Mermaid pero se publican como SVG, en versión clar
 </figure>
 ```
 
+Si un diagrama merece movimiento, se dibuja a mano como SVG con animación (SMIL y CSS) y se genera con un script de `_diagrams/animated/`, como `07-openspec-ciclo.py`. Respeta `prefers-reduced-motion` y se incluye en el post igual que los demás.
+
 ## Estructura
 
 | Ruta | Contenido |

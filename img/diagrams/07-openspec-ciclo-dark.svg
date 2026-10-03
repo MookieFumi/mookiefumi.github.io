@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="45 0 510 690" width="510" height="690" role="img" aria-labelledby="t d">
+<title id="t">Ciclo de un change en OpenSpec</title>
+<desc id="d">De arriba abajo: explore (opcional), propose, apply y archive; al archivar, los deltas pasan a openspec/specs. Update vuelve de apply a propose y sync fusiona los deltas antes de archivar; los dos son opcionales.</desc>
+<style>
+  text { font-family: "Bricolage Grotesque", "Segoe UI", system-ui, -apple-system, sans-serif; }
+  .cmd { font-size: 15px; font-weight: 700; fill: #ECE9F8; }
+  .sub { font-size: 12px; fill: #A39EC0; }
+  .tag { font-size: 11px; fill: #A39EC0; font-style: italic; }
+  .node { fill: #1C1832; stroke: #A58BFF; stroke-width: 2; }
+  .optional { stroke-dasharray: 6 5; }
+  .store { fill: #262043; stroke: #A58BFF; stroke-width: 2; }
+  .edge { fill: none; stroke: #7E77A3; stroke-width: 2; }
+  .flow { stroke-dasharray: 6 6; animation: flow 1.4s linear infinite; }
+  .arrow { fill: #7E77A3; }
+  .ring { fill: #FFC940; fill-opacity: 0.2; stroke: #FFC940; stroke-width: 3; opacity: 0; }
+  .appear { opacity: 0; animation: appear .6s ease-out forwards; }
+  @keyframes flow { to { stroke-dashoffset: -12; } }
+  @keyframes appear { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    .flow, .appear { animation: none; opacity: 1; }
+    .motion { display: none; }
+  }
+</style>
+<defs>
+  <marker id="head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+    <path class="arrow" d="M1 1 L9 5 L1 9 z"/>
+  </marker>
+  <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="4"/>
+  </filter>
+</defs>
+<path class="edge" d="M190 88 L190 144" marker-end="url(#head)"/>
+<path class="edge" d="M190 208 L190 264" marker-end="url(#head)"/>
+<path class="edge" d="M190 328 L190 404" marker-end="url(#head)"/>
+<path class="edge" d="M190 468 L190 562" marker-end="url(#head)"/>
+<path class="edge flow" d="M305.0 306.0 C330.0 306.0 330.0 246.0 355.0 246.0" marker-end="url(#head)"/>
+<path class="edge flow" d="M355.0 226.0 C330.0 226.0 330.0 186.0 305.0 186.0" marker-end="url(#head)"/>
+<path class="edge flow" d="M355.0 366.0 C330.0 366.0 330.0 436.0 305.0 436.0" marker-end="url(#head)"/>
+<g class="appear" style="animation-delay:0.00s">
+<rect class="node optional" x="75.0" y="24" width="230" height="64" rx="12"/>
+<text class="cmd" x="190" y="52" text-anchor="middle">/opsx-explore</text>
+<text class="sub" x="190" y="72" text-anchor="middle">pensar antes de comprometerse</text>
+</g>
+<g class="appear" style="animation-delay:0.12s">
+<rect class="node" x="75.0" y="144" width="230" height="64" rx="12"/>
+<text class="cmd" x="190" y="172" text-anchor="middle">/opsx-propose</text>
+<text class="sub" x="190" y="192" text-anchor="middle">proposal, design, tasks y deltas</text>
+</g>
+<g class="appear" style="animation-delay:0.24s">
+<rect class="node" x="75.0" y="264" width="230" height="64" rx="12"/>
+<text class="cmd" x="190" y="292" text-anchor="middle">/opsx-apply</text>
+<text class="sub" x="190" y="312" text-anchor="middle">código y tests, tarea a tarea</text>
+</g>
+<g class="appear" style="animation-delay:0.36s">
+<rect class="node" x="75.0" y="404" width="230" height="64" rx="12"/>
+<text class="cmd" x="190" y="432" text-anchor="middle">/opsx-archive</text>
+<text class="sub" x="190" y="452" text-anchor="middle">los deltas pasan a la spec viva</text>
+</g>
+<g class="appear" style="animation-delay:0.48s">
+<rect class="node optional" x="355.0" y="208" width="170" height="56" rx="12"/>
+<text class="cmd" x="440" y="232" text-anchor="middle">/opsx-update</text>
+<text class="sub" x="440" y="251" text-anchor="middle">reconcilia los artefactos</text>
+</g>
+<g class="appear" style="animation-delay:0.60s">
+<rect class="node optional" x="355.0" y="338" width="170" height="56" rx="12"/>
+<text class="cmd" x="440" y="362" text-anchor="middle">/opsx-sync</text>
+<text class="sub" x="440" y="381" text-anchor="middle">fusiona los deltas antes</text>
+</g>
+<g class="appear" style="animation-delay:0.72s">
+<path class="store" d="M75.0 560 A115.0 12 0 0 1 305.0 560 V620 A115.0 12 0 0 1 75.0 620 Z"/>
+<path class="store" d="M75.0 560 A115.0 12 0 0 0 305.0 560" style="fill:none"/>
+<text class="cmd" x="190" y="592" text-anchor="middle">openspec/specs</text>
+<text class="sub" x="190" y="612" text-anchor="middle">la fuente de verdad</text>
+</g>
+<g class="appear" style="animation-delay:0.92s">
+<rect class="node optional" x="355.0" y="656" width="26" height="16" rx="5" style="stroke-width:1.5"/>
+<text class="tag" x="391.0" y="668">paso opcional</text>
+</g>
+<g class="motion">
+<rect class="ring" x="71.0" y="20" width="238" height="72" rx="15">
+<animate attributeName="opacity" dur="11s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0;0.0;0.07;0.1;1" values="0;0;1;1;0;0"/>
+</rect>
+<rect class="ring" x="71.0" y="140" width="238" height="72" rx="15">
+<animate attributeName="opacity" dur="11s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.1861;0.2161;0.2861;0.3161;1" values="0;0;1;1;0;0"/>
+</rect>
+<rect class="ring" x="71.0" y="260" width="238" height="72" rx="15">
+<animate attributeName="opacity" dur="11s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.4021;0.4321;0.5021;0.5321;1" values="0;0;1;1;0;0"/>
+</rect>
+<rect class="ring" x="71.0" y="400" width="238" height="72" rx="15">
+<animate attributeName="opacity" dur="11s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.6425;0.6725;0.7425;0.7725;1" values="0;0;1;1;0;0"/>
+</rect>
+<rect class="ring" x="71.0" y="544" width="238" height="92" rx="16">
+<animate attributeName="opacity" dur="11s" repeatCount="indefinite" calcMode="linear" keyTimes="0;0.9;0.93;1.0;1;1" values="0;0;1;1;0;0"/>
+</rect>
+<circle r="9" fill="#FFC940" filter="url(#soft)" opacity="0.7">
+<animateMotion dur="11s" repeatCount="indefinite" calcMode="linear" keyPoints="0.0;0.0;0.2247;0.2247;0.4494;0.4494;0.7116;0.7116;1.0;1.0" keyTimes="0.0;0.07;0.2161;0.2861;0.4321;0.5021;0.6725;0.7425;0.93;1.0" path="M190 56.0 L190 590.0"/>
+</circle>
+<circle r="5" fill="#FFC940">
+<animateMotion dur="11s" repeatCount="indefinite" calcMode="linear" keyPoints="0.0;0.0;0.2247;0.2247;0.4494;0.4494;0.7116;0.7116;1.0;1.0" keyTimes="0.0;0.07;0.2161;0.2861;0.4321;0.5021;0.6725;0.7425;0.93;1.0" path="M190 56.0 L190 590.0"/>
+</circle>
+</g>
+</svg>

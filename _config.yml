@@ -1,10 +1,8 @@
 # --- General options --- #
 
-# url is the full website URL
-# baseurl is the website's URL without the hostname
-
-# If you are building a simple GitHub user page (http://username.github.io) then use these settings:
-url: "http://mookiefumi.github.io"
+# url: dirección pública del blog (dominio propio, ver CNAME)
+# baseurl: ruta bajo el dominio; vacía porque el blog está en la raíz
+url: "https://mookiefumi.com"
 baseurl: ""
 
 # Name of website
@@ -96,7 +94,6 @@ defaults:
       path: "" # all files
     values:
       layout: "page"
-      show-avatar: true
 
 # Exclude these files from production site
 exclude:
@@ -105,50 +102,3 @@ exclude:
   - LICENSE
   - README.md
   - CNAME
-  - Vagrantfile
-
-# prose.io config
-prose:
-  rooturl: '_posts'
-  media: 'img'
-  ignore:
-    - 404.html
-    - LICENSE
-    - feed.xml
-    - _config.yml
-    - /_layouts
-    - /_includes
-    - /css
-    - /img
-    - /js
-  metadata:
-    _posts:
-      - name: "layout"
-        field:
-          element: "hidden"
-          value: "post"
-      - name: "title"
-        field:
-          element: "text"
-          label: "Post title"
-          placeholder: "Title"
-          alterable: true
-      - name: "subtitle"
-        field:
-          element: "textarea"
-          label: "Subtitle"
-          placeholder: "A description of your post."
-          alterable: true
-      - name: "date"
-        field:
-          element: "text"
-          label: "Date"
-          help: "Enter date of post."
-          #placeholder: "yyyy-mm-dd"
-          placeholder: "dd-mm-yyyy"
-          alterable: true
-      - name: "published"
-        field:
-          element: "checkbox"
-          label: "Publish"
-          help: "Check to publish post, uncheck to hide."

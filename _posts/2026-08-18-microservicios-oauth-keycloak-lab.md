@@ -638,7 +638,7 @@ Con Keycloak en el mismo clúster, el servicio queda protegido para los dos tipo
 * **Las URLs importan**: la del issuer, la interna para las claves y las redirect URIs deben coincidir exactamente con lo que espera cada parte.
 * **En un MCP Server, el esquema de desafío** es el que permite a los clientes descubrir solos dónde iniciar sesión.
 
-En el [siguiente laboratorio](/2026-08-19-microservicios-oauth-entra-id-lab) repetiremos el escenario con **Microsoft Entra ID**, y veremos qué se simplifica y qué cambia al pasar a un proveedor gestionado.
+En el siguiente laboratorio repetiremos el escenario con **Microsoft Entra ID**, y veremos qué se simplifica y qué cambia al pasar a un proveedor gestionado.
 
 ## Referencias
 

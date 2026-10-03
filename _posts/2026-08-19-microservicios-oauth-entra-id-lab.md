@@ -3,7 +3,7 @@ layout: post
 title: "Laboratorio: securizando microservicios con OAuth 2.1 y Microsoft Entra ID"
 subtitle: Los mismos servicios y el mismo código, con un proveedor de identidad gestionado
 topic: seguridad
-published: true
+published: false
 ---
 
 En el [laboratorio anterior](/2026-08-18-microservicios-oauth-keycloak-lab) protegimos nuestros servicios con Keycloak, desplegado en el mismo clúster de Kubernetes local. Ahora repetimos el escenario con **Microsoft Entra ID**, el proveedor de identidad de Microsoft.

@@ -112,6 +112,7 @@ h4 {
 .topic-desarrollo { --topic-fill: var(--topic-desarrollo-fill); --topic-text: var(--topic-desarrollo-text); }
 .topic-ia { --topic-fill: var(--topic-ia-fill); --topic-text: var(--topic-ia-text); }
 .topic-k8s { --topic-fill: var(--topic-k8s-fill); --topic-text: var(--topic-k8s-text); }
+.topic-seguridad { --topic-fill: var(--topic-seguridad-fill); --topic-text: var(--topic-seguridad-text); }
 
 .chip {
   display: inline-flex;
@@ -329,7 +330,8 @@ a.chip:hover {
 .topic-aspnet.featured::after,
 .topic-desarrollo.featured::after,
 .topic-ia.featured::after,
-.topic-k8s.featured::after {
+.topic-k8s.featured::after,
+.topic-seguridad.featured::after {
   color: rgba(255, 255, 255, 0.22);
 }
 
@@ -1115,3 +1117,38 @@ a.chip-solid:hover {
     font-size: 220px;
   }
 }
+
+/* --- Diagramas (Mermaid pre-renderizado a SVG, claro/oscuro como los iconos de tema) --- */
+
+.diagram {
+  margin: 0;
+  padding: 16px;
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  overflow-x: auto;
+}
+
+.diagram img {
+  display: block;
+  margin-inline: auto;
+  max-width: 100%;
+}
+
+.diagram figcaption {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--color-text-muted);
+}
+
+.diagram .diagram-dark { display: none; }
+.diagram .diagram-light { display: block; }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .diagram .diagram-dark { display: block; }
+  :root:not([data-theme="light"]) .diagram .diagram-light { display: none; }
+}
+
+:root[data-theme="dark"] .diagram .diagram-dark { display: block; }
+:root[data-theme="dark"] .diagram .diagram-light { display: none; }

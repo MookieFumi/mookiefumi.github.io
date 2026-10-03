@@ -47,6 +47,8 @@
   --topic-ia-text: #9D1FAE;
   --topic-k8s-fill: #0A84A0;
   --topic-k8s-text: #0B6F86;
+  --topic-seguridad-fill: #DC2626;
+  --topic-seguridad-text: #B91C1C;
 
   /* Tipografía */
   --font-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
@@ -81,6 +83,7 @@
     --topic-desarrollo-text: #FF8A4C;
     --topic-ia-text: #E879F9;
     --topic-k8s-text: #3CCFEF;
+    --topic-seguridad-text: #FF6B6B;
   }
 }
 
@@ -106,4 +109,5 @@
   --topic-desarrollo-text: #FF8A4C;
   --topic-ia-text: #E879F9;
   --topic-k8s-text: #3CCFEF;
+  --topic-seguridad-text: #FF6B6B;
 }

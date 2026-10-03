@@ -6,6 +6,8 @@
   name: IA
 - slug: k8s
   name: k8s
+- slug: seguridad
+  name: Seguridad
 - slug: xamarin
   name: Xamarin
 - slug: testing

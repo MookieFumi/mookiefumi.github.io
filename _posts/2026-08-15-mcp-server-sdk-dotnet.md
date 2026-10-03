@@ -69,7 +69,7 @@ dotnet add package ModelContextProtocol.AspNetCore
 
 Partimos de una solución con tres proyectos:
 
-* **La API**: el proyecto de plantilla de ASP.NET Core con su endpoint `GET /weatherforecast`, sin parámetros. No entraremos en su código; es simplemente el backend que queremos exponer.
+* **La API**: un proyecto ASP.NET Core creado a partir de la plantilla, con su endpoint renombrado a `GET /brentforecast`, sin parámetros. No entraremos en su código; es simplemente el backend que queremos exponer.
 * **El MCP Server**: un proyecto ASP.NET Core que consume esa API y la expone como tool.
 * **El AppHost de Aspire**: orquesta ambos proyectos y hace que el MCP Server encuentre la API sin URLs fijas.
 
@@ -78,16 +78,16 @@ Partimos de una solución con tres proyectos:
 ```csharp
 var builder = DistributedApplication.CreateBuilder(args);
 
-var api = builder.AddProject<Projects.WeatherApi>("api");
+var api = builder.AddProject<Projects.BrentApi>("brent-api");
 
-builder.AddProject<Projects.WeatherMcp>("mcp")
+builder.AddProject<Projects.BrentMcp>("brent-mcp")
     .WithReference(api)
     .WaitFor(api);
 
 builder.Build().Run();
 ```
 
-`WithReference(api)` es la pieza clave: Aspire inyecta en el MCP Server la información necesaria para llegar a la API por su nombre lógico, `api`, sin que tengamos que fijar ningún host ni puerto. `WaitFor(api)` hace que el MCP Server no arranque hasta que la API esté lista.
+`WithReference(api)` es la pieza clave: Aspire inyecta en el MCP Server la información necesaria para llegar a la API por su nombre lógico, `brent-api`, sin que tengamos que fijar ningún host ni puerto. `WaitFor(api)` hace que el MCP Server no arranque hasta que la API esté lista.
 
 ### El MCP Server
 
@@ -99,9 +99,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
-builder.Services.AddHttpClient("WeatherApi", client =>
+builder.Services.AddHttpClient("BrentApi", client =>
 {
-    client.BaseAddress = new Uri("https+http://api");
+    client.BaseAddress = new Uri("https+http://brent-api");
 });
 
 builder.Services
@@ -117,18 +117,18 @@ app.MapMcp("/mcp");
 app.Run();
 
 [McpServerToolType]
-public static class WeatherTools
+public static class BrentTools
 {
-    [McpServerTool, Description("Gets the weather forecast for the next days")]
-    public static async Task<string> GetWeatherForecast(IHttpClientFactory httpClientFactory)
+    [McpServerTool, Description("Gets the Brent forecast for the next days")]
+    public static async Task<string> GetBrentForecast(IHttpClientFactory httpClientFactory)
     {
-        var client = httpClientFactory.CreateClient("WeatherApi");
-        return await client.GetStringAsync("/weatherforecast");
+        var client = httpClientFactory.CreateClient("BrentApi");
+        return await client.GetStringAsync("/brentforecast");
     }
 }
 ```
 
-`AddServiceDefaults()` viene del proyecto `ServiceDefaults` que genera la plantilla de Aspire y, entre otras cosas (telemetría, health checks, resiliencia), registra el **service discovery**. Gracias a él, `https+http://api` no es un host real sino el nombre lógico definido en el AppHost: se resuelve al endpoint real de la API, prefiriendo HTTPS y usando HTTP si no está disponible.
+`AddServiceDefaults()` viene del proyecto `ServiceDefaults` que genera la plantilla de Aspire y, entre otras cosas (telemetría, health checks, resiliencia), registra el **service discovery**. Gracias a él, `https+http://brent-api` no es un host real sino el nombre lógico definido en el AppHost: se resuelve al endpoint real de la API, prefiriendo HTTPS y usando HTTP si no está disponible.
 
 Esta tool es un reflejo 1:1 del endpoint, que para un ejemplo es más que suficiente. En un sistema real es aquí donde aplicaríamos lo visto antes: combinar llamadas, filtrar datos y devolver solo lo que el modelo necesita.
 
@@ -164,7 +164,7 @@ Escanea el ensamblado en busca de clases marcadas con `[McpServerToolType]` y re
 builder.Services
     .AddMcpServer()
     .WithHttpTransport()
-    .WithTools<WeatherTools>();
+    .WithTools<BrentTools>();
 ```
 
 ### `[McpServerTool]` y la inyección de dependencias
@@ -177,8 +177,8 @@ Los métodos de las tools pueden ser estáticos o de instancia:
 Los parámetros que sí debe rellenar el modelo se declaran como parámetros normales, y el SDK genera su esquema JSON a partir del tipo. Por ejemplo, si nuestra API aceptara un número de días:
 
 ```csharp
-[McpServerTool, Description("Gets the weather forecast for the given number of days")]
-public static async Task<string> GetWeatherForecast(
+[McpServerTool, Description("Gets the Brent forecast for the given number of days")]
+public static async Task<string> GetBrentForecast(
     IHttpClientFactory httpClientFactory,
     [Description("Number of days to forecast, between 1 and 5")] int days)
 {
@@ -212,12 +212,12 @@ Arrancamos la solución desde el AppHost:
 aspire run
 ```
 
-En el dashboard de Aspire veremos los dos recursos, `api` y `mcp`, con sus endpoints. Tomamos la URL del MCP Server y la añadimos en `.vscode/mcp.json`:
+En el dashboard de Aspire veremos los dos recursos, `brent-api` y `brent-mcp`, con sus endpoints. Tomamos la URL del MCP Server y la añadimos en `.vscode/mcp.json`:
 
 ```json
 {
   "servers": {
-    "weather-mcp": {
+    "brent-mcp": {
       "type": "http",
       "url": "http://localhost:<port>/mcp"
     }
@@ -225,7 +225,7 @@ En el dashboard de Aspire veremos los dos recursos, `api` y `mcp`, con sus endpo
 }
 ```
 
-Al iniciar el servidor desde VS Code, debería descubrir la tool `GetWeatherForecast` y el modelo podrá usarla en modo agente para responder preguntas sobre la previsión. Además, como el MCP Server usa `ServiceDefaults`, en el propio dashboard podemos seguir las trazas de cada llamada: desde la petición del cliente MCP hasta la llamada a la API.
+Al iniciar el servidor desde VS Code, debería descubrir la tool `GetBrentForecast` y el modelo podrá usarla en modo agente para responder preguntas sobre la previsión. Además, como el MCP Server usa `ServiceDefaults`, en el propio dashboard podemos seguir las trazas de cada llamada: desde la petición del cliente MCP hasta la llamada a la API.
 
 Si quieres inspeccionar el servidor sin pasar por un modelo, el **MCP Inspector** permite conectarse, listar las tools y ejecutarlas a mano:
 

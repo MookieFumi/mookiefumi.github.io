@@ -236,7 +236,7 @@ Todo esto lo pondremos en práctica en los siguientes artículos.
 
 ## Qué viene
 
-* **Laboratorio con Keycloak**: desplegaremos Keycloak en nuestro clúster de Kubernetes local, configuraremos realm, clients, scopes y roles, y protegeremos el MCP Server para usuarios (desde Visual Studio Code) y para aplicaciones.
+* **[Laboratorio con Keycloak](/2026-08-18-microservicios-oauth-keycloak-lab)**: desplegaremos Keycloak en nuestro clúster de Kubernetes local, configuraremos realm, clients, scopes y roles, y protegeremos el MCP Server para usuarios (desde Visual Studio Code) y para aplicaciones.
 * **Laboratorio con Entra ID**: el mismo escenario con el proveedor de identidad de Microsoft, y las diferencias que aparecen al cambiar de uno a otro.
 
 ## Referencias

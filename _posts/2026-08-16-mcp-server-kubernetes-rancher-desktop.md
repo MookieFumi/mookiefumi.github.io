@@ -6,7 +6,7 @@ topic: k8s
 published: true
 ---
 
-En el [post anterior](/2026-08-15-mcp-server-sdk-dotnet) creamos un MCP Server con el SDK oficial de .NET que consume una API de ejemplo (`GET /weatherforecast`), todo orquestado con Aspire. En este laboratorio vamos a llevar esa misma solución a un **clúster de Kubernetes local**, exponerla con un Ingress y conectarla desde Visual Studio Code.
+En el [post anterior](/2026-08-15-mcp-server-sdk-dotnet) creamos un MCP Server con el SDK oficial de .NET que consume una API de ejemplo (`GET /brentforecast`), todo orquestado con Aspire. En este laboratorio vamos a llevar esa misma solución a un **clúster de Kubernetes local**, exponerla con un Ingress y conectarla desde Visual Studio Code.
 
 No es un camino de rosas, y precisamente por eso merece la pena contarlo: por el camino aparecen dos problemas muy habituales al trabajar con Kubernetes en local, que veremos en detalle junto con su solución y algunas alternativas.
 
@@ -395,7 +395,7 @@ kubectl port-forward svc/brent-api-service 8080:8080
 Y en otra terminal:
 
 ```powershell
-curl.exe http://localhost:8080/weatherforecast
+curl.exe http://localhost:8080/brentforecast
 ```
 
 Lo mismo para el MCP Server, que responderá en `http://localhost:8081/mcp`:
@@ -458,7 +458,7 @@ Para que esos nombres resuelvan a nuestra máquina, lo normal es añadirlos al f
 Podemos comprobar que el Ingress funciona igualmente enviando la cabecera `Host` a mano, que es lo que Traefik usa para elegir la regla:
 
 ```powershell
-curl.exe http://127.0.0.1/weatherforecast -H "Host: api.brent.local"
+curl.exe http://127.0.0.1/brentforecast -H "Host: api.brent.local"
 ```
 
 Funciona. Así que intentamos lo mismo en VS Code, apuntando a `127.0.0.1` y añadiendo la cabecera en `.vscode/mcp.json`:
@@ -559,7 +559,7 @@ kubectl get ingress
 La columna `HOSTS` debe aparecer vacía o con `*`. Si todavía muestra los hosts anteriores, el cambio no se ha aplicado. Y ahora sí:
 
 ```powershell
-curl.exe http://127.0.0.1/weatherforecast
+curl.exe http://127.0.0.1/brentforecast
 ```
 
 ### Alternativas
@@ -584,7 +584,7 @@ Con el Ingress por ruta, la configuración de `.vscode/mcp.json` queda así de s
 }
 ```
 
-Arrancamos el servidor desde VS Code y descubre la tool `GetWeatherForecast`. A partir de aquí, el modelo puede usarla en modo agente: la petición pasa por Traefik, llega al MCP Server y este llama a la API dentro del clúster usando el service discovery de Aspire.
+Arrancamos el servidor desde VS Code y descubre la tool `GetBrentForecast`. A partir de aquí, el modelo puede usarla en modo agente: la petición pasa por Traefik, llega al MCP Server y este llama a la API dentro del clúster usando el service discovery de Aspire.
 
 ## Extra: el dashboard de Aspire en el clúster
 

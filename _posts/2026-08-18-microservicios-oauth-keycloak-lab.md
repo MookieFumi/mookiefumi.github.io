@@ -418,7 +418,7 @@ builder.Services.AddAuthorization(options =>
         (context.User.FindFirst("scope")?.Value.Split(' ').Contains("mcp.tools") ?? false)));
 });
 
-builder.Services.AddHttpClient("WeatherApi", client =>
+builder.Services.AddHttpClient("BrentApi", client =>
 {
     client.BaseAddress = new Uri("https+http://brent-api");
 });
@@ -439,13 +439,13 @@ app.MapMcp("/mcp").RequireAuthorization("McpAccess");
 app.Run();
 
 [McpServerToolType]
-public static class WeatherTools
+public static class BrentTools
 {
-    [McpServerTool, Description("Gets the weather forecast for the next days")]
-    public static async Task<string> GetWeatherForecast(IHttpClientFactory httpClientFactory)
+    [McpServerTool, Description("Gets the Brent forecast for the next days")]
+    public static async Task<string> GetBrentForecast(IHttpClientFactory httpClientFactory)
     {
-        var client = httpClientFactory.CreateClient("WeatherApi");
-        return await client.GetStringAsync("/weatherforecast");
+        var client = httpClientFactory.CreateClient("BrentApi");
+        return await client.GetStringAsync("/brentforecast");
     }
 }
 ```
@@ -540,7 +540,7 @@ Usamos un client registrado previamente, con su `clientId` en la configuración.
 
 ## ¿Y si no es un MCP Server?
 
-Para proteger cualquier otra API del clúster, como la propia API del tiempo, la configuración de Keycloak es la misma (un client por servicio, su rol, un client scope con su mapper de audiencia) y el problema de las dos URLs también. En el código desaparecen las tres piezas específicas de MCP:
+Para proteger cualquier otra API del clúster, como la propia API brent, la configuración de Keycloak es la misma (un client por servicio, su rol, un client scope con su mapper de audiencia) y el problema de las dos URLs también. En el código desaparecen las tres piezas específicas de MCP:
 
 * No hay `AddMcp` ni metadatos de recurso protegido, ni la regla `/.well-known/oauth-protected-resource` en el Ingress.
 * JWT Bearer puede ser el esquema por defecto para todo, incluido el desafío, porque no hay que anunciar nada en el `401`.
@@ -556,12 +556,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("WeatherRead", policy => policy.RequireRole("Weather.Read"));
+    options.AddPolicy("BrentRead", policy => policy.RequireRole("Brent.Read"));
 });
 
 // ...
 
-app.MapGet("/weatherforecast", GetForecast).RequireAuthorization("WeatherRead");
+app.MapGet("/brentforecast", GetForecast).RequireAuthorization("BrentRead");
 ```
 
 Y si el MCP Server llamara a esa API protegida, tendría que pedir su propio token: con client credentials si basta con su identidad, o con un intercambio de token si la API necesita saber qué usuario originó la llamada. Nunca reenviando el token que recibió, como vimos en el post de conceptos.

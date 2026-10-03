@@ -69,7 +69,7 @@ dotnet add package ModelContextProtocol.AspNetCore
 
 Partimos de una solución con tres proyectos:
 
-* **La API**: el proyecto de plantilla de ASP.NET Core con su endpoint `GET /weatherforecast`, sin parámetros. No entraremos en su código; es simplemente el backend que queremos exponer.
+* **La API**: un proyecto ASP.NET Core creado a partir de la plantilla, con su endpoint renombrado a `GET /brentforecast`, sin parámetros. No entraremos en su código; es simplemente el backend que queremos exponer.
 * **El MCP Server**: un proyecto ASP.NET Core que consume esa API y la expone como tool.
 * **El AppHost de Aspire**: orquesta ambos proyectos y hace que el MCP Server encuentre la API sin URLs fijas.
 
@@ -99,7 +99,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
-builder.Services.AddHttpClient("WeatherApi", client =>
+builder.Services.AddHttpClient("BrentApi", client =>
 {
     client.BaseAddress = new Uri("https+http://brent-api");
 });
@@ -117,13 +117,13 @@ app.MapMcp("/mcp");
 app.Run();
 
 [McpServerToolType]
-public static class WeatherTools
+public static class BrentTools
 {
-    [McpServerTool, Description("Gets the weather forecast for the next days")]
-    public static async Task<string> GetWeatherForecast(IHttpClientFactory httpClientFactory)
+    [McpServerTool, Description("Gets the Brent forecast for the next days")]
+    public static async Task<string> GetBrentForecast(IHttpClientFactory httpClientFactory)
     {
-        var client = httpClientFactory.CreateClient("WeatherApi");
-        return await client.GetStringAsync("/weatherforecast");
+        var client = httpClientFactory.CreateClient("BrentApi");
+        return await client.GetStringAsync("/brentforecast");
     }
 }
 ```
@@ -164,7 +164,7 @@ Escanea el ensamblado en busca de clases marcadas con `[McpServerToolType]` y re
 builder.Services
     .AddMcpServer()
     .WithHttpTransport()
-    .WithTools<WeatherTools>();
+    .WithTools<BrentTools>();
 ```
 
 ### `[McpServerTool]` y la inyección de dependencias
@@ -177,8 +177,8 @@ Los métodos de las tools pueden ser estáticos o de instancia:
 Los parámetros que sí debe rellenar el modelo se declaran como parámetros normales, y el SDK genera su esquema JSON a partir del tipo. Por ejemplo, si nuestra API aceptara un número de días:
 
 ```csharp
-[McpServerTool, Description("Gets the weather forecast for the given number of days")]
-public static async Task<string> GetWeatherForecast(
+[McpServerTool, Description("Gets the Brent forecast for the given number of days")]
+public static async Task<string> GetBrentForecast(
     IHttpClientFactory httpClientFactory,
     [Description("Number of days to forecast, between 1 and 5")] int days)
 {
@@ -225,7 +225,7 @@ En el dashboard de Aspire veremos los dos recursos, `brent-api` y `brent-mcp`, c
 }
 ```
 
-Al iniciar el servidor desde VS Code, debería descubrir la tool `GetWeatherForecast` y el modelo podrá usarla en modo agente para responder preguntas sobre la previsión. Además, como el MCP Server usa `ServiceDefaults`, en el propio dashboard podemos seguir las trazas de cada llamada: desde la petición del cliente MCP hasta la llamada a la API.
+Al iniciar el servidor desde VS Code, debería descubrir la tool `GetBrentForecast` y el modelo podrá usarla en modo agente para responder preguntas sobre la previsión. Además, como el MCP Server usa `ServiceDefaults`, en el propio dashboard podemos seguir las trazas de cada llamada: desde la petición del cliente MCP hasta la llamada a la API.
 
 Si quieres inspeccionar el servidor sin pasar por un modelo, el **MCP Inspector** permite conectarse, listar las tools y ejecutarlas a mano:
 

@@ -150,7 +150,7 @@ Partimos del Ingress del laboratorio anterior, que enrutaba por ruta. Lo movemos
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: weather-ingress
+  name: brent-ingress
 spec:
   ingressClassName: traefik
   rules:
@@ -167,21 +167,21 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: mcp-service
+                name: brent-mcp-service
                 port:
                   number: 8080
           - path: /mcp
             pathType: Prefix
             backend:
               service:
-                name: mcp-service
+                name: brent-mcp-service
                 port:
                   number: 8080
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: api-service
+                name: brent-api-service
                 port:
                   number: 8080
 ```
@@ -420,7 +420,7 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddHttpClient("WeatherApi", client =>
 {
-    client.BaseAddress = new Uri("https+http://api");
+    client.BaseAddress = new Uri("https+http://brent-api");
 });
 
 builder.Services
@@ -466,8 +466,8 @@ Como en el laboratorio anterior, reconstruimos la imagen con el nombre que esper
 
 ```powershell
 cd src
-docker build -t mcp:latest -f WeatherMcp/Dockerfile .
-kubectl rollout restart deployment mcp-deployment
+docker build -t brent-mcp:latest -f BrentMcp/Dockerfile .
+kubectl rollout restart deployment brent-mcp-deployment
 ```
 
 No usamos `helm upgrade` a propósito: revertiría el parche de `imagePullPolicy: Never`.
@@ -518,7 +518,7 @@ En `.vscode/mcp.json`, indicamos el client registrado para VS Code:
 ```json
 {
   "servers": {
-    "weather-mcp": {
+    "brent-mcp": {
       "type": "http",
       "url": "http://127.0.0.1/mcp",
       "oauth": { "clientId": "vscode-mcp" }

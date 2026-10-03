@@ -2,7 +2,7 @@ flowchart LR
     VS[VS Code] -->|127.0.0.1| T[Traefik]
     APP[Application] -->|127.0.0.1| T
     T -->|/auth| KC[Keycloak]
-    T -->|/mcp and /.well-known| MCP[MCP Server]
-    T -->|/| API[API]
+    T -->|/mcp and /.well-known| MCP[brent-mcp]
+    T -->|/| API[brent-api]
     MCP -->|downloads keys from keycloak-service| KC
     MCP -->|service discovery| API

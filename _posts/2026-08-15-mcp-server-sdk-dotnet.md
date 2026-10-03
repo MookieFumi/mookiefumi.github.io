@@ -78,16 +78,16 @@ Partimos de una solución con tres proyectos:
 ```csharp
 var builder = DistributedApplication.CreateBuilder(args);
 
-var api = builder.AddProject<Projects.WeatherApi>("api");
+var api = builder.AddProject<Projects.BrentApi>("brent-api");
 
-builder.AddProject<Projects.WeatherMcp>("mcp")
+builder.AddProject<Projects.BrentMcp>("brent-mcp")
     .WithReference(api)
     .WaitFor(api);
 
 builder.Build().Run();
 ```
 
-`WithReference(api)` es la pieza clave: Aspire inyecta en el MCP Server la información necesaria para llegar a la API por su nombre lógico, `api`, sin que tengamos que fijar ningún host ni puerto. `WaitFor(api)` hace que el MCP Server no arranque hasta que la API esté lista.
+`WithReference(api)` es la pieza clave: Aspire inyecta en el MCP Server la información necesaria para llegar a la API por su nombre lógico, `brent-api`, sin que tengamos que fijar ningún host ni puerto. `WaitFor(api)` hace que el MCP Server no arranque hasta que la API esté lista.
 
 ### El MCP Server
 
@@ -101,7 +101,7 @@ builder.AddServiceDefaults();
 
 builder.Services.AddHttpClient("WeatherApi", client =>
 {
-    client.BaseAddress = new Uri("https+http://api");
+    client.BaseAddress = new Uri("https+http://brent-api");
 });
 
 builder.Services
@@ -128,7 +128,7 @@ public static class WeatherTools
 }
 ```
 
-`AddServiceDefaults()` viene del proyecto `ServiceDefaults` que genera la plantilla de Aspire y, entre otras cosas (telemetría, health checks, resiliencia), registra el **service discovery**. Gracias a él, `https+http://api` no es un host real sino el nombre lógico definido en el AppHost: se resuelve al endpoint real de la API, prefiriendo HTTPS y usando HTTP si no está disponible.
+`AddServiceDefaults()` viene del proyecto `ServiceDefaults` que genera la plantilla de Aspire y, entre otras cosas (telemetría, health checks, resiliencia), registra el **service discovery**. Gracias a él, `https+http://brent-api` no es un host real sino el nombre lógico definido en el AppHost: se resuelve al endpoint real de la API, prefiriendo HTTPS y usando HTTP si no está disponible.
 
 Esta tool es un reflejo 1:1 del endpoint, que para un ejemplo es más que suficiente. En un sistema real es aquí donde aplicaríamos lo visto antes: combinar llamadas, filtrar datos y devolver solo lo que el modelo necesita.
 
@@ -212,12 +212,12 @@ Arrancamos la solución desde el AppHost:
 aspire run
 ```
 
-En el dashboard de Aspire veremos los dos recursos, `api` y `mcp`, con sus endpoints. Tomamos la URL del MCP Server y la añadimos en `.vscode/mcp.json`:
+En el dashboard de Aspire veremos los dos recursos, `brent-api` y `brent-mcp`, con sus endpoints. Tomamos la URL del MCP Server y la añadimos en `.vscode/mcp.json`:
 
 ```json
 {
   "servers": {
-    "weather-mcp": {
+    "brent-mcp": {
       "type": "http",
       "url": "http://localhost:<port>/mcp"
     }

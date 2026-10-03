@@ -39,7 +39,7 @@ Son los tres recursos básicos con los que vamos a trabajar:
 
 * **Pod**: la unidad mínima de ejecución. Envuelve uno o varios contenedores. Los pods son efímeros: se crean, se destruyen y cambian de IP.
 * **Deployment**: describe cómo deben ejecutarse los pods de una aplicación (qué imagen, cuántas réplicas, qué variables de entorno) y se encarga de que siempre se cumpla. Si un pod muere, el Deployment crea otro.
-* **Service** (abreviado `svc` en `kubectl`): da un **nombre y una dirección estables** a un conjunto de pods y reparte el tráfico entre ellos. Como los pods cambian de IP, los demás componentes nunca hablan con un pod directamente, sino con su Service. Dentro del clúster, cada Service tiene un nombre DNS: nuestro MCP Server llegará a la API a través del Service `api-service`.
+* **Service** (abreviado `svc` en `kubectl`): da un **nombre y una dirección estables** a un conjunto de pods y reparte el tráfico entre ellos. Como los pods cambian de IP, los demás componentes nunca hablan con un pod directamente, sino con su Service. Dentro del clúster, cada Service tiene un nombre DNS: nuestro MCP Server llegará a la API a través del Service `brent-api-service`.
 
 Por defecto, un Service solo es accesible **desde dentro del clúster**. Para llegar desde fuera necesitaremos algo más: un Ingress.
 
@@ -79,12 +79,12 @@ La relación entre ambos la establece la **IngressClass**: cada Ingress indica e
 El flujo completo de una petición en nuestro laboratorio será:
 
 ```
-VS Code ──► Traefik (Ingress Controller) ──► regla del Ingress ──► mcp-service ──► pod del MCP Server
-                                                                                        │
-                                                            api-service ◄───────────────┘
-                                                                 │
-                                                                 ▼
-                                                          pod de la API
+VS Code ──► Traefik (Ingress Controller) ──► regla del Ingress ──► brent-mcp-service ──► pod del MCP Server
+                                                                                                  │
+                                                            brent-api-service ◄───────────────────┘
+                                                                    │
+                                                                    ▼
+                                                              pod de la API
 ```
 
 Más detalles en la [documentación de Kubernetes sobre Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/).
@@ -209,9 +209,9 @@ Partimos del AppHost del post anterior, con la API y el MCP Server:
 ```csharp
 var builder = DistributedApplication.CreateBuilder(args);
 
-var api = builder.AddProject<Projects.WeatherApi>("api");
+var api = builder.AddProject<Projects.BrentApi>("brent-api");
 
-builder.AddProject<Projects.WeatherMcp>("mcp")
+builder.AddProject<Projects.BrentMcp>("brent-mcp")
     .WithReference(api)
     .WaitFor(api);
 
@@ -231,9 +231,9 @@ var builder = DistributedApplication.CreateBuilder(args);
 
 builder.AddKubernetesEnvironment("k8s");
 
-var api = builder.AddProject<Projects.WeatherApi>("api");
+var api = builder.AddProject<Projects.BrentApi>("brent-api");
 
-builder.AddProject<Projects.WeatherMcp>("mcp")
+builder.AddProject<Projects.BrentMcp>("brent-mcp")
     .WithReference(api)
     .WaitFor(api);
 
@@ -254,23 +254,23 @@ Merece la pena echar un vistazo al `values.yaml`. Estas son las partes que nos i
 
 ```yaml
 parameters:
-  api:
+  brent_api:
     port_http: 8080
-    api_image: "api:latest"
-  mcp:
+    brent_api_image: "brent-api:latest"
+  brent_mcp:
     port_http: 8080
-    mcp_image: "mcp:latest"
+    brent_mcp_image: "brent-mcp:latest"
 config:
-  mcp:
-    services__api__http__0: ""
+  brent_mcp:
+    services__brent-api__http__0: ""
     OTEL_EXPORTER_OTLP_ENDPOINT: "http://k8s-dashboard-service:18889"
     # ...
 ```
 
 Tres detalles:
 
-* Las imágenes se llaman `api:latest` y `mcp:latest`, sin registry. Volveremos a esto enseguida.
-* Las variables `services__api__http__0` son la traducción del `WithReference(api)`: es el mismo service discovery que usábamos en local, ahora apuntando al Service de Kubernetes.
+* Las imágenes se llaman `brent-api:latest` y `brent-mcp:latest`, sin registry. Volveremos a esto enseguida.
+* Las variables `services__brent-api__http__0` son la traducción del `WithReference(api)`: es el mismo service discovery que usábamos en local, ahora apuntando al Service de Kubernetes.
 * La telemetría apunta a `k8s-dashboard-service`: Aspire incluye **su propio dashboard** en el chart. Lo veremos al final.
 
 ## Construir las imágenes
@@ -279,8 +279,8 @@ Con el motor `dockerd` de Rancher Desktop, las imágenes que construimos con `do
 
 ```powershell
 cd src
-docker build -t api:latest -f WeatherApi/Dockerfile .
-docker build -t mcp:latest -f WeatherMcp/Dockerfile .
+docker build -t brent-api:latest -f BrentApi/Dockerfile .
+docker build -t brent-mcp:latest -f BrentMcp/Dockerfile .
 ```
 
 Comprobamos que existen:
@@ -294,13 +294,13 @@ docker images | Select-String "api|mcp"
 Antes de instalar, podemos ver el YAML final que Helm aplicará al clúster, con los valores ya sustituidos:
 
 ```powershell
-helm template weather-solution ./k8s-output
+helm template brent-solution ./k8s-output
 ```
 
 Si todo cuadra, instalamos la release:
 
 ```powershell
-helm install weather-solution ./k8s-output
+helm install brent-solution ./k8s-output
 kubectl get pods
 ```
 
@@ -308,9 +308,9 @@ Helm nos dice que la instalación ha ido bien... pero los pods no opinan lo mism
 
 ```
 NAME                                   READY   STATUS         RESTARTS
-api-deployment-6fdfc7ddd5-s8v4h        0/1     ErrImagePull   0
+brent-api-deployment-6fdfc7ddd5-s8v4h        0/1     ErrImagePull   0
 k8s-dashboard-deployment-596c65c744-vx8tz  1/1  Running       0
-mcp-deployment-5b6df5b94f-w8r7g        0/1     ErrImagePull   0
+brent-mcp-deployment-5b6df5b94f-w8r7g        0/1     ErrImagePull   0
 ```
 
 ## Problema 1: `ErrImagePull` con imágenes locales
@@ -322,7 +322,7 @@ Las imágenes existen en local, pero Kubernetes intenta **descargarlas** igualme
 * Si el tag es `:latest`, o no hay tag, la política por defecto es **`Always`**: descargar siempre.
 * Con cualquier otro tag, la política por defecto es **`IfNotPresent`**: descargar solo si no está en el nodo.
 
-Como el chart usa `api:latest` y `mcp:latest` sin registry, Kubernetes intenta descargarlas de Docker Hub (`docker.io/library/api:latest`), donde no existen. De ahí el `ErrImagePull`.
+Como el chart usa `brent-api:latest` y `brent-mcp:latest` sin registry, Kubernetes intenta descargarlas de Docker Hub (`docker.io/library/brent-api:latest`), donde no existen. De ahí el `ErrImagePull`.
 
 El dashboard, en cambio, arranca sin problemas porque su imagen es pública y sí se puede descargar.
 
@@ -337,25 +337,25 @@ kubectl describe pod <api-pod-name>
 Forzamos la política `Never` en los dos Deployments, para que Kubernetes use siempre la imagen local. Primero comprobamos el nombre del contenedor dentro de cada Deployment:
 
 ```powershell
-kubectl get deployment api-deployment -o jsonpath="{.spec.template.spec.containers[*].name}"
+kubectl get deployment brent-api-deployment -o jsonpath="{.spec.template.spec.containers[*].name}"
 ```
 
-Creamos un fichero de patch por Deployment, usando el nombre del contenedor obtenido. Por ejemplo, `patch-api.yaml`:
+Creamos un fichero de patch por Deployment, usando el nombre del contenedor obtenido. Por ejemplo, `patch-brent-api.yaml`:
 
 ```yaml
 spec:
   template:
     spec:
       containers:
-        - name: api
+        - name: brent-api
           imagePullPolicy: Never
 ```
 
-Y lo aplicamos (lo mismo para `mcp` con su propio fichero):
+Y lo aplicamos (lo mismo para `brent-mcp` con su propio fichero):
 
 ```powershell
-kubectl patch deployment api-deployment --patch-file patch-api.yaml
-kubectl patch deployment mcp-deployment --patch-file patch-mcp.yaml
+kubectl patch deployment brent-api-deployment --patch-file patch-brent-api.yaml
+kubectl patch deployment brent-mcp-deployment --patch-file patch-brent-mcp.yaml
 kubectl get pods
 ```
 
@@ -365,15 +365,15 @@ Usar un fichero en lugar de JSON en línea evita los problemas de escapado de co
 
 El patch funciona, pero tiene un inconveniente: **se pierde en el siguiente `helm upgrade`**, porque el chart no sabe nada de él. Estas son otras opciones:
 
-* **Usar un tag distinto de `latest`**. Es probablemente la más limpia. Si construimos las imágenes como `api:1.0` y `mcp:1.0`, la política por defecto pasa a ser `IfNotPresent` y Kubernetes usará las imágenes locales sin tocar nada más. Como los nombres de imagen son parámetros del chart, basta con sobrescribirlos al instalar:
+* **Usar un tag distinto de `latest`**. Es probablemente la más limpia. Si construimos las imágenes como `brent-api:1.0` y `brent-mcp:1.0`, la política por defecto pasa a ser `IfNotPresent` y Kubernetes usará las imágenes locales sin tocar nada más. Como los nombres de imagen son parámetros del chart, basta con sobrescribirlos al instalar:
 
   ```powershell
-  docker build -t api:1.0 -f WeatherApi/Dockerfile .
-  docker build -t mcp:1.0 -f WeatherMcp/Dockerfile .
+  docker build -t brent-api:1.0 -f BrentApi/Dockerfile .
+  docker build -t brent-mcp:1.0 -f BrentMcp/Dockerfile .
 
-  helm install weather-solution ./k8s-output `
-    --set parameters.api.api_image=api:1.0 `
-    --set parameters.mcp.mcp_image=mcp:1.0
+  helm install brent-solution ./k8s-output `
+    --set parameters.brent_api.brent_api_image=brent-api:1.0 `
+    --set parameters.brent_mcp.brent_mcp_image=brent-mcp:1.0
   ```
 
 * **Editar las plantillas del chart** para añadir `imagePullPolicy`. Funciona, pero el chart es generado: cada `aspire publish` sobrescribe los cambios.
@@ -389,7 +389,7 @@ Antes de configurar el Ingress, comprobamos que todo responde usando `port-forwa
 Para la API:
 
 ```powershell
-kubectl port-forward svc/api-service 8080:8080
+kubectl port-forward svc/brent-api-service 8080:8080
 ```
 
 Y en otra terminal:
@@ -401,7 +401,7 @@ curl.exe http://localhost:8080/weatherforecast
 Lo mismo para el MCP Server, que responderá en `http://localhost:8081/mcp`:
 
 ```powershell
-kubectl port-forward svc/mcp-service 8081:8080
+kubectl port-forward svc/brent-mcp-service 8081:8080
 ```
 
 ## Exponer los servicios con un Ingress
@@ -412,7 +412,7 @@ Aspire no genera un Ingress para este escenario, así que lo creamos nosotros. A
 kubectl get svc
 ```
 
-Veremos `api-service` y `mcp-service` en el puerto 8080, además del Service del dashboard y el Service `kubernetes`, que existe siempre y apunta a la API del propio clúster.
+Veremos `brent-api-service` y `brent-mcp-service` en el puerto 8080, además del Service del dashboard y el Service `kubernetes`, que existe siempre y apunta a la API del propio clúster.
 
 ### Primer intento: enrutado por host
 
@@ -422,28 +422,28 @@ La opción más habitual es un host por servicio. Creamos `ingress.yaml`:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: weather-ingress
+  name: brent-ingress
 spec:
   ingressClassName: traefik
   rules:
-    - host: api.weather.local
+    - host: api.brent.local
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: api-service
+                name: brent-api-service
                 port:
                   number: 8080
-    - host: mcp.weather.local
+    - host: mcp.brent.local
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: mcp-service
+                name: brent-mcp-service
                 port:
                   number: 8080
 ```
@@ -458,7 +458,7 @@ Para que esos nombres resuelvan a nuestra máquina, lo normal es añadirlos al f
 Podemos comprobar que el Ingress funciona igualmente enviando la cabecera `Host` a mano, que es lo que Traefik usa para elegir la regla:
 
 ```powershell
-curl.exe http://127.0.0.1/weatherforecast -H "Host: api.weather.local"
+curl.exe http://127.0.0.1/weatherforecast -H "Host: api.brent.local"
 ```
 
 Funciona. Así que intentamos lo mismo en VS Code, apuntando a `127.0.0.1` y añadiendo la cabecera en `.vscode/mcp.json`:
@@ -466,11 +466,11 @@ Funciona. Así que intentamos lo mismo en VS Code, apuntando a `127.0.0.1` y añ
 ```json
 {
   "servers": {
-    "weather-mcp": {
+    "brent-mcp": {
       "type": "http",
       "url": "http://127.0.0.1/mcp",
       "headers": {
-        "Host": "mcp.weather.local"
+        "Host": "mcp.brent.local"
       }
     }
   }
@@ -492,7 +492,7 @@ Connection state: Error 404 status connecting to http://127.0.0.1/mcp as SSE: 40
 
 Ese `404 page not found`, en texto plano, es la respuesta por defecto de **Traefik cuando ninguna regla coincide**. Es decir, la petición ni siquiera llega al MCP Server.
 
-La razón es que la cabecera `Host` personalizada **no llega a enviarse**. `Host` no es una cabecera cualquiera: el cliente HTTP la calcula a partir de la URL, y en este caso el valor configurado no se aplicó. La petición sale con `Host: 127.0.0.1`, y como nuestras reglas solo contemplan `api.weather.local` y `mcp.weather.local`, Traefik devuelve 404.
+La razón es que la cabecera `Host` personalizada **no llega a enviarse**. `Host` no es una cabecera cualquiera: el cliente HTTP la calcula a partir de la URL, y en este caso el valor configurado no se aplicó. La petición sale con `Host: 127.0.0.1`, y como nuestras reglas solo contemplan `api.brent.local` y `mcp.brent.local`, Traefik devuelve 404.
 
 ### Cómo lo diagnosticamos
 
@@ -527,7 +527,7 @@ Si el problema es depender del host, **dejamos de depender de él**. Reescribimo
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: weather-ingress
+  name: brent-ingress
 spec:
   ingressClassName: traefik
   rules:
@@ -537,14 +537,14 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: mcp-service
+                name: brent-mcp-service
                 port:
                   number: 8080
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: api-service
+                name: brent-api-service
                 port:
                   number: 8080
 ```
@@ -564,7 +564,7 @@ curl.exe http://127.0.0.1/weatherforecast
 
 ### Alternativas
 
-* **Editar el fichero `hosts`**, si tienes permisos de administrador. Es la vía clásica: añadir `127.0.0.1 api.weather.local` y `127.0.0.1 mcp.weather.local` en `C:\Windows\System32\drivers\etc\hosts`, abriendo el editor como administrador.
+* **Editar el fichero `hosts`**, si tienes permisos de administrador. Es la vía clásica: añadir `127.0.0.1 api.brent.local` y `127.0.0.1 mcp.brent.local` en `C:\Windows\System32\drivers\etc\hosts`, abriendo el editor como administrador.
 * **Usar un servicio de DNS comodín** como `nip.io`, donde cualquier nombre del tipo `mcp.127.0.0.1.nip.io` resuelve a `127.0.0.1` sin tocar el fichero `hosts`. Solo hay que usar esos nombres en las reglas del Ingress. Requiere acceso a DNS público.
 * **Usar `port-forward`** directamente contra el Service, como hicimos en la comprobación intermedia. Sirve para probar, pero hay que mantener el comando en marcha.
 * **En un clúster real**, con nombres DNS de verdad, el enrutado por host funciona sin problemas, porque el cliente envía el `Host` que corresponde a la URL. El problema es propio de trabajar contra `127.0.0.1`.
@@ -576,7 +576,7 @@ Con el Ingress por ruta, la configuración de `.vscode/mcp.json` queda así de s
 ```json
 {
   "servers": {
-    "weather-mcp": {
+    "brent-mcp": {
       "type": "http",
       "url": "http://127.0.0.1/mcp"
     }

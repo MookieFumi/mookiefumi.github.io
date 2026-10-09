@@ -8,8 +8,8 @@ layout: base
   <section class="home-intro">
     {% if site.avatar %}<img src="{{ site.avatar | prepend: site.baseurl }}" alt="{{ site.author.name }}" width="72" height="72">{% endif %}
     <div>
-      <h1>Lo que aprendo cuando lo pruebo de verdad.</h1>
-      <p>Laboratorios de .NET, IA y seguridad que puedes levantar en tu portátil. Sin hola mundos: lo que funciona, lo que se rompe y por qué.</p>
+      <h1>C# y .NET bien hechos, con IA.</h1>
+      <p>Buenas prácticas, patrones y spec-driven development (SDD).</p>
       <div class="topic-list">
         {% for topic in site.data.topics %}{% include topic-chip.html slug=topic.slug %}{% endfor %}
       </div>

@@ -1,4 +1,4 @@
-# Csharpeando#
+# ~/mookie
 
 Blog de Miguel Ángel Martín Hernández sobre .NET, IA, despliegues y equipos. Se publica en [mookiefumi.com](https://mookiefumi.com) con GitHub Pages.
 

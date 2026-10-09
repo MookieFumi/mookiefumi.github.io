@@ -3,7 +3,7 @@
     <div>
       <a class="brand" href="{{ site.baseurl }}/">
         <img src="{{ '/img/brand/csharpeando-mark.svg' | prepend: site.baseurl }}" alt="" width="28" height="28">
-        <span>{{ site.title | remove: '#' }}<span class="brand-hash">#</span></span>
+        <span><span class="brand-path">~/</span>{{ site.title | remove_first: '~/' }}</span>
       </a>
       <p>{{ site.author.name }} · 2016–{{ site.time | date: '%Y' }}{% if site.url-pretty %} · <a href="{{ site.url }}">{{ site.url-pretty }}</a>{% endif %}</p>
     </div>

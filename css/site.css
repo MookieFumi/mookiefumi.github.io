@@ -188,7 +188,7 @@ a.chip:hover {
   flex: none;
 }
 
-.brand-hash {
+.brand-path {
   color: var(--color-link);
 }
 

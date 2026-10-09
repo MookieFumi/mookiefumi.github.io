@@ -1253,37 +1253,269 @@ a.chip:hover {
   height: 18px;
 }
 
-/* --- 404 --- */
+/* --- 404: terminal con comecocos --- */
 
 .not-found {
   display: grid;
-  justify-items: center;
-  gap: 12px;
-  text-align: center;
-  padding-block: 64px 16px;
+  gap: 28px;
+  padding-top: 36px;
 }
 
-.not-found .big-code {
-  font: 700 clamp(96px, 18vw, 160px) / 0.9 var(--font-mono);
-  letter-spacing: -0.06em;
+.nf-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.nf-code {
+  margin: 0;
+  font: 700 clamp(96px, 16vw, 168px) / 0.85 var(--font-mono);
+  letter-spacing: -0.07em;
+  color: var(--brand-signal);
+}
+
+:root[data-theme="light"] .nf-code {
   color: var(--color-link);
 }
 
-.not-found h1 {
+.nf-lead {
   margin: 0;
-  font-size: clamp(28px, 4vw, 40px);
-}
-
-.not-found p {
-  margin: 0;
+  max-width: 420px;
+  font-family: var(--font-mono);
+  font-size: 15px;
   color: var(--color-text-muted);
 }
 
-.not-found img {
-  margin-top: 16px;
-  border-radius: var(--radius-md);
-  max-width: 420px;
-  width: 100%;
+.nf-lead kbd {
+  font-family: var(--font-mono);
+  color: var(--color-text);
+}
+
+/* Comecocos: los puntos avanzan hacia la boca y un fantasma lo persigue. Solo decoración. */
+.pacman-strip {
+  position: relative;
+  height: 56px;
+  overflow: hidden;
+  border-block: 1px dashed var(--color-border);
+}
+
+.pm {
+  position: absolute;
+  left: 96px;
+  top: 10px;
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+}
+
+.pm::before,
+.pm::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 36px;
+  height: 18px;
+  background: var(--brand-signal);
+}
+
+.pm::before {
+  top: 0;
+  border-radius: 18px 18px 0 0;
+  transform-origin: 50% 100%;
+  animation: pm-top 0.3s ease-in-out infinite alternate;
+}
+
+.pm::after {
+  top: 18px;
+  border-radius: 0 0 18px 18px;
+  transform-origin: 50% 0;
+  animation: pm-bottom 0.3s ease-in-out infinite alternate;
+}
+
+@keyframes pm-top { to { transform: rotate(-38deg); } }
+@keyframes pm-bottom { to { transform: rotate(38deg); } }
+
+.pm-dots {
+  position: absolute;
+  left: 114px;
+  right: 0;
+  top: 25px;
+  height: 6px;
+  background: linear-gradient(90deg, var(--brand-signal) 0 6px, transparent 6px 36px);
+  background-size: 36px 6px;
+  animation: pm-dots 0.6s linear infinite;
+}
+
+@keyframes pm-dots { to { background-position: -36px 0; } }
+
+.pm-ghost {
+  position: absolute;
+  left: 28px;
+  top: 11px;
+  width: 32px;
+  height: 34px;
+  border-radius: 16px 16px 4px 4px;
+  background: var(--prompt-path);
+  animation: pm-bob 0.6s ease-in-out infinite alternate;
+}
+
+.pm-ghost::before,
+.pm-ghost::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+}
+
+.pm-ghost::before {
+  top: 10px;
+  left: 6px;
+  width: 8px;
+  height: 9px;
+  background: #E6EDF3;
+  box-shadow: 12px 0 0 #E6EDF3;
+}
+
+.pm-ghost::after {
+  top: 13px;
+  left: 10px;
+  width: 4px;
+  height: 4px;
+  background: #0B0E14;
+  box-shadow: 12px 0 0 #0B0E14;
+}
+
+@keyframes pm-bob {
+  from { transform: translateY(-2px); }
+  to { transform: translateY(2px); }
+}
+
+.pm-hud {
+  position: absolute;
+  inset: 0 0 0 auto;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 0 4px 0 22px;
+  background: var(--color-bg);
+  font: 13px var(--font-mono);
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+}
+
+.pm-hud b {
+  font-weight: 500;
+  color: var(--color-link);
+}
+
+@media (max-width: 600px) {
+  .pm-hud span:not(:nth-child(2)) { display: none; }
+}
+
+/* Terminal */
+.nf-term .window-body {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+#nf-log p,
+#nf-log ul,
+#nf-log dl {
+  margin: 0;
+}
+
+#nf-log .prompt-line {
+  margin-top: 12px;
+}
+
+#nf-log > .prompt-line:first-child {
+  margin-top: 0;
+}
+
+.nf-err { color: var(--topic-seguridad); }
+.nf-warn { color: var(--topic-aspnet); }
+.nf-muted { color: var(--color-text-muted); }
+
+.nf-list {
+  list-style: none;
+  margin: 0;
+  padding-left: 20px;
+}
+
+.nf-list a {
+  text-decoration: none;
+}
+
+.nf-help {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0 24px;
+  margin: 0;
+  padding-left: 20px;
+}
+
+.nf-help dt { color: var(--color-text); }
+.nf-help dd { margin: 0; color: var(--color-text-muted); }
+
+.nf-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.nf-input input {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  caret-color: var(--brand-signal);
+}
+
+.nf-input input:focus-visible {
+  outline: none;
+}
+
+.nf-input:focus-within {
+  box-shadow: 0 1px 0 var(--color-focus);
+}
+
+.nf-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.nf-btn {
+  padding: 11px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  font: 500 15px var(--font-mono);
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.nf-btn:hover {
+  border-color: var(--color-link);
+  color: var(--color-text);
+}
+
+.nf-btn-primary {
+  border-color: var(--brand-signal);
+  background: var(--brand-signal);
+  color: var(--brand-ink);
+  font-weight: 700;
+}
+
+.nf-btn-primary:hover {
+  color: var(--brand-ink);
 }
 
 @media (prefers-reduced-motion: reduce) {

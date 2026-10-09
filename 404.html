@@ -1,15 +1,64 @@
 ---
-layout: default
+layout: base
 title: Página no encontrada
 permalink: /404.html
 comments: false
 ---
 
-<div class="not-found">
-  <span class="big-code" aria-hidden="true">404</span>
-  <p class="meta">$ cd ~/esta-pagina: No such file or directory</p>
-  <h1>Esta página no existe</h1>
-  <p>Error 404. Puede que el enlace esté roto o que el artículo haya cambiado de dirección.</p>
-  <p><a href="{{ site.baseurl }}/">Volver a la portada</a> · <a href="{{ site.baseurl }}/temas">Ver todos los temas</a></p>
-  <img src="{{ site.baseurl }}/img/404-southpark.jpg" alt="Personajes de South Park">
+<div class="container not-found">
+  <h1 class="sr-only">Página no encontrada (error 404)</h1>
+
+  <div class="nf-head">
+    <p class="nf-code" aria-hidden="true">404</p>
+    <p class="nf-lead">Esta página no existe. La terminal de abajo funciona: escribe <kbd>help</kbd>.</p>
+  </div>
+
+  <div class="pacman-strip" aria-hidden="true">
+    <div class="pm-dots"></div>
+    <div class="pm-ghost"></div>
+    <div class="pm"></div>
+    <div class="pm-hud"><span>1UP</span><span>SCORE <b>000404</b></span><span>~/ ~/ ~/</span></div>
+  </div>
+
+  <section class="window nf-term" aria-label="Terminal">
+    {% include window-bar.html title="bash — ~/mookie" %}
+    <div class="window-body">
+      <div id="nf-log" aria-live="polite">
+        <p class="prompt-line"><span class="p-user">mookie</span><span class="p-sep">@</span><span class="p-host">dev</span><span class="p-sep">:</span><span class="p-path">~</span><span class="p-sep">$</span> cd <span data-nf-path>esta-pagina</span></p>
+        <p class="nf-err">bash: cd: <span data-nf-path>esta-pagina</span>: No such file or directory</p>
+
+        <div id="nf-suggest" hidden>
+          <p class="prompt-line"><span class="p-user">mookie</span><span class="p-sep">@</span><span class="p-host">dev</span><span class="p-sep">:</span><span class="p-path">~</span><span class="p-sep">$</span> ls ~/posts | grep <span id="nf-grep"></span></p>
+          <p class="nf-muted">¿Quisiste decir?</p>
+          <ul class="nf-list" id="nf-suggest-list"></ul>
+        </div>
+
+        <p class="prompt-line"><span class="p-user">mookie</span><span class="p-sep">@</span><span class="p-host">dev</span><span class="p-sep">:</span><span class="p-path">~</span><span class="p-sep">$</span> help</p>
+        <dl class="nf-help">
+          <dt>ls</dt><dd>últimos posts</dd>
+          <dt>cd ~</dt><dd>volver a la portada</dd>
+          <dt>cat sobre-mi.md</dt><dd>quién escribe esto</dd>
+          <dt>tree ~/temas</dt><dd>todos los temas</dd>
+          <dt>sudo …</dt><dd>no lo intentes</dd>
+        </dl>
+      </div>
+
+      <form class="nf-input" id="nf-form" hidden>
+        <label for="nf-cmd"><span class="p-user">mookie</span><span class="p-sep">@</span><span class="p-host">dev</span><span class="p-sep">:</span><span class="p-path">~</span><span class="p-sep">$</span><span class="sr-only"> Escribe un comando</span></label>
+        <input id="nf-cmd" name="cmd" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="escribe un comando…">
+      </form>
+      <noscript><p class="nf-muted">Sin JavaScript la terminal no responde, pero los enlaces de abajo sí.</p></noscript>
+    </div>
+  </section>
+
+  <div class="nf-actions">
+    <a class="nf-btn nf-btn-primary" href="{{ site.baseurl }}/">$ cd ~</a>
+    <a class="nf-btn" href="{{ site.baseurl }}/temas">tree ~/temas</a>
+  </div>
 </div>
+
+<script>
+  window.NF_POSTS = [{% for post in site.posts %}{"t": {{ post.title | jsonify }}, "u": {{ post.url | prepend: site.baseurl | jsonify }}}{% unless forloop.last %},{% endunless %}{% endfor %}];
+  window.NF_BASE = {{ site.baseurl | jsonify }};
+</script>
+<script src="{{ '/js/404.js' | prepend: site.baseurl }}" defer></script>

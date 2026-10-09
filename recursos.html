@@ -1,0 +1,37 @@
+---
+layout: base
+title: Recursos
+subtitle: Slides de mis charlas y otros enlaces
+comments: false
+---
+
+<div class="container-narrow">
+  <header class="page-hero">
+    {% include prompt.html cmd="ls ~/recursos" %}
+    <h1>Recursos</h1>
+    <p>{{ page.subtitle }}.</p>
+  </header>
+
+  <div class="resources">
+    {% for group in site.data.recursos %}
+    <section class="window" id="{{ group.section }}" aria-labelledby="{{ group.section }}-title">
+      {% capture group_title %}bash — ~/mookie/recursos/{{ group.section }}{% endcapture %}
+      {% include window-bar.html title=group_title %}
+      <div class="window-body">
+        {% capture group_cmd %}ls -l ~/recursos/{{ group.section }}{% endcapture %}
+        {% include prompt.html cmd=group_cmd %}
+        <h2 id="{{ group.section }}-title">{{ group.title }}</h2>
+        <ul class="resource-list">
+          {% for item in group.items %}
+          <li>
+            <span class="meta">{% if item.date %}{{ item.date | date: '%Y-%m-%d' }}{% endif %}</span>
+            <span class="resource-kind">{{ item.kind }}</span>
+            <a href="{{ item.url }}">{{ item.title }} <span aria-hidden="true">↗</span></a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </section>
+    {% endfor %}
+  </div>
+</div>

@@ -1,0 +1,13 @@
+# Recursos enlazados desde /recursos. Cada sección se pinta como una ventana de terminal
+# y cada elemento como una línea de `ls -l`. Para añadir un enlace basta con editar este fichero.
+- section: charlas
+  title: Slides de mis charlas
+  items:
+    - title: "SDD en la práctica: OpenSpec"
+      url: https://mookiefumi.github.io/sdd-slides/openspec/
+      kind: slides
+      date: 2026-10-09
+    - title: "SDD en la práctica: Spec Kit"
+      url: https://mookiefumi.github.io/sdd-slides/spec-kit/
+      kind: slides
+      date: 2026-10-09

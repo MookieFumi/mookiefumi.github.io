@@ -17,6 +17,7 @@ description: .NET, IA y seguridad, explicados con laboratorios que puedes ejecut
 navbar-links:
   posts: ""
   temas: "temas"
+  recursos: "recursos"
   sobre-mí: "aboutme"
   # Resources:
   #   - Beautiful Jekyll: "http://deanattali.com/beautiful-jekyll/"

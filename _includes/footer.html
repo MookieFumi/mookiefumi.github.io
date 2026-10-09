@@ -2,10 +2,9 @@
   <div class="container">
     <div>
       <a class="brand" href="{{ site.baseurl }}/">
-        <img src="{{ '/img/brand/csharpeando-mark.svg' | prepend: site.baseurl }}" alt="" width="28" height="28">
-        <span><span class="brand-path">~/</span>{{ site.title | remove_first: '~/' }}</span>
+        <span class="brand-path">~/</span>{{ site.title | remove_first: '~/' }}
       </a>
-      <p>{{ site.author.name }} · 2016–{{ site.time | date: '%Y' }}{% if site.url-pretty %} · <a href="{{ site.url }}">{{ site.url-pretty }}</a>{% endif %}</p>
+      <p>$ exit · {{ site.author.name }} · 2016–{{ site.time | date: '%Y' }}{% if site.url-pretty %} · <a href="{{ site.url }}">{{ site.url-pretty }}</a>{% endif %}</p>
     </div>
     {% include social-links.html %}
   </div>

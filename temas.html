@@ -7,6 +7,7 @@ comments: false
 
 <div class="container-narrow">
   <header class="page-hero">
+    {% include prompt.html cmd="tree ~/temas" %}
     <h1>Temas</h1>
     <p>{{ page.subtitle }}.</p>
   </header>
@@ -16,7 +17,7 @@ comments: false
     {% assign topic_posts = site.posts | where: "topic", topic.slug %}
     <section class="topic-section topic-{{ topic.slug }}" id="{{ topic.slug }}">
       <header>
-        <span class="topic-badge" aria-hidden="true">#</span>
+        <span class="topic-badge" aria-hidden="true">./</span>
         <div>
           <h2>{{ topic.name }}</h2>
           <span class="meta">{% if topic_posts.size == 0 %}Próximamente{% else %}{{ topic_posts.size }} {% if topic_posts.size == 1 %}artículo{% else %}artículos{% endif %}{% endif %}</span>

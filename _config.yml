@@ -15,8 +15,9 @@ description: .NET, IA y seguridad, explicados con laboratorios que puedes ejecut
 
 # List of links in the navigation bar
 navbar-links:
-  Temas: "temas"
-  Sobre mí: "aboutme"
+  posts: ""
+  temas: "temas"
+  sobre-mí: "aboutme"
   # Resources:
   #   - Beautiful Jekyll: "http://deanattali.com/beautiful-jekyll/"
   #   - Learn markdown: "http://www.markdowntutorial.com/"

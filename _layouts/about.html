@@ -1,0 +1,29 @@
+---
+layout: base
+---
+
+<div class="container about">
+  <aside class="about-badge" aria-label="Credencial">
+    <div class="lanyard-strap" aria-hidden="true"><span>~/mookie · ~/mookie · ~/mookie</span></div>
+    <div class="lanyard-clip" aria-hidden="true"></div>
+    <div class="badge">
+      <span class="badge-hole" aria-hidden="true"></span>
+      <div class="badge-head"><strong><span>~/</span>mookie</strong><span>ACCESS · ROOT</span></div>
+      <img src="{{ '/img/brand/mookie-badge.jpg' | prepend: site.baseurl }}" alt="Foto de {{ site.author.name }}" width="240" height="240">
+      <p class="badge-name">Miguel Ángel Martín</p>
+      <div class="badge-foot"><span>Software / Cloud Architect</span><span>uid=1000</span></div>
+    </div>
+  </aside>
+
+  <section class="about-session window">
+    {% include window-bar.html title="bash — ~/mookie/sobre-mi" %}
+    <div class="window-body">
+      {% include prompt.html cmd="whoami" %}
+      <h1 class="sr-only">{{ page.title }}</h1>
+      <div class="prose">
+        {{ content }}
+      </div>
+      {% include prompt.html cursor=true %}
+    </div>
+  </section>
+</div>

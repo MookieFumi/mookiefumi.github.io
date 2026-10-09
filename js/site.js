@@ -1,12 +1,12 @@
-// Csharpeando# · modo oscuro y botón de copiar código
+// ~/mookie · tema claro/oscuro y botón de copiar código
 
 (function () {
   var root = document.documentElement;
-  var media = window.matchMedia('(prefers-color-scheme: dark)');
   var toggle = document.querySelector('[data-theme-toggle]');
 
   function currentTheme() {
-    return root.getAttribute('data-theme') || (media.matches ? 'dark' : 'light');
+    // Oscuro por defecto, como una terminal
+    return root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
   }
 
   function syncToggle() {
@@ -28,7 +28,6 @@
     });
   }
 
-  if (media.addEventListener) media.addEventListener('change', syncToggle);
   syncToggle();
 
   // Portapapeles moderno si está disponible (https); si no, selección + execCommand

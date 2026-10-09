@@ -5,11 +5,12 @@ layout: base
 <div class="container">
 
   {% if paginator.page == 1 %}
-  <section class="home-intro">
-    {% if site.avatar %}<img src="{{ site.avatar | prepend: site.baseurl }}" alt="{{ site.author.name }}" width="72" height="72">{% endif %}
-    <div>
-      <h1>Hola, soy Miguel</h1>
-      <p>Entre .NET, IA, despliegues y equipos, me toca revisar muchos temas. Aquí repaso los que creo que merecen la pena.</p>
+  <section class="home-intro window">
+    {% include window-bar.html title="bash — ~/mookie" %}
+    <div class="window-body">
+      {% include prompt.html cmd="cat README.md" %}
+      <h1>Escribo sobre .NET, C#, SDD e IA.</h1>
+      <p class="lead">Buenas prácticas y patrones que aguantan en producción.</p>
       <div class="topic-list">
         {% for topic in site.data.topics %}{% include topic-chip.html slug=topic.slug %}{% endfor %}
       </div>
@@ -18,18 +19,23 @@ layout: base
 
   {% assign featured = paginator.posts | first %}
   {% assign featured_topic = site.data.topics | where: "slug", featured.topic | first %}
-  <a class="featured topic-{{ featured.topic | default: 'maui' }}" href="{{ featured.url | prepend: site.baseurl }}">
-    <span class="eyebrow">Último artículo{% if featured_topic %} · {{ featured_topic.name }}{% endif %}</span>
-    <h2>{{ featured.title }}</h2>
-    <p>{% include excerpt.html post=featured words=34 %}</p>
-    <span class="meta">{% include date-es.html date=featured.date %} · {% include reading-time.html content=featured.content %} de lectura</span>
-    <span class="cta">Leer artículo →</span>
+  {% capture featured_title %}bash — ~/mookie/posts{% endcapture %}
+  <a class="featured window topic-{{ featured.topic | default: 'maui' }}" href="{{ featured.url | prepend: site.baseurl }}">
+    {% include window-bar.html title=featured_title %}
+    <div class="window-body">
+      {% include prompt.html path="~/posts" cmd="cat ultimo.md" %}
+      <span class="eyebrow">Último artículo{% if featured_topic %} · {{ featured_topic.name }}{% endif %}</span>
+      <h2>{{ featured.title }}</h2>
+      <p>{% include excerpt.html post=featured words=34 %}</p>
+      <span class="meta">{% include date-es.html date=featured.date %} · {% include reading-time.html content=featured.content %} de lectura</span>
+      <span class="cta">$ ./leer.sh →</span>
+    </div>
   </a>
   {% endif %}
 
   <h2 class="section-title">
-    {% if paginator.page == 1 %}Más artículos{% else %}Artículos · página {{ paginator.page }}{% endif %}
-    <a href="{{ site.baseurl }}/temas">Ver por temas →</a>
+    <span class="cmd">{% if paginator.page == 1 %}ls -lt ~/posts{% else %}ls -lt ~/posts --page={{ paginator.page }}{% endif %}</span>
+    <a href="{{ site.baseurl }}/temas">tree ~/temas →</a>
   </h2>
 
   <ul class="post-grid">
@@ -42,10 +48,10 @@ layout: base
   {% if paginator.total_pages > 1 %}
   <nav class="pager" aria-label="Paginación">
     {% if paginator.previous_page %}
-    <a class="prev" href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">← Más recientes</a>
+    <a class="prev" href="{{ paginator.previous_page_path | prepend: site.baseurl | replace: '//', '/' }}">← más recientes</a>
     {% endif %}
     {% if paginator.next_page %}
-    <a class="next" href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}">Anteriores →</a>
+    <a class="next" href="{{ paginator.next_page_path | prepend: site.baseurl | replace: '//', '/' }}">anteriores →</a>
     {% endif %}
   </nav>
   {% endif %}

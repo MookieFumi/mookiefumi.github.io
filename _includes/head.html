@@ -10,20 +10,18 @@
   <!-- Aplica el tema guardado antes de pintar para evitar un destello -->
   <script>
     try {
-      var savedTheme = localStorage.getItem('theme');
-      if (savedTheme === 'dark' || savedTheme === 'light') document.documentElement.setAttribute('data-theme', savedTheme);
+      if (localStorage.getItem('theme') === 'light') document.documentElement.setAttribute('data-theme', 'light');
     } catch (e) {}
   </script>
 
   <link rel="icon" href="{{ '/favicon.svg' | prepend: site.baseurl }}" type="image/svg+xml">
   <link rel="icon" href="{{ '/favicon-32x32.png' | prepend: site.baseurl }}" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | prepend: site.baseurl }}">
-  <meta name="theme-color" content="#F6F5FB" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#120F22" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#05070A">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=JetBrains+Mono:wght@400;600&family=Literata:ital,opsz,wght@0,7..72,400..700;1,7..72,400&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..800&family=Geist+Mono:wght@400..700&display=swap">
 
   <link rel="stylesheet" href="{{ '/css/tokens.css' | prepend: site.baseurl }}">
   <link rel="stylesheet" href="{{ '/css/site.css' | prepend: site.baseurl }}">
@@ -45,6 +43,6 @@
   {% if page.fb-img %}
   <meta property="og:image" content="{{ page.fb-img }}">
   {% else %}
-  <meta property="og:image" content="{{ site.url }}/img/brand/csharpeando-mark-512.png">
+  <meta property="og:image" content="{{ site.url }}/img/brand/mookie-og.png">
   {% endif %}
 </head>

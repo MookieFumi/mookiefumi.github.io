@@ -17,10 +17,16 @@ layout: base
 {% endif %}
 
 <article class="topic-{{ page.topic | default: 'maui' }}">
-  <header class="post-hero topic-{{ page.topic | default: 'maui' }}">
-    <div class="container-narrow">
-      {% if topic %}{% include topic-chip.html slug=page.topic solid=true %}{% endif %}
-      <h1>{{ page.title }}</h1>
+  {%- assign post_slug = page.url | split: '/' | last | remove: '.html' | slice: 11, 60 -%}
+  <header class="post-hero container-narrow">
+    <div class="window">
+      {% include window-bar.html title="bash — ~/mookie/posts" %}
+      <div class="window-body">
+        {% capture post_cmd %}cat {{ post_slug }}.md{% endcapture %}
+        {% include prompt.html path="~/posts" cmd=post_cmd %}
+        {% if topic %}<div>{% include topic-chip.html slug=page.topic %}</div>{% endif %}
+        <h1>{{ page.title }}</h1>
+      </div>
     </div>
   </header>
 
@@ -44,7 +50,7 @@ layout: base
       {% if site.avatar %}<img src="{{ site.avatar | prepend: site.baseurl }}" alt="" width="64" height="64">{% endif %}
       <div>
         <h2>{{ site.author.name }}</h2>
-        <p>{{ site.description }}. Escribo sobre lo que voy aprendiendo con .NET MAUI, Xamarin, testing y ASP.NET Core.</p>
+        <p>Software / Cloud Solution Architect y Technical Lead .NET. Escribo sobre .NET, C#, SDD e IA: buenas prácticas y patrones que aguantan en producción.</p>
         {% include social-links.html %}
       </div>
     </aside>

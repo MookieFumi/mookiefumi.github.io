@@ -1,9 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Csharpeando#">
-  <rect width="64" height="64" rx="14" fill="#5B2EE0"/>
-  <g fill="#FFC940">
-    <polygon points="27,12 34,12 27,52 20,52"/>
-    <polygon points="41,12 48,12 41,52 34,52"/>
-    <rect x="13" y="22" width="38" height="7" rx="1"/>
-    <rect x="13" y="35" width="38" height="7" rx="1"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="~/mookie">
+  <rect width="64" height="64" rx="14" fill="#0B0E14"/>
+  <g fill="none" stroke="#B8F25B" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10 37 C13 30 18 29 22 33 C26 37 30 37 33 30"/>
+    <path d="M50 14 L39 50"/>
   </g>
 </svg>

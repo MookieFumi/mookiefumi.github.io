@@ -6,17 +6,19 @@ url: "https://mookiefumi.com"
 baseurl: ""
 
 # Name of website
-title: Csharpeando#
+title: "~/mookie"
 
 # Short description of your site
-description: Historias de un desarrollador en .NET/ Kotlin
+description: .NET, IA y seguridad, explicados con laboratorios que puedes ejecutar
 
 # --- Navigation bar options --- #
 
 # List of links in the navigation bar
 navbar-links:
-  Temas: "temas"
-  Sobre mí: "aboutme"
+  posts: ""
+  temas: "temas"
+  recursos: "recursos"
+  sobre-mí: "aboutme"
   # Resources:
   #   - Beautiful Jekyll: "http://deanattali.com/beautiful-jekyll/"
   #   - Learn markdown: "http://www.markdowntutorial.com/"
@@ -33,7 +35,7 @@ avatar: "/img/avatar-icon.jpg"
 # Important: you must keep the "name" parameter, everything else you can remove
 author:
   name: Miguel Angel Martin Hrdez
-  email: "mookiefumi@outlook.com"
+  email: "me@mookiefumi.com"
   github: MookieFumi
   twitter: MookieFumi
   linkedin: "in/mookiefumi"  # eg. "pub/dean-attali/8/946/143"

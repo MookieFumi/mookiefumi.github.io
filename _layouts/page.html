@@ -4,10 +4,10 @@ layout: base
 
 <div class="container-narrow">
   <header class="page-hero">
-    {% if page.avatar and site.avatar %}
-    <img class="page-avatar" src="{{ site.avatar | prepend: site.baseurl }}" alt="{{ site.author.name }}" width="120" height="120">
-    {% endif %}
-    <h1>{{ page.title | remove: '#' }}</h1>
+    {%- assign page_slug = page.url | remove: '.html' | remove_first: '/' -%}
+    {% capture page_cmd %}cd ~/{{ page_slug }}{% endcapture %}
+    {% include prompt.html cmd=page_cmd %}
+    <h1>{{ page.title }}</h1>
     {% if page.subtitle %}<p>{{ page.subtitle }}</p>{% endif %}
   </header>
 

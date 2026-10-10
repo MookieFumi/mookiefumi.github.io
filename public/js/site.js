@@ -23,8 +23,6 @@
       root.setAttribute('data-theme', next);
       try { localStorage.setItem('theme', next); } catch (e) {}
       syncToggle();
-      // Disqus toma los colores al cargar; se recarga para que siga al tema
-      if (window.DISQUS) window.DISQUS.reset({ reload: true });
     });
   }
 

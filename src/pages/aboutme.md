@@ -1,8 +1,6 @@
 ---
-layout: about
+layout: ../layouts/About.astro
 title: Sobre mí
-avatar: true
-comments: false
 ---
 
 Soy **Miguel Ángel Martín**, Software / Cloud Solution Architect y Technical Lead .NET. Llevo desde 2016 escribiendo aquí sobre lo que me encuentro programando. Empecé con apps móviles en Xamarin, pasé por .NET MAUI, ASP.NET, testing y microservicios, y hoy dedico casi todo el tiempo a tres frentes: la seguridad (OAuth 2.1, OpenID Connect, Keycloak y Entra ID), una IA que hace cosas de verdad con servidores MCP y el desarrollo guiado por especificaciones, para que los agentes no improvisen.

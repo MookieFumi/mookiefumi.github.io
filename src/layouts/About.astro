@@ -1,0 +1,39 @@
+---
+import { SITE } from '../site';
+import Base from './Base.astro';
+import WindowBar from '../components/WindowBar.astro';
+import Prompt from '../components/Prompt.astro';
+
+// Layout de una página Markdown: recibe su front matter.
+interface Props {
+  frontmatter: { title: string };
+}
+const { title } = Astro.props.frontmatter;
+---
+<Base title={title}>
+  <div class="container about">
+    <aside class="about-badge" aria-label="Credencial">
+      <div class="lanyard-strap" aria-hidden="true"><span>~/mookie · ~/mookie · ~/mookie</span></div>
+      <div class="lanyard-clip" aria-hidden="true"></div>
+      <div class="badge">
+        <span class="badge-hole" aria-hidden="true"></span>
+        <div class="badge-head"><strong><span>~/</span>mookie</strong><span>ACCESS · ROOT</span></div>
+        <img src="/img/brand/mookie-badge.jpg" alt={`Foto de ${SITE.author.name}`} width="240" height="240">
+        <p class="badge-name">Miguel Ángel Martín</p>
+        <div class="badge-foot"><span>Software / Cloud Architect</span><span>uid=1000</span></div>
+      </div>
+    </aside>
+
+    <section class="about-session window">
+      <WindowBar title="bash — ~/mookie/sobre-mi" />
+      <div class="window-body">
+        <Prompt cmd="whoami" />
+        <h1 class="sr-only">{title}</h1>
+        <div class="prose">
+          <slot />
+        </div>
+        <Prompt cursor />
+      </div>
+    </section>
+  </div>
+</Base>

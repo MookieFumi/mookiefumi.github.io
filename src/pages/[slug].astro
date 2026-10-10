@@ -1,25 +1,20 @@
 ---
-// Página provisional de cada post: solo comprueba que el contenido se
-// renderiza en su URL de siempre. El layout definitivo llega en la fase 3.
 import { render } from 'astro:content';
+import Post from '../layouts/Post.astro';
 import { getPublishedPosts } from '../lib/posts';
 
 export async function getStaticPaths() {
   const posts = await getPublishedPosts();
-  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+  // La lista va del más reciente al más antiguo.
+  return posts.map((post, index) => ({
+    params: { slug: post.id },
+    props: { post, next: posts[index - 1], previous: posts[index + 1] },
+  }));
 }
 
-const { post } = Astro.props;
+const { post, previous, next } = Astro.props;
 const { Content } = await render(post);
 ---
-<!doctype html>
-<html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <title>{post.data.title}</title>
-  </head>
-  <body>
-    <h1>{post.data.title}</h1>
-    <Content />
-  </body>
-</html>
+<Post post={post} previous={previous} next={next}>
+  <Content />
+</Post>

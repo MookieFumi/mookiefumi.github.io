@@ -1,0 +1,9 @@
+---
+import { getEntry } from 'astro:content';
+
+interface Props {
+  id: string;
+}
+const topic = await getEntry('topics', Astro.props.id);
+---
+{topic && <a class={`chip topic-${topic.id}`} href={`/temas#${topic.id}`}>{topic.data.name}</a>}

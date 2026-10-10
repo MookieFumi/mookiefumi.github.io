@@ -1,0 +1,23 @@
+---
+import { getEntry } from 'astro:content';
+import { formatDate } from '../lib/dates';
+import { excerpt, readingTime } from '../lib/text';
+import { postHtml, postSlug, type Post } from '../lib/posts';
+
+interface Props {
+  post: Post;
+}
+const { post } = Astro.props;
+const topic = await getEntry(post.data.topic);
+const html = postHtml(post);
+---
+<li>
+  <a class={`post-card window topic-${post.data.topic.id}`} href={`/${post.id}`}>
+    <div class="window-bar" aria-hidden="true"><span class="window-dots"></span><span class="window-title">{postSlug(post).slice(0, 40)}.md</span>{topic && <span class="chip">{topic.data.name}</span>}</div>
+    <div class="post-card-body">
+      <h3>{post.data.title}</h3>
+      <p>{excerpt(html, post.data.subtitle, 22)}</p>
+      <span class="meta">{formatDate(post.data.date, { short: true })} · {readingTime(html)}</span>
+    </div>
+  </a>
+</li>

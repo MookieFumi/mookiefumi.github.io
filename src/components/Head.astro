@@ -1,0 +1,53 @@
+---
+import { SITE } from '../site';
+
+interface Props {
+  title?: string;
+  description?: string;
+  article?: boolean;
+}
+const { title, description, article = false } = Astro.props;
+
+const fullTitle = title ? `${title} · ${SITE.title}` : `${SITE.title} · ${SITE.description}`;
+const metaDescription = description ?? SITE.description;
+// Las URLs públicas no llevan `.html` ni `index`.
+const path = Astro.url.pathname.replace(/\/index\.html$|\/$|\.html$/, '');
+---
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>{fullTitle}</title>
+
+  <meta name="author" content={SITE.author.name}>
+  <meta name="description" content={metaDescription}>
+
+  <!-- Aplica el tema guardado antes de pintar para evitar un destello -->
+  <script is:inline>
+    try {
+      if (localStorage.getItem('theme') === 'light') document.documentElement.setAttribute('data-theme', 'light');
+    } catch (e) {}
+  </script>
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta name="theme-color" content="#05070A">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..800&family=Geist+Mono:wght@400..700&display=swap">
+
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/site.css">
+  <slot />
+
+  <link rel="alternate" type="application/rss+xml" title={`${SITE.title} - ${SITE.description}`} href="/feed.xml">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content={title ?? SITE.title}>
+  <meta property="og:type" content={article ? 'article' : 'website'}>
+  <meta property="og:url" content={`${SITE.url}${path}`}>
+  <meta property="og:description" content={metaDescription}>
+  <meta property="og:image" content={`${SITE.url}/img/brand/mookie-og.png`}>
+</head>

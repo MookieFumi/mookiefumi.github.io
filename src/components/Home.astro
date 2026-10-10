@@ -1,0 +1,73 @@
+---
+// Portada y páginas de la paginación (`/`, `/page2/`, `/page3/`…).
+import { getEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import WindowBar from './WindowBar.astro';
+import Prompt from './Prompt.astro';
+import TopicChip from './TopicChip.astro';
+import PostCard from './PostCard.astro';
+import { formatDate } from '../lib/dates';
+import { excerpt, readingTime } from '../lib/text';
+import { postHtml, type Post } from '../lib/posts';
+import { getTopics } from '../lib/data';
+
+interface Props {
+  posts: Post[];
+  page: number;
+  totalPages: number;
+}
+const { posts, page, totalPages } = Astro.props;
+
+const pagePath = (n: number) => (n === 1 ? '/' : `/page${n}/`);
+const topics = await getTopics();
+const featured = page === 1 ? posts[0] : undefined;
+const featuredTopic = featured && (await getEntry(featured.data.topic));
+const listed = featured ? posts.slice(1) : posts;
+---
+<Base>
+  <div class="container">
+    {featured && (
+      <section class="home-intro window">
+        <WindowBar title="bash — ~/mookie" />
+        <div class="window-body">
+          <Prompt cmd="cat README.md" />
+          <h1>Escribo sobre .NET, C#, SDD e IA.</h1>
+          <p class="lead">Buenas prácticas y patrones que aguantan en producción.</p>
+          <div class="topic-list">
+            {topics.map((topic) => <TopicChip id={topic.id} />)}
+          </div>
+        </div>
+      </section>
+    )}
+
+    {featured && (
+      <a class={`featured window topic-${featured.data.topic.id}`} href={`/${featured.id}`}>
+        <WindowBar title="bash — ~/mookie/posts" />
+        <div class="window-body">
+          <Prompt path="~/posts" cmd="cat ultimo.md" />
+          <span class="eyebrow">Último artículo{featuredTopic && ` · ${featuredTopic.data.name}`}</span>
+          <h2>{featured.data.title}</h2>
+          <p>{excerpt(postHtml(featured), featured.data.subtitle, 34)}</p>
+          <span class="meta">{formatDate(featured.data.date)} · {readingTime(postHtml(featured))} de lectura</span>
+          <span class="cta">$ ./leer.sh →</span>
+        </div>
+      </a>
+    )}
+
+    <h2 class="section-title">
+      <span class="cmd">{page === 1 ? 'ls -lt ~/posts' : `ls -lt ~/posts --page=${page}`}</span>
+      <a href="/temas">tree ~/temas →</a>
+    </h2>
+
+    <ul class="post-grid">
+      {listed.map((post) => <PostCard post={post} />)}
+    </ul>
+
+    {totalPages > 1 && (
+      <nav class="pager" aria-label="Paginación">
+        {page > 1 && <a class="prev" href={pagePath(page - 1)}>← más recientes</a>}
+        {page < totalPages && <a class="next" href={pagePath(page + 1)}>anteriores →</a>}
+      </nav>
+    )}
+  </div>
+</Base>

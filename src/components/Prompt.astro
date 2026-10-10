@@ -1,0 +1,10 @@
+---
+// Línea de prompt de terminal: `mookie@dev:~$ comando`.
+interface Props {
+  cmd?: string;
+  path?: string;
+  cursor?: boolean;
+}
+const { cmd = '', path = '~', cursor = false } = Astro.props;
+---
+<p class="prompt-line"><span class="p-user">mookie</span><span class="p-sep">@</span><span class="p-host">dev</span><span class="p-sep">:</span><span class="p-path">{path}</span><span class="p-sep">$</span> {cmd}{cursor && <span class="cursor" aria-hidden="true"></span>}</p>

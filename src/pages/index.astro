@@ -1,0 +1,7 @@
+---
+import Home from '../components/Home.astro';
+import { getPostPages } from '../lib/pagination';
+
+const [first] = await getPostPages();
+---
+<Home {...first} />

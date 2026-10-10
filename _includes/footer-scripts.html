@@ -1,9 +1,0 @@
-<script src="{{ '/js/site.js' | prepend: site.baseurl }}"></script>
-{% for js in page.ext-js %}
-<script src="{{ js }}"></script>
-{% endfor %}
-{% for js in page.js %}
-<script src="{{ js | prepend: site.baseurl | replace: '//', '/' }}"></script>
-{% endfor %}
-
-{% include cloudflare_analytics.html %}

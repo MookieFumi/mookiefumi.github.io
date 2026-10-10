@@ -1,0 +1,51 @@
+---
+import Base from '../layouts/Base.astro';
+import Prompt from '../components/Prompt.astro';
+import { formatDate } from '../lib/dates';
+import { getTopics } from '../lib/data';
+import { getPublishedPosts } from '../lib/posts';
+
+const title = 'Temas';
+const subtitle = 'Todos los artículos agrupados por tema';
+const topics = await getTopics();
+const posts = await getPublishedPosts();
+---
+<Base title={title} description={subtitle}>
+  <div class="container-narrow">
+    <header class="page-hero">
+      <Prompt cmd="tree ~/temas" />
+      <h1>{title}</h1>
+      <p>{subtitle}.</p>
+    </header>
+
+    <div class="topics-index">
+      {topics.map((topic) => {
+        const topicPosts = posts.filter((post) => post.data.topic.id === topic.id);
+        const count = topicPosts.length;
+        return (
+          <section class={`topic-section topic-${topic.id}`} id={topic.id}>
+            <header>
+              <span class="topic-badge" aria-hidden="true">./</span>
+              <div>
+                <h2>{topic.data.name}</h2>
+                <span class="meta">{count === 0 ? 'Próximamente' : `${count} ${count === 1 ? 'artículo' : 'artículos'}`}</span>
+              </div>
+            </header>
+            {count === 0 ? (
+              <p class="topic-empty">Aún no hay artículos sobre {topic.data.name}.</p>
+            ) : (
+              <ul class="topic-posts">
+                {topicPosts.map((post) => (
+                  <li>
+                    <a href={`/${post.id}`}>{post.data.title}</a>
+                    <span class="meta">{formatDate(post.data.date, { short: true })}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        );
+      })}
+    </div>
+  </div>
+</Base>

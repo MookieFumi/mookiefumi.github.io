@@ -1,0 +1,9 @@
+---
+// Barra superior de una ventana de terminal.
+interface Props {
+  title: string;
+  hidden?: boolean;
+}
+const { title, hidden = false } = Astro.props;
+---
+<div class="window-bar" aria-hidden={hidden ? 'true' : undefined}><span class="window-dots" aria-hidden="true"></span><span class="window-title">{title}</span><slot /></div>

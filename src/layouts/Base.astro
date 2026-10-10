@@ -1,0 +1,29 @@
+---
+import { SITE } from '../site';
+import Head from '../components/Head.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  article?: boolean;
+}
+const { title, description, article } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="es">
+  <Head title={title} description={description} article={article}><slot name="head" /></Head>
+  <body>
+    <Nav />
+    <main id="contenido">
+      <slot />
+    </main>
+    <Footer />
+    <script is:inline src="/js/site.js"></script>
+    <slot name="scripts" />
+    {SITE.cloudflareAnalyticsToken && (
+      <script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon={JSON.stringify({ token: SITE.cloudflareAnalyticsToken })}></script>
+    )}
+  </body>
+</html>

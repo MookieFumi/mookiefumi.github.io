@@ -1,0 +1,11 @@
+---
+import Home from '../../components/Home.astro';
+import { getPostPages } from '../../lib/pagination';
+
+// La página 1 es la portada; desde la 2 se publican en `/page2/`, `/page3/`…
+export async function getStaticPaths() {
+  const pages = await getPostPages();
+  return pages.slice(1).map((page) => ({ params: { num: String(page.page) }, props: page }));
+}
+---
+<Home {...Astro.props} />

@@ -337,13 +337,12 @@ a.chip:hover {
 
 /* --- Portada: presentación --- */
 
+/* Sin marco de ventana: así no se confunde con las tarjetas clicables de los artículos. */
 .home-intro {
-  margin-top: 36px;
-}
-
-.home-intro .window-body {
   display: grid;
   gap: 14px;
+  margin-top: 36px;
+  padding-inline: 4px;
 }
 
 .home-intro h1 {
@@ -767,7 +766,8 @@ a.chip:hover {
 
 @media (max-width: 860px) {
   .about-badge { position: static; }
-  .about-badge .about-lanyard { height: 430px; }
+  .about-badge { padding-bottom: 0; }
+  .about-badge .about-lanyard { height: 340px; }
 }
 
 /* --- Contenido de los artículos --- */

@@ -27,15 +27,12 @@ const listed = featured ? posts.slice(1) : posts;
 <Base>
   <div class="container">
     {featured && (
-      <section class="home-intro window">
-        <WindowBar title="bash — ~/mookie" />
-        <div class="window-body">
-          <Prompt cmd="cat README.md" />
-          <h1>Escribo sobre .NET, C#, SDD e IA.</h1>
-          <p class="lead">Buenas prácticas y patrones que aguantan en producción.</p>
-          <div class="topic-list">
-            {topics.map((topic) => <TopicChip id={topic.id} />)}
-          </div>
+      <section class="home-intro">
+        <Prompt cmd="cat README.md" />
+        <h1>Escribo sobre .NET, C#, SDD e IA.</h1>
+        <p class="lead">Buenas prácticas y patrones que aguantan en producción.</p>
+        <div class="topic-list">
+          {topics.map((topic) => <TopicChip id={topic.id} />)}
         </div>
       </section>
     )}

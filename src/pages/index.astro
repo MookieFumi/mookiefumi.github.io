@@ -1,0 +1,19 @@
+---
+// Portada provisional: lista los posts para revisar la migración del
+// contenido. La portada definitiva, con paginación, llega en la fase 4.
+import { getPublishedPosts } from '../lib/posts';
+
+const posts = await getPublishedPosts();
+---
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>~/mookie</title>
+  </head>
+  <body>
+    <ul>
+      {posts.map((post) => <li><a href={`/${post.id}`}>{post.data.title}</a></li>)}
+    </ul>
+  </body>
+</html>

@@ -80,4 +80,4 @@ En `src/site.ts`:
 
 ## Licencia
 
-El diseño original partía de [beautiful-jekyll](https://github.com/daattali/beautiful-jekyll), con licencia MIT (ver `LICENSE`).
+MIT (ver `LICENSE`).

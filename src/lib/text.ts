@@ -1,5 +1,4 @@
-// Tiempo de lectura y extractos a partir del HTML ya renderizado de un post,
-// con las mismas reglas que los includes de Jekyll.
+// Tiempo de lectura y extractos a partir del HTML ya renderizado de un post.
 
 function stripHtml(html: string): string {
   return html

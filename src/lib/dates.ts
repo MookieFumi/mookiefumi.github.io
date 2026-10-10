@@ -1,5 +1,4 @@
-// Fechas en español, como hacía `_includes/date-es.html`. Las fechas de los
-// posts no llevan hora y se leen como medianoche UTC, así que se formatean en
+// Fechas en español. Las fechas de los posts no llevan hora y se leen como medianoche UTC, así que se formatean en
 // UTC para que nunca salga el día anterior.
 const MONTHS = [
   'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',

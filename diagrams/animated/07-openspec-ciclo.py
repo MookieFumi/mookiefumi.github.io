@@ -2,7 +2,7 @@
 """Diagrama animado del ciclo de un change de OpenSpec, en vertical.
 
 Genera public/img/diagrams/07-openspec-ciclo-{light,dark}.svg con los colores del blog.
-Uso: python3 _diagrams/animated/07-openspec-ciclo.py
+Uso: python3 diagrams/animated/07-openspec-ciclo.py
 
 El SVG lleva sus propios estilos y animaciones (SMIL y CSS), así que funciona
 dentro de un <img> sin cargar nada. Con prefers-reduced-motion se queda estático.

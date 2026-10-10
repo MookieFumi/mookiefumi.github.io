@@ -4,7 +4,6 @@
 
 (function () {
   var posts = window.NF_POSTS || [];
-  var base = window.NF_BASE || '';
   var log = document.getElementById('nf-log');
   var form = document.getElementById('nf-form');
   var input = document.getElementById('nf-cmd');
@@ -75,7 +74,7 @@
 
   function go(url, label) {
     print('→ ' + label + '…');
-    location.href = base + url;
+    location.href = url;
   }
 
   var routes = { '~': '/', '/': '/', '': '/', 'temas': '/temas', '~/temas': '/temas', 'recursos': '/recursos', '~/recursos': '/recursos', 'sobre-mi': '/aboutme', '~/sobre-mi': '/aboutme' };

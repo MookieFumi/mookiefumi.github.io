@@ -5,7 +5,7 @@ import { getPublishedPosts, postHtml } from '../lib/posts';
 import { summary } from '../lib/text';
 
 // Los 20 posts más recientes. La descripción es el subtítulo (si lo hay)
-// seguido de las primeras 50 palabras del post, como el feed de Jekyll.
+// seguido de las primeras 50 palabras del post.
 export async function GET(context: APIContext) {
   const posts = (await getPublishedPosts()).slice(0, 20);
   return rss({

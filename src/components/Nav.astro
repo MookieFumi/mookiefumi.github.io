@@ -1,7 +1,7 @@
 ---
 import { SITE } from '../site';
 
-// Igual que en Jekyll: el enlace de la página actual lleva aria-current.
+// El enlace de la página actual lleva aria-current.
 const current = Astro.url.pathname.replace(/\.html$/, '');
 const brand = SITE.title.replace('~/', '');
 ---

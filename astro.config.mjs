@@ -1,21 +1,21 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-import { mookieTheme, rougeWrapper } from './src/lib/shiki.mjs';
+import { mookieTheme, codeBlockWrapper } from './src/lib/shiki.mjs';
 
 export default defineConfig({
   site: 'https://mookiefumi.com',
   // Genera los ficheros tal como están en `src/pages`: `slug.html` para los
-  // posts (`/AAAA-MM-DD-slug`, sin barra final, como en Jekyll) y
+  // posts (`/AAAA-MM-DD-slug`, sin barra final) y
   // `page2/index.html` para la paginación (`/page2/`).
   build: {
     format: 'preserve',
   },
-  // Conserva un espacio entre elementos en línea, como el HTML de Jekyll.
+  // Conserva un espacio entre elementos en línea.
   compressHTML: true,
   markdown: {
     shikiConfig: {
       theme: mookieTheme,
-      transformers: [rougeWrapper()],
+      transformers: [codeBlockWrapper()],
     },
   },
   redirects: {

@@ -61,6 +61,6 @@ const nfPosts = JSON.stringify(posts).replace(/</g, '\\u003c');
     <a class="nf-btn" href="/temas">tree ~/temas</a>
   </div>
 </div>
-  <script is:inline slot="scripts" set:html={`window.NF_POSTS = ${nfPosts};\nwindow.NF_BASE = "";`}></script>
+  <script is:inline slot="scripts" set:html={`window.NF_POSTS = ${nfPosts};`}></script>
   <script is:inline slot="scripts" src="/js/404.js" defer></script>
 </Base>

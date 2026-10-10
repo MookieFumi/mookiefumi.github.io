@@ -1,4 +1,4 @@
-// Configuración del sitio (lo que antes estaba en `_config.yml`).
+// Configuración del sitio.
 export const SITE = {
   url: 'https://mookiefumi.com',
   urlPretty: 'mookiefumi.com',

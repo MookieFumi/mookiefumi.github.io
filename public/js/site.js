@@ -47,7 +47,7 @@
   }
 
   // Botón "Copiar" en cada bloque de código
-  var blocks = document.querySelectorAll('.prose div.highlighter-rouge, .prose figure.highlight');
+  var blocks = document.querySelectorAll('.prose div.code-block');
   Array.prototype.forEach.call(blocks, function (block) {
     var code = block.querySelector('pre code') || block.querySelector('pre');
     if (!code) return;

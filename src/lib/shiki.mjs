@@ -1,5 +1,5 @@
-// Resaltado de código con Shiki usando la paleta de ~/mookie (antes
-// `css/syntax.css` con Rouge). Los bloques de código usan fondo de terminal en
+// Resaltado de código con Shiki usando la paleta de ~/mookie. Los bloques de
+// código usan fondo de terminal en
 // los dos temas, así que basta un solo juego de colores: lima para palabras
 // clave, violeta para tipos, cian para cadenas, ámbar para números y gris
 // para comentarios.
@@ -29,15 +29,15 @@ export const mookieTheme = {
   ],
 };
 
-// Envuelve cada bloque en `<div class="language-xxx highlighter-rouge">`, el
-// mismo marcado que generaba Rouge, para que sigan funcionando la barra de
-// ventana con el lenguaje y el botón de copiar de `site.css` y `site.js`.
-export function rougeWrapper() {
+// Envuelve cada bloque en `<div class="language-xxx code-block">`: `site.css`
+// pinta con esas clases la barra de ventana con el lenguaje, y `site.js` añade
+// el botón de copiar.
+export function codeBlockWrapper() {
   return {
-    name: 'mookie:rouge-wrapper',
+    name: 'mookie:code-block',
     root(root) {
       const lang = this.options.lang;
-      const className = !lang || lang === 'plaintext' ? ['highlighter-rouge'] : [`language-${lang}`, 'highlighter-rouge'];
+      const className = !lang || lang === 'plaintext' ? ['code-block'] : [`language-${lang}`, 'code-block'];
       return {
         type: 'root',
         children: [{ type: 'element', tagName: 'div', properties: { className }, children: root.children }],

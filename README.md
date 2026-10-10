@@ -41,8 +41,8 @@ El front matter se valida con el esquema de `src/content.config.ts`: si falta un
 
 Los diagramas se escriben en Mermaid pero se publican como SVG, en versión clara y oscura, para no cargar ninguna librería en el navegador.
 
-1. Escribe el diagrama en `_diagrams/src/<nombre>.mmd`.
-2. Ejecuta `./_diagrams/render.sh <nombre>` (necesita Node.js). Genera `public/img/diagrams/<nombre>-light.svg` y `public/img/diagrams/<nombre>-dark.svg`.
+1. Escribe el diagrama en `diagrams/src/<nombre>.mmd`.
+2. Ejecuta `./diagrams/render.sh <nombre>` (necesita Node.js). Genera `public/img/diagrams/<nombre>-light.svg` y `public/img/diagrams/<nombre>-dark.svg`.
 3. Inclúyelo en el post:
 
 ```html
@@ -52,7 +52,7 @@ Los diagramas se escriben en Mermaid pero se publican como SVG, en versión clar
 </figure>
 ```
 
-Si un diagrama merece movimiento, se dibuja a mano como SVG con animación (SMIL y CSS) y se genera con un script de `_diagrams/animated/`, como `07-openspec-ciclo.py`. Respeta `prefers-reduced-motion` y se incluye en el post igual que los demás.
+Si un diagrama merece movimiento, se dibuja a mano como SVG con animación (SMIL y CSS) y se genera con un script de `diagrams/animated/`, como `07-openspec-ciclo.py`. Respeta `prefers-reduced-motion` y se incluye en el post igual que los demás.
 
 ## Estructura
 
@@ -68,7 +68,7 @@ Si un diagrama merece movimiento, se dibuja a mano como SVG con animación (SMIL
 | `public/` | Ficheros que se publican tal cual: CSS, JS, imágenes, favicons y `CNAME` |
 | `public/css/tokens.css` | Colores y tipografías (modo claro y oscuro) |
 | `public/js/site.js` | Modo oscuro y botón de copiar código |
-| `_diagrams/` | Fuentes Mermaid, temas de color y scripts de renderizado |
+| `diagrams/` | Fuentes Mermaid, temas de color y scripts de renderizado |
 
 ## Configuración
 

@@ -883,9 +883,8 @@ a.chip:hover {
   color: var(--color-inline-code-text);
 }
 
-/* Bloques de código (rouge): ventanas de terminal */
-.prose div.highlighter-rouge,
-.prose figure.highlight,
+/* Bloques de código: ventanas de terminal */
+.prose div.code-block,
 .prose > pre {
   position: relative;
   margin-inline: 0;
@@ -965,8 +964,7 @@ a.chip:hover {
   transition: opacity 0.15s ease;
 }
 
-.prose div.highlighter-rouge:hover .copy-code,
-.prose figure.highlight:hover .copy-code,
+.prose div.code-block:hover .copy-code,
 .copy-code:focus-visible {
   opacity: 1;
 }

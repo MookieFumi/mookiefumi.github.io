@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Diagrama animado del ciclo de un change de OpenSpec, en vertical.
 
-Genera img/diagrams/07-openspec-ciclo-{light,dark}.svg con los colores del blog.
+Genera public/img/diagrams/07-openspec-ciclo-{light,dark}.svg con los colores del blog.
 Uso: python3 _diagrams/animated/07-openspec-ciclo.py
 
 El SVG lleva sus propios estilos y animaciones (SMIL y CSS), así que funciona
@@ -9,7 +9,7 @@ dentro de un <img> sin cargar nada. Con prefers-reduced-motion se queda estátic
 """
 from pathlib import Path
 
-OUT = Path(__file__).resolve().parents[2] / "img" / "diagrams"
+OUT = Path(__file__).resolve().parents[2] / "public" / "img" / "diagrams"
 NAME = "07-openspec-ciclo"
 
 VX, W, H = 45, 510, 690   # recorte horizontal del lienzo (x inicial y ancho) y alto

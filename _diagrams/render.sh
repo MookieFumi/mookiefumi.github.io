@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Renderiza los diagramas Mermaid de _diagrams/src a img/diagrams,
+# Renderiza los diagramas Mermaid de _diagrams/src a public/img/diagrams,
 # en versión clara y oscura con los colores del blog.
 #
 # Uso: ./_diagrams/render.sh            (todos)
@@ -16,7 +16,7 @@ for name in "${names[@]}"; do
   for theme in light dark; do
     npx -y @mermaid-js/mermaid-cli \
       -i "_diagrams/src/${name}.mmd" \
-      -o "img/diagrams/${name}-${theme}.svg" \
+      -o "public/img/diagrams/${name}-${theme}.svg" \
       -c "_diagrams/theme-${theme}.json" \
       -p "_diagrams/puppeteer-config.json" \
       -b transparent

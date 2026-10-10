@@ -3,6 +3,7 @@ import { SITE } from '../site';
 import Base from './Base.astro';
 import WindowBar from '../components/WindowBar.astro';
 import Prompt from '../components/Prompt.astro';
+import Lanyard from '../components/Lanyard/Lanyard';
 
 // Layout de una página Markdown: recibe su front matter.
 interface Props {
@@ -13,15 +14,32 @@ const { title } = Astro.props.frontmatter;
 <Base title={title}>
   <div class="container about">
     <aside class="about-badge" aria-label="Credencial">
-      <div class="lanyard-strap" aria-hidden="true"><span>~/mookie · ~/mookie · ~/mookie</span></div>
-      <div class="lanyard-clip" aria-hidden="true"></div>
-      <div class="badge">
-        <span class="badge-hole" aria-hidden="true"></span>
-        <div class="badge-head"><strong><span>~/</span>mookie</strong><span>ACCESS · ROOT</span></div>
-        <img src="/img/brand/mookie-badge.jpg" alt={`Foto de ${SITE.author.name}`} width="240" height="240">
-        <p class="badge-name">Miguel Ángel Martín</p>
-        <div class="badge-foot"><span>Software / Cloud Architect</span><span>uid=1000</span></div>
-      </div>
+      <!-- Prueba: la credencial en 3D con el Lanyard de React Bits. La tarjeta es una
+           imagen, así que el texto va aparte para lectores de pantalla. -->
+      <p class="sr-only">Miguel Ángel Martín, Software / Cloud Architect.</p>
+      <Lanyard
+        client:visible
+        className="about-lanyard"
+        frontImage="/img/brand/mookie-badge-card.jpg"
+        strapImage="/img/brand/mookie-strap.png"
+        strapColor="#B8F25B"
+        cardColor="#0B0E14"
+        finish="glossy"
+        metal="graphite"
+        size={0.45}
+        strapLength={0.45}
+      />
+      <noscript>
+        <div class="lanyard-strap" aria-hidden="true"><span>~/mookie · ~/mookie · ~/mookie</span></div>
+        <div class="lanyard-clip" aria-hidden="true"></div>
+        <div class="badge">
+          <span class="badge-hole" aria-hidden="true"></span>
+          <div class="badge-head"><strong><span>~/</span>mookie</strong><span>ACCESS · ROOT</span></div>
+          <img src="/img/brand/mookie-badge.jpg" alt={`Foto de ${SITE.author.name}`} width="240" height="240">
+          <p class="badge-name">Miguel Ángel Martín</p>
+          <div class="badge-foot"><span>Software / Cloud Architect</span><span>uid=1000</span></div>
+        </div>
+      </noscript>
     </aside>
 
     <section class="about-session window">

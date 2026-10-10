@@ -6,7 +6,7 @@ import { parse } from 'yaml';
 // Los posts se llaman `aaaa-mm-dd-slug.md`: el id que genera `glob()` es ese
 // nombre sin extensión, y coincide con la URL pública.
 const posts = defineCollection({
-  loader: glob({ base: './src/content/posts', pattern: '*.md' }),
+  loader: glob({ base: './src/content/posts', pattern: '*.{md,mdx}' }),
   schema: z.object({
     title: z.string(),
     subtitle: z.string().optional(),

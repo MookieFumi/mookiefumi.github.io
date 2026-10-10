@@ -16,5 +16,18 @@ export function postSlug(post: Post): string {
 }
 
 export function postHtml(post: Post): string {
-  return post.rendered?.html ?? '';
+  return post.rendered?.html ?? mdxParagraphs(post.body ?? '');
+}
+
+// Los posts en MDX no guardan el HTML renderizado en la colección. Para el
+// extracto, el tiempo de lectura y el RSS basta con sus párrafos de texto: se
+// quitan los imports, los componentes, los títulos y los bloques de código.
+function mdxParagraphs(body: string): string {
+  return body
+    .replace(/```[\s\S]*?```/g, '')
+    .split(/\n\s*\n/)
+    .map((block) => block.trim())
+    .filter((block) => block && !/^(import|export)\s|^[<#{]/.test(block))
+    .map((block) => `<p>${block.replace(/\[([^\]]*)\]\([^)]*\)/g, '$1').replace(/[*_`]/g, '')}</p>`)
+    .join('\n');
 }

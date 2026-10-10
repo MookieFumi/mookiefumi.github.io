@@ -1,9 +1,12 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import mdx from '@astrojs/mdx';
+import react from '@astrojs/react';
 import { mookieTheme, codeBlockWrapper } from './src/lib/shiki.mjs';
 
 export default defineConfig({
   site: 'https://mookiefumi.com',
+  integrations: [react(), mdx()],
   // Genera los ficheros tal como están en `src/pages`: `slug.html` para los
   // posts (`/AAAA-MM-DD-slug`, sin barra final) y
   // `page2/index.html` para la paginación (`/page2/`).

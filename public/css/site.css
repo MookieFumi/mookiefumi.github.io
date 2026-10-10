@@ -626,6 +626,12 @@ a.chip:hover {
   padding-bottom: 28px;
 }
 
+/* Más específico que `.lanyard` (height: 100%), que llega después con la isla. */
+.about-badge .about-lanyard {
+  width: 100%;
+  height: 580px;
+}
+
 .lanyard-strap {
   width: 38px;
   height: 150px;
@@ -761,6 +767,7 @@ a.chip:hover {
 
 @media (max-width: 860px) {
   .about-badge { position: static; }
+  .about-badge .about-lanyard { height: 430px; }
 }
 
 /* --- Contenido de los artículos --- */

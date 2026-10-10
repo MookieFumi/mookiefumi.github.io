@@ -1,0 +1,30 @@
+---
+title: "Prueba: un componente de React dentro de un post en MDX"
+date: 2026-10-10
+topic: desarrollo
+published: true
+---
+
+import Lanyard from '../../components/Lanyard/Lanyard';
+
+Este post es una prueba de concepto y no está pensado para publicarse. Sirve para comprobar que un post en MDX convive con los posts en Markdown: mismo layout, mismo resaltado de código y la misma URL `/AAAA-MM-DD-slug`.
+
+Debajo hay una isla de React que solo se hidrata cuando entra en pantalla (`client:visible`). Arrastra la tarjeta.
+
+<Lanyard
+  client:visible
+  frontImage="/img/brand/mookie-badge-card.jpg"
+  strapImage="/img/brand/mookie-strap.png"
+  strapColor="#B8F25B"
+  cardColor="#0B0E14"
+  metal="graphite"
+  style={{ height: '520px' }}
+/>
+
+## El código sigue resaltándose igual
+
+```csharp
+app.MapGet("/hola", () => "Hola desde MDX");
+```
+
+Y el resto del Markdown funciona como siempre: **negrita**, `código en línea` y [enlaces](/temas).

@@ -1,19 +1,7 @@
 ---
-// Portada provisional: lista los posts para revisar la migración del
-// contenido. La portada definitiva, con paginación, llega en la fase 4.
-import { getPublishedPosts } from '../lib/posts';
+import Home from '../components/Home.astro';
+import { getPostPages } from '../lib/pagination';
 
-const posts = await getPublishedPosts();
+const [first] = await getPostPages();
 ---
-<!doctype html>
-<html lang="es">
-  <head>
-    <meta charset="utf-8" />
-    <title>~/mookie</title>
-  </head>
-  <body>
-    <ul>
-      {posts.map((post) => <li><a href={`/${post.id}`}>{post.data.title}</a></li>)}
-    </ul>
-  </body>
-</html>
+<Home {...first} />

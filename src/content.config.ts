@@ -1,6 +1,7 @@
 import { defineCollection, reference } from 'astro:content';
 import { glob, file } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { parse } from 'yaml';
 
 // Los posts conservan el nombre `AAAA-MM-DD-slug.md` de Jekyll: el id que
 // genera `glob()` es ese nombre sin extensión, y coincide con la URL pública.
@@ -16,19 +17,26 @@ const posts = defineCollection({
 });
 
 // Temas del blog: el id se usa en `topic:` de cada post, en las clases
-// `.topic-<id>` y como ancla en /temas.
+// `.topic-<id>` y como ancla en /temas. `order` guarda la posición en el
+// fichero, porque las colecciones no garantizan el orden.
 const topics = defineCollection({
-  loader: file('./src/data/topics.yml'),
+  loader: file('./src/data/topics.yml', {
+    parser: (text) => parse(text).map((topic: object, order: number) => ({ ...topic, order })),
+  }),
   schema: z.object({
     name: z.string(),
+    order: z.number(),
   }),
 });
 
 // Enlaces de /recursos, agrupados por sección.
 const recursos = defineCollection({
-  loader: file('./src/data/recursos.yml'),
+  loader: file('./src/data/recursos.yml', {
+    parser: (text) => parse(text).map((group: object, order: number) => ({ ...group, order })),
+  }),
   schema: z.object({
     title: z.string(),
+    order: z.number(),
     items: z.array(
       z.object({
         title: z.string(),

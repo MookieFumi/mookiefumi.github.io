@@ -14,7 +14,7 @@ const brand = SITE.title.replace('~/', '');
     <nav class="site-nav" aria-label="Principal">
       <div class="nav-tabs">
         {SITE.navbarLinks.map((link) => (
-          <a href={`/${link.path}`} aria-current={link.path && current === `/${link.path}` ? 'page' : undefined}>{link.label}</a>
+          <a href={`/${link.path}`} aria-current={current === `/${link.path}` ? 'page' : undefined}>{link.label}</a>
         ))}
       </div>
       <button class="theme-toggle" type="button" data-theme-toggle aria-label="Cambiar a modo claro" aria-pressed="true">

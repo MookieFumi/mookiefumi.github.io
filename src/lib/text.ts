@@ -36,3 +36,8 @@ export function excerpt(html: string, subtitle: string | undefined, count: numbe
   const paragraphs = html.split('<p>').slice(1, 5).map((chunk) => chunk.split('</p>')[0]);
   return truncateWords(stripHtml(paragraphs.join(' ')).replace(/\n/g, ''), count);
 }
+
+// Las primeras palabras de todo el texto de un post (para el RSS).
+export function summary(html: string, count: number): string {
+  return truncateWords(stripHtml(html), count);
+}

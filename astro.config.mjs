@@ -4,10 +4,11 @@ import { mookieTheme, rougeWrapper } from './src/lib/shiki.mjs';
 
 export default defineConfig({
   site: 'https://mookiefumi.com',
-  // Genera `slug.html` en lugar de `slug/index.html` para conservar las URLs
-  // de Jekyll (`/AAAA-MM-DD-slug`, sin barra final).
+  // Genera los ficheros tal como están en `src/pages`: `slug.html` para los
+  // posts (`/AAAA-MM-DD-slug`, sin barra final, como en Jekyll) y
+  // `page2/index.html` para la paginación (`/page2/`).
   build: {
-    format: 'file',
+    format: 'preserve',
   },
   // Conserva un espacio entre elementos en línea, como el HTML de Jekyll.
   compressHTML: true,

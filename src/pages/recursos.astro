@@ -1,0 +1,41 @@
+---
+import Base from '../layouts/Base.astro';
+import Prompt from '../components/Prompt.astro';
+import WindowBar from '../components/WindowBar.astro';
+import { isoDate } from '../lib/dates';
+import { getRecursos } from '../lib/data';
+
+const title = 'Recursos';
+const subtitle = 'Slides de mis charlas y otros enlaces';
+const groups = await getRecursos();
+---
+<Base title={title} description={subtitle}>
+  <div class="container-narrow">
+    <header class="page-hero">
+      <Prompt cmd="ls ~/recursos" />
+      <h1>{title}</h1>
+      <p>{subtitle}.</p>
+    </header>
+
+    <div class="resources">
+      {groups.map((group) => (
+        <section class="window" id={group.id} aria-labelledby={`${group.id}-title`}>
+          <WindowBar title={`bash — ~/mookie/recursos/${group.id}`} />
+          <div class="window-body">
+            <Prompt cmd={`ls -l ~/recursos/${group.id}`} />
+            <h2 id={`${group.id}-title`}>{group.data.title}</h2>
+            <ul class="resource-list">
+              {group.data.items.map((item) => (
+                <li>
+                  <span class="meta">{item.date && isoDate(item.date)}</span>
+                  <span class="resource-kind">{item.kind}</span>
+                  <a href={item.url}>{item.title} <span aria-hidden="true">↗</span></a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      ))}
+    </div>
+  </div>
+</Base>

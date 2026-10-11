@@ -3,7 +3,7 @@ title: "Directory.Build.props: el contrato de calidad de tu solución .NET"
 subtitle: Cómo MSBuild lo encuentra, qué conviene centralizar, qué no y cómo gobernarlo en equipo
 date: 2026-09-12
 topic: desarrollo
-published: false
+published: true
 ---
 
 Un único `Directory.Build.props` en la raíz del repositorio convierte las reglas de tu equipo en algo que aplica el compilador, no en una página de wiki que nadie lee. Este es el primer post de una serie sobre gobernanza de soluciones .NET; en el segundo veremos Central Package Management.

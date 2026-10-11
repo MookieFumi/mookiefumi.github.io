@@ -3,7 +3,7 @@ title: "Central Package Management: una única fuente de verdad para tus paquete
 subtitle: Directory.Packages.props, excepciones controladas, transitive pinning y cadena de suministro
 date: 2026-09-13
 topic: desarrollo
-published: false
+published: true
 ---
 
 Con Central Package Management (CPM), las versiones de todos los paquetes NuGet de una solución viven en un único fichero: `Directory.Packages.props`. Los `.csproj` dicen qué paquetes usan y ese fichero decide en qué versión. Este es el segundo post de la serie sobre gobernanza de soluciones .NET; en el [primero](/2026-09-12-directory-build-props-contrato-calidad) vimos `Directory.Build.props`.

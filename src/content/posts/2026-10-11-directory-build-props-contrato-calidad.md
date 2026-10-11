@@ -158,7 +158,7 @@ Un punto de partida mínimo:
 | `AnalysisLevel` | Activa los analizadores de .NET con el conjunto de reglas recomendado. |
 | `EnforceCodeStyleInBuild` | Las reglas de estilo del `.editorconfig` se comprueban al compilar, no solo en el IDE. |
 
-Hay mucho más que contar aquí: qué nivel de analizadores elegir, cómo se reparte el trabajo entre `Directory.Build.props` y `.editorconfig`, cuándo convertir warnings en errores y cómo activarlo en una solución existente sin bloquear al equipo. Lo dejo para un post aparte.
+Hay mucho más que contar aquí: qué nivel de analizadores elegir, cómo se reparte el trabajo entre `Directory.Build.props` y `.editorconfig`, cuándo convertir warnings en errores y cómo activarlo en una solución existente sin bloquear al equipo. Todo eso lo desarrollo en [otro post](/2026-10-11-estandares-lenguaje-calidad-dotnet).
 
 ## Versionado centralizado de los artefactos
 

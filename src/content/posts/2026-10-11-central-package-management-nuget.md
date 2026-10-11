@@ -278,4 +278,4 @@ repo/
     └── copilot-instructions.md
 ```
 
-Son unos pocos ficheros que convierten las normas del equipo en algo que el build comprueba en cada commit. La parte de calidad (analizadores, `.editorconfig` y warnings como errores) la desarrollaré en un post dedicado.
+Son unos pocos ficheros que convierten las normas del equipo en algo que el build comprueba en cada commit. La parte de calidad (analizadores, `.editorconfig` y warnings como errores) la desarrollo en [otro post](/2026-10-11-estandares-lenguaje-calidad-dotnet).

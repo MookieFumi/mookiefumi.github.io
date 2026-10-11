@@ -3,7 +3,7 @@ title: "Hacer cumplir las normas y estándares de .NET con GitHub Actions"
 subtitle: Un único workflow comprueba en cada pull request lo que definen Directory.Build.props, Central Package Management y el .editorconfig
 date: 2026-09-16
 topic: desarrollo
-published: false
+published: true
 ---
 
 En los posts sobre gobernanza de soluciones .NET dejamos las normas en ficheros del repositorio: [Directory.Build.props](/2026-09-12-directory-build-props-contrato-calidad), [Central Package Management](/2026-09-13-central-package-management-nuget) y los [estándares de lenguaje y calidad](/2026-09-14-estandares-lenguaje-calidad-dotnet). Esos ficheros solo valen si algo comprueba que se cumplen en cada cambio. En un repositorio de GitHub ese algo es un workflow de Actions.

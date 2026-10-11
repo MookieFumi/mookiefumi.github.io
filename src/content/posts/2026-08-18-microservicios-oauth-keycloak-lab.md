@@ -2,7 +2,7 @@
 title: "Laboratorio: securizando microservicios con OAuth 2.1 y Keycloak"
 subtitle: Usuarios y aplicaciones contra los servicios de un clúster de Kubernetes local, con un MCP Server como ejemplo
 date: 2026-08-18
-topic: seguridad
+topic: dotnet
 published: true
 ---
 

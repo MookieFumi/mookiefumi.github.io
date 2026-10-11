@@ -48,7 +48,7 @@
   --topic-desarrollo: #B8F25B;
   --topic-ia: #B39CFF;
   --topic-k8s: #5CC8FF;
-  --topic-seguridad: #FF6B7A;
+  --topic-dotnet: #FF6B7A;
 
   /* Tipografía */
   --font-display: "Geist", "Segoe UI", system-ui, sans-serif;
@@ -85,6 +85,6 @@
   --topic-desarrollo: #3B7A00;
   --topic-ia: #6D4ED8;
   --topic-k8s: #0B6FB8;
-  --topic-seguridad: #C62E40;
+  --topic-dotnet: #C62E40;
   --window-shadow: 0 16px 40px rgba(11, 14, 20, 0.08);
 }

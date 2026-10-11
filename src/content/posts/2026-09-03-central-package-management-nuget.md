@@ -1,14 +1,14 @@
 ---
 title: "Central Package Management: una única fuente de verdad para tus paquetes NuGet"
 subtitle: Directory.Packages.props, excepciones controladas, transitive pinning y cadena de suministro
-date: 2026-10-11
+date: 2026-09-03
 topic: desarrollo
-published: true
+published: false
 ---
 
-Con Central Package Management (CPM), las versiones de todos los paquetes NuGet de una solución viven en un único fichero: `Directory.Packages.props`. Los `.csproj` dicen qué paquetes usan y ese fichero decide en qué versión. Este es el segundo post de la serie sobre gobernanza de soluciones .NET; en el [primero](/2026-10-11-directory-build-props-contrato-calidad) vimos `Directory.Build.props`.
+Con Central Package Management (CPM), las versiones de todos los paquetes NuGet de una solución viven en un único fichero: `Directory.Packages.props`. Los `.csproj` dicen qué paquetes usan y ese fichero decide en qué versión. Este es el segundo post de la serie sobre gobernanza de soluciones .NET; en el [primero](/2026-09-02-directory-build-props-contrato-calidad) vimos `Directory.Build.props`.
 
-Aquí repaso cómo funciona, cómo gestionar las excepciones y cómo apoyarte en él para proteger la cadena de suministro. Al final explico por qué, para un equipo, CPM tiene menos que ver con NuGet de lo que parece y bastante más con cómo se toman las decisiones técnicas.
+Aquí repaso cómo funciona, cómo gestionar las excepciones y cómo apoyarte en él para proteger la cadena de suministro. Al final explico por qué, para un equipo, CPM tiene que ver sobre todo con cómo se toman las decisiones técnicas.
 
 ## El problema: versiones dispersas en cada proyecto
 
@@ -66,7 +66,7 @@ Los `.csproj` siguen usando `PackageReference`, pero sin versión:
 </ItemGroup>
 ```
 
-Hay tres reglas que conviene conocer desde el principio:
+Tres reglas que conviene saber desde el principio:
 
 - `PackageVersion` no añade el paquete a ningún proyecto. Solo fija su versión, y cada proyecto sigue decidiendo qué usa con `PackageReference`.
 - Un `PackageReference` con `Version` da el error `NU1008`: con CPM activo, la versión solo puede venir del fichero central.
@@ -133,7 +133,7 @@ Agrupa estos pins en un `ItemGroup` propio con un comentario. Así, cuando actua
 
 ## Cadena de suministro: NuGetAudit, Package Source Mapping y lock files
 
-Centralizar versiones es el primer paso. Con tres piezas más, el fichero central pasa a ser la base de una cadena de suministro segura.
+Centralizar versiones es el primer paso. Con tres piezas más, el fichero central sirve de base a una cadena de suministro segura.
 
 ### NuGetAudit: vulnerabilidades en cada restore
 
@@ -238,7 +238,7 @@ Igual que con `Directory.Build.props`, el fichero central merece una revisión e
 
 Así, añadir un paquete nuevo a la solución pasa por una revisión de arquitectura: licencia, mantenimiento, alternativas ya aprobadas. Usar los que ya están declarados sigue siendo libre.
 
-Y otra vez conviene alinear a Copilot en `.github/copilot-instructions.md`:
+También conviene alinear a Copilot en `.github/copilot-instructions.md`:
 
 ```markdown
 ## NuGet packages
@@ -252,7 +252,7 @@ Y otra vez conviene alinear a Copilot en `.github/copilot-instructions.md`:
 
 ## Beneficios para equipos de desarrollo
 
-CPM no va de NuGet. Va de que las decisiones sobre dependencias se tomen una vez, en un sitio visible y con revisión. En el día a día se nota así:
+CPM consigue que las decisiones sobre dependencias se tomen una vez, en un sitio visible y con revisión. En el día a día se nota así:
 
 - Todo el equipo sabe qué versión de cada paquete usa la solución mirando un solo fichero.
 - Desaparecen los downgrades y los errores que solo aparecían al combinar dos proyectos.
@@ -278,4 +278,4 @@ repo/
     └── copilot-instructions.md
 ```
 
-Son unos pocos ficheros que convierten las normas del equipo en algo que el build comprueba en cada commit. La parte de calidad (analizadores, `.editorconfig` y warnings como errores) la desarrollo en [otro post](/2026-10-11-estandares-lenguaje-calidad-dotnet).
+Con unos pocos ficheros, las normas del equipo las comprueba el build en cada commit. La parte de calidad (analizadores, `.editorconfig` y warnings como errores) la desarrollo en [otro post](/2026-09-04-estandares-lenguaje-calidad-dotnet).

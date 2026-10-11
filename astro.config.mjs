@@ -22,6 +22,9 @@ export default defineConfig({
     },
   },
   redirects: {
+    // Las páginas de temas y recursos pasaron a nombres de fichero en inglés.
+    '/temas': '/topics',
+    '/recursos': '/resources',
     // El slug de este post tenía mayúsculas; ahora todos van en minúsculas.
     '/2019-10-20-unit-testing-tools-using-your-MacOS-terminal':
       '/2019-10-20-unit-testing-tools-using-your-macos-terminal',

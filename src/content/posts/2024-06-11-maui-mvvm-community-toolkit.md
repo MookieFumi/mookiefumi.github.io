@@ -7,7 +7,7 @@ published: true
 
 # ¿Cómo puedo implementar el patrón MVVM con CommunityToolkit?
 
-En el [artículo anterior](https://mookiefumi.com/2024-06-04-maui-mvvm) en el que hacía una pequeña introducción al patrón MVVM comenté que había varias formas de implementarlo, una en "crudo" que es la que mostré en dicho artículo y otra por ejemplo la que nos ofrece el **Community Toolkit para .NET**.
+En el [artículo anterior](https://mookiefumi.com/2024-06-07-maui-mvvm) en el que hacía una pequeña introducción al patrón MVVM comenté que había varias formas de implementarlo, una en "crudo" que es la que mostré en dicho artículo y otra por ejemplo la que nos ofrece el **Community Toolkit para .NET**.
 
 En este artículo veremos los pasos necesarios para implementar dicho patrón a través de este llamado "kit de herramientas" e intentaré ir resumiento lo que nos aporta si lo incluímos en nuestro proyecto.
 

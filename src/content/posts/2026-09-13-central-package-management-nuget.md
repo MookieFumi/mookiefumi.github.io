@@ -1,12 +1,12 @@
 ---
 title: "Central Package Management: una única fuente de verdad para tus paquetes NuGet"
 subtitle: Directory.Packages.props, excepciones controladas, transitive pinning y cadena de suministro
-date: 2026-09-03
+date: 2026-09-13
 topic: desarrollo
 published: false
 ---
 
-Con Central Package Management (CPM), las versiones de todos los paquetes NuGet de una solución viven en un único fichero: `Directory.Packages.props`. Los `.csproj` dicen qué paquetes usan y ese fichero decide en qué versión. Este es el segundo post de la serie sobre gobernanza de soluciones .NET; en el [primero](/2026-09-02-directory-build-props-contrato-calidad) vimos `Directory.Build.props`.
+Con Central Package Management (CPM), las versiones de todos los paquetes NuGet de una solución viven en un único fichero: `Directory.Packages.props`. Los `.csproj` dicen qué paquetes usan y ese fichero decide en qué versión. Este es el segundo post de la serie sobre gobernanza de soluciones .NET; en el [primero](/2026-09-12-directory-build-props-contrato-calidad) vimos `Directory.Build.props`.
 
 Aquí repaso cómo funciona, cómo gestionar las excepciones y cómo apoyarte en él para proteger la cadena de suministro. Al final explico por qué, para un equipo, CPM tiene que ver sobre todo con cómo se toman las decisiones técnicas.
 
@@ -278,4 +278,4 @@ repo/
     └── copilot-instructions.md
 ```
 
-Con unos pocos ficheros, las normas del equipo las comprueba el build en cada commit. La parte de calidad (analizadores, `.editorconfig` y warnings como errores) la desarrollo en [otro post](/2026-09-04-estandares-lenguaje-calidad-dotnet).
+Con unos pocos ficheros, las normas del equipo las comprueba el build en cada commit. La parte de calidad (analizadores, `.editorconfig` y warnings como errores) la desarrollo en [otro post](/2026-09-14-estandares-lenguaje-calidad-dotnet).

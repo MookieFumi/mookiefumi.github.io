@@ -6,4 +6,4 @@ interface Props {
 }
 const topic = await getEntry('topics', Astro.props.id);
 ---
-{topic && <a class={`chip topic-${topic.id}`} href={`/topics#${topic.id}`}>{topic.data.name}</a>}
+{topic && <a class={`chip topic-${topic.id}`} href={`/temas#${topic.id}`}>{topic.data.name}</a>}

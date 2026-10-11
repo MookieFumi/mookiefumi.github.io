@@ -10,7 +10,7 @@ const { title, description, article = false } = Astro.props;
 
 const fullTitle = title ? `${title} · ${SITE.title}` : `${SITE.title} · ${SITE.description}`;
 const metaDescription = description ?? SITE.description;
-// Las URLs públicas no llevan `.html` (`/topics`, `/page2/`, `/`).
+// Las URLs públicas no llevan `.html` (`/temas`, `/page2/`, `/`).
 const path = Astro.url.pathname.replace(/\.html$/, '');
 ---
 <head>

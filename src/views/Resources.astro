@@ -12,7 +12,7 @@ const groups = await getResources();
 <Base title={title} description={subtitle}>
   <div class="container-narrow">
     <header class="page-hero">
-      <Prompt cmd="ls ~/resources" />
+      <Prompt cmd="ls ~/recursos" />
       <h1>{title}</h1>
       <p>{subtitle}.</p>
     </header>
@@ -20,9 +20,9 @@ const groups = await getResources();
     <div class="resources">
       {groups.map((group) => (
         <section class="window" id={group.id} aria-labelledby={`${group.id}-title`}>
-          <WindowBar title={`bash — ~/mookie/resources/${group.id}`} />
+          <WindowBar title={`bash — ~/mookie/recursos/${group.id}`} />
           <div class="window-body">
-            <Prompt cmd={`ls -l ~/resources/${group.id}`} />
+            <Prompt cmd={`ls -l ~/recursos/${group.id}`} />
             <h2 id={`${group.id}-title`}>{group.data.title}</h2>
             <ul class="resource-list">
               {group.data.items.map((item) => (

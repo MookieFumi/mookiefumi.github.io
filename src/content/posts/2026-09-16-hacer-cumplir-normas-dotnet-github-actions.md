@@ -1,7 +1,7 @@
 ---
 title: "Hacer cumplir las normas y estándares de .NET con GitHub Actions"
 subtitle: Restore bloqueado, warnings como errores, formato, vulnerabilidades y CODEOWNERS ejecutados en cada pull request
-date: 2026-09-20
+date: 2026-09-16
 topic: desarrollo
 published: false
 ---

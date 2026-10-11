@@ -8,8 +8,6 @@ published: true
 
 En los posts sobre gobernanza de soluciones .NET dejamos las normas en ficheros del repositorio: [Directory.Build.props](/2026-09-12-directory-build-props-contrato-calidad), [Central Package Management](/2026-09-13-central-package-management-nuget) y los [estándares de lenguaje y calidad](/2026-09-14-estandares-lenguaje-calidad-dotnet). Esos ficheros solo valen si algo comprueba que se cumplen en cada cambio. En un repositorio de GitHub ese algo es un workflow de Actions.
 
-Parto de una solución como la de esos posts, pero con todo dentro de `src/`: la solución, los ficheros de configuración, los proyectos y los tests (el árbol completo está al final). Añado un workflow que comprueba cada decisión que ya habíamos tomado.
-
 ## Lo que ya tenemos y lo que falta
 
 El build local ya hace bastante, pero un pull request puede llegar con warnings, con el código sin formatear o con un paquete vulnerable, porque nadie estaba obligado a compilar antes de subirlo. Lo que queremos que pase en CI:

@@ -202,24 +202,39 @@ Separar en varios jobs solo compensa cuando una parte tarda de verdad, por ejemp
 
 ## Quién revisa los cambios del estándar
 
-Todo lo anterior comprueba el código. Quién puede cambiar las reglas lo controla `CODEOWNERS` junto con la protección de rama, no Actions. El fichero reúne lo que fuimos listando en los tres posts:
+Todo lo anterior comprueba el código. Quién puede cambiar las reglas lo controla `CODEOWNERS` junto con la protección de rama, no Actions.
+
+`CODEOWNERS` es un fichero que asocia rutas del repositorio con las personas responsables de ellas. Cuando un PR toca un fichero con dueño, GitHub pide la revisión a ese dueño de forma automática. Si además la protección de rama exige la revisión de los code owners, el PR no se puede fusionar hasta que uno de ellos lo apruebe. Sirve para los ficheros de alto impacto: un cambio en `Directory.Build.props` o en `Directory.Packages.props` afecta a todos los proyectos a la vez y merece más atención que un cambio de negocio. El resto del código sigue su flujo normal.
+
+El fichero reúne lo que fuimos listando en los tres posts:
 
 ```text
 # .github/CODEOWNERS
-/src/Directory.Build.props        @contoso/architecture
-/src/Directory.Build.targets      @contoso/architecture
-/src/tests/Directory.Build.props  @contoso/architecture
-/src/Directory.Packages.props     @contoso/architecture
-/src/nuget.config                 @contoso/architecture
-/src/.editorconfig                @contoso/architecture
-/src/global.json                  @contoso/architecture
-/.github/workflows/               @contoso/architecture
-/.github/actions/                 @contoso/architecture
+/src/Directory.Build.props        @contoso/maintainers
+/src/Directory.Build.targets      @contoso/maintainers
+/src/tests/Directory.Build.props  @contoso/maintainers
+/src/Directory.Packages.props     @contoso/maintainers
+/src/nuget.config                 @contoso/maintainers
+/src/.editorconfig                @contoso/maintainers
+/src/global.json                  @contoso/maintainers
+/.github/workflows/               @contoso/maintainers
+/.github/actions/                 @contoso/maintainers
 ```
 
-Las dos últimas líneas son las que más se olvidan. Si cualquiera puede editar los workflows, puede quitar los checks que acabamos de montar, así que `.github/workflows/` y `.github/actions/` también tienen que pasar por arquitectura.
+Las dos últimas líneas son las que más se olvidan. Si cualquiera puede editar los workflows, puede quitar los checks que acabamos de montar, así que `.github/workflows/` y `.github/actions/` también tienen que pasar por los dueños.
 
-En la regla de protección de la rama principal hay que marcar dos cosas: exigir la revisión de los code owners y exigir que pase el check `build`, que reúne todos los pasos anteriores. Sin eso los workflows avisan, pero se puede fusionar igualmente.
+### A quién se puede asignar
+
+Un dueño puede ser una persona (`@usuario`), un equipo de la organización (`@contoso/maintainers`) o una dirección de correo asociada a una cuenta de GitHub. Se pueden poner varios en la misma línea y basta con que apruebe uno. Todos necesitan permiso de escritura en el repositorio, y si una regla del fichero coincide con una ruta, manda la última que aparece.
+
+`maintainers` no es un grupo especial de GitHub. Existe un rol de repositorio llamado Maintain, pero `CODEOWNERS` no acepta roles. Para que sean los mantenedores, hay dos caminos:
+
+- En un repositorio de una organización, crea un equipo, por ejemplo `@contoso/maintainers`, y dale permiso de escritura. Es lo más cómodo, porque cambiar quién revisa es cambiar los miembros del equipo y no editar el fichero.
+- En un repositorio personal no hay equipos, así que se listan las personas: `/src/Directory.Build.props @usuario1 @usuario2`.
+
+Con un único mantenedor hay un límite: el autor de un PR no puede aprobar el suyo, así que si es el único dueño, la regla le bloquea a él mismo. Un administrador puede saltársela, y con dos dueños el problema desaparece.
+
+Para que el fichero tenga efecto, `CODEOWNERS` tiene que estar en la rama base (en `.github/`, en la raíz o en `docs/`). En la regla de protección de la rama principal hay que marcar dos cosas: exigir la revisión de los code owners y exigir que pase el check `build`, que reúne todos los pasos anteriores. Sin eso los workflows avisan y los dueños reciben la petición, pero se puede fusionar igualmente.
 
 ## Antes de poner todo en obligatorio
 
@@ -229,7 +244,7 @@ Si la solución ya tiene años, activar estos checks de golpe pone todos los PRs
 2. Abre un PR dedicado con el resultado de `dotnet format`, sin cambios de lógica, y activa entonces el formato.
 3. Activa los pasos de vulnerabilidades y `dependency-review`, que suelen estar limpios o tienen un arreglo de una línea en `Directory.Packages.props`.
 4. Marca el check como obligatorio en la protección de rama cuando lleve una semana en verde.
-5. Añade `CODEOWNERS` el último, cuando el equipo de arquitectura sepa cuántas revisiones va a recibir.
+5. Añade `CODEOWNERS` el último, cuando los mantenedores sepan cuántas revisiones van a recibir.
 
 ## Cómo queda el repositorio
 

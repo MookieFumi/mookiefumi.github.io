@@ -188,8 +188,8 @@ Tener los pasos en un `ci.yml` está bien para un repositorio. Para aplicarlos a
 Aquí encaja la composite action, porque corre dentro del job del llamador y el checkout, el SDK y el restore se hacen una sola vez. Los pasos de comprobación quedan en un `action.yml`:
 
 ```yaml
-# .github/actions/governance/action.yml
-name: governance
+# .github/actions/net-governance/action.yml
+name: net-governance
 description: Checks the governance rules of a .NET solution
 
 inputs:
@@ -280,7 +280,7 @@ jobs:
           cache: true
           cache-dependency-path: "**/packages.lock.json"
 
-      - uses: ./.github/actions/governance
+      - uses: ./.github/actions/net-governance
 
       - run: dotnet test --no-build -c Release
 ```
@@ -288,7 +288,7 @@ jobs:
 Para añadirlo a un workflow que ya tienes, basta con insertar el `uses` después del checkout y del `setup-dotnet`. Si lo defines en un repositorio central, por ejemplo `contoso/platform-actions`, cada repositorio lo llama por ruta y versión:
 
 ```yaml
-- uses: contoso/platform-actions/governance@v1
+- uses: contoso/platform-actions/net-governance@v1
   with:
     solution: Payments.sln
     check-format: "false"   # until the solution is formatted
@@ -326,7 +326,7 @@ repo/
     ├── CODEOWNERS
     ├── dependabot.yml
     ├── actions/
-    │   └── governance/action.yml
+    │   └── net-governance/action.yml
     └── workflows/
         ├── ci.yml
         └── outdated.yml

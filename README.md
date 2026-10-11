@@ -21,7 +21,7 @@ Antes de subir cambios, ejecuta `pnpm check` y `pnpm build`. Es lo mismo que hac
 Astro genera HTML estático en el build y no envía JavaScript al navegador salvo que un componente lo pida. Las piezas que importan:
 
 - **Rutas.** Cada fichero de `src/pages/` es una URL. `[slug].astro` genera una página por post a partir de la colección, y `page[num]/index.astro` genera la paginación (`/page2/`, `/page3/`…). Con `build.format: 'preserve'` los posts salen como `slug.html`, así que se sirven en `/aaaa-mm-dd-slug`, sin barra final.
-- **Colecciones de contenido.** `src/content.config.ts` define tres colecciones: `posts` (los ficheros de `src/content/posts/`), `topics` y `recursos` (los YAML de `src/data/`). Cada una tiene un esquema: si un post tiene un campo mal o un `topic` que no existe, `pnpm check` y `pnpm build` fallan y dicen qué fichero es.
+- **Colecciones de contenido.** `src/content.config.ts` define tres colecciones: `posts` (los ficheros de `src/content/posts/`), `topics` y `resources` (los YAML de `src/data/`). Cada una tiene un esquema: si un post tiene un campo mal o un `topic` que no existe, `pnpm check` y `pnpm build` fallan y dicen qué fichero es.
 - **Componentes y layouts.** Los ficheros `.astro` tienen una parte de código entre `---` (se ejecuta solo en el build) y una plantilla HTML con expresiones `{...}`. Los layouts de `src/layouts/` envuelven las páginas y los componentes de `src/components/` se reutilizan entre ellas.
 - **Ficheros estáticos.** Lo que hay en `public/` se copia tal cual a la raíz del sitio: `public/images/foo.png` se sirve en `/images/foo.png`.
 - **Código.** Los bloques de código se resaltan en el build con Shiki y el tema de `src/lib/shiki.mjs`. No hace falta ningún CSS ni script extra.
@@ -142,8 +142,9 @@ Si un diagrama merece movimiento, se dibuja a mano como SVG con animación (SMIL
 | --- | --- |
 | `src/content/posts/` | Los artículos |
 | `src/content.config.ts` | Esquema de los posts, temas y recursos |
-| `src/data/` | Temas (`topics.yml`) y enlaces de `/recursos` (`recursos.yml`) |
+| `src/data/` | Temas (`topics.yml`) y enlaces de `/recursos` (`resources.yml`) |
 | `src/pages/` | Rutas del sitio: portada, paginación, posts, temas, recursos, sobre mí, 404 y RSS |
+| `src/views/` | Contenido de las páginas `/temas` y `/recursos`; las rutas de `src/pages/` solo lo montan |
 | `src/layouts/`, `src/components/` | Plantillas del sitio |
 | `src/lib/` | Fechas, tiempo de lectura, extractos y resaltado de código (Shiki) |
 | `src/site.ts` | Título, autor, enlaces de la barra y analítica |

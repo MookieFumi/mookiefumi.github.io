@@ -5,6 +5,6 @@ export async function getTopics() {
   return (await getCollection('topics')).sort((a, b) => a.data.order - b.data.order);
 }
 
-export async function getRecursos() {
-  return (await getCollection('recursos')).sort((a, b) => a.data.order - b.data.order);
+export async function getResources() {
+  return (await getCollection('resources')).sort((a, b) => a.data.order - b.data.order);
 }

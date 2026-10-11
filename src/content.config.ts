@@ -30,8 +30,8 @@ const topics = defineCollection({
 });
 
 // Enlaces de /recursos, agrupados por sección.
-const recursos = defineCollection({
-  loader: file('./src/data/recursos.yml', {
+const resources = defineCollection({
+  loader: file('./src/data/resources.yml', {
     parser: (text) => parse(text).map((group: object, order: number) => ({ ...group, order })),
   }),
   schema: z.object({
@@ -48,4 +48,4 @@ const recursos = defineCollection({
   }),
 });
 
-export const collections = { posts, topics, recursos };
+export const collections = { posts, topics, resources };

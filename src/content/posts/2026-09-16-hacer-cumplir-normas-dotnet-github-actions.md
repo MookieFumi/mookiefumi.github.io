@@ -8,7 +8,7 @@ published: false
 
 En los posts sobre gobernanza de soluciones .NET dejamos las normas en ficheros del repositorio: [Directory.Build.props](/2026-09-12-directory-build-props-contrato-calidad), [Central Package Management](/2026-09-13-central-package-management-nuget) y los [estándares de lenguaje y calidad](/2026-09-14-estandares-lenguaje-calidad-dotnet). Esos ficheros solo valen si algo comprueba que se cumplen en cada cambio. En un repositorio de GitHub ese algo es un workflow de Actions.
 
-Este laboratorio es corto. Parto de la solución de ejemplo de esos posts (`Payments.sln` con `src/` y `tests/`) y añado un workflow que comprueba cada decisión que ya habíamos tomado. La tabla indica de qué post viene cada una.
+Parto de la solución de ejemplo de esos posts (`Payments.sln` con `src/` y `tests/`) y añado un workflow que comprueba cada decisión que ya habíamos tomado.
 
 ## Lo que ya tenemos y lo que falta
 
@@ -157,7 +157,7 @@ No sustituye a Dependabot, que ya abre los PRs de actualización agrupados como 
 
 ## Quién revisa los cambios del estándar
 
-Todo lo anterior comprueba el código. Falta controlar quién puede cambiar las reglas, y eso no lo hace Actions: lo hace `CODEOWNERS` junto con la protección de rama. El fichero reúne lo que fuimos listando en los tres posts:
+Todo lo anterior comprueba el código. Quién puede cambiar las reglas lo controla `CODEOWNERS` junto con la protección de rama, no Actions. El fichero reúne lo que fuimos listando en los tres posts:
 
 ```text
 # .github/CODEOWNERS
@@ -172,7 +172,7 @@ Todo lo anterior comprueba el código. Falta controlar quién puede cambiar las 
 /.github/actions/             @contoso/architecture
 ```
 
-La última línea es la que se olvida con más facilidad. Si cualquiera puede editar los workflows, puede quitar los checks que acabamos de montar, así que las carpetas `.github/workflows/` y `.github/actions/` también tienen que pasar por arquitectura.
+Las dos últimas líneas son las que más se olvidan. Si cualquiera puede editar los workflows, puede quitar los checks que acabamos de montar, así que `.github/workflows/` y `.github/actions/` también tienen que pasar por arquitectura.
 
 En la regla de protección de la rama principal hay que marcar dos cosas: exigir la revisión de los code owners y exigir que pase el check `build`, que reúne todos los pasos anteriores. Sin eso los workflows avisan, pero se puede fusionar igualmente.
 
@@ -185,7 +185,7 @@ Tener los pasos en un `ci.yml` está bien para un repositorio. Para aplicarlos a
 | Composite action | Un paso (`uses:`) dentro de un job | Añadir las comprobaciones a un workflow existente, compartiendo su checkout y su SDK |
 | Workflow reutilizable | Un job entero (`uses:` a nivel de job) | Imponer un pipeline completo, con su propio runner |
 
-Para lo que pedía este post encaja la composite action, porque corre dentro del job del llamador: el checkout, el SDK y el restore se hacen una sola vez, que era el objetivo. Los pasos de comprobación quedan en un `action.yml`:
+Aquí encaja la composite action, porque corre dentro del job del llamador y el checkout, el SDK y el restore se hacen una sola vez. Los pasos de comprobación quedan en un `action.yml`:
 
 ```yaml
 # .github/actions/dotnet-governance/action.yml
@@ -262,9 +262,9 @@ runs:
 
 Todo `run` de una composite action necesita `shell` explícito, y las condiciones de los pasos leen los inputs con `inputs.<nombre>`. Los inputs llegan siempre como texto, así que se comparan con `'true'`.
 
-Lo que depende de cada repositorio, como el nombre de la solución o las carpetas del código, entra como input con un valor por defecto razonable. Si `solution` va vacío, `dotnet` busca el único `.sln` o proyecto de la carpeta actual, y si hay varios falla con `MSB1011`. Los inputs se pasan a los scripts a través de `env` y no escribiendo `${{ inputs.x }}` dentro del `run`, para que un valor raro no pueda inyectar comandos en el shell. Lo que el preset no puede adivinar, como el SDK o el checkout, se queda en el workflow que lo llama.
+Lo que depende de cada repositorio, como el nombre de la solución o las carpetas del código, entra como input con un valor por defecto razonable. Si `solution` va vacío, `dotnet` busca el único `.sln` o proyecto de la carpeta actual, y si hay varios falla con `MSB1011`. Los inputs se pasan a los scripts a través de `env` y no escribiendo `${{ inputs.x }}` dentro del `run`, para que un valor raro no pueda inyectar comandos en el shell.
 
-El workflow del repositorio queda en lo que cambia de un proyecto a otro: el checkout, el SDK y los tests.
+El workflow del repositorio se queda con lo que el preset no puede adivinar: el checkout, el SDK y los tests.
 
 ```yaml
 # .github/workflows/ci.yml
@@ -313,7 +313,7 @@ Si la solución ya tiene años, activar estos checks de golpe pone todos los PRs
 
 ## Cómo queda el repositorio
 
-Con esto, la raíz del repositorio ya no solo describe las normas del equipo: un único workflow las comprueba en cada pull request y `CODEOWNERS` decide quién puede cambiarlas.
+Así queda la parte de gobernanza del repositorio. Los ficheros de la raíz describen las normas, un único workflow las comprueba en cada pull request y `CODEOWNERS` decide quién puede cambiarlas.
 
 ```text
 repo/

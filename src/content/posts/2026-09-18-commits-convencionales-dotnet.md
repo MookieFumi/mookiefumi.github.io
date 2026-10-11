@@ -1,6 +1,6 @@
 ---
 title: "Conventional Commits en .NET sin fiarte de que el dev se acuerde"
-subtitle: Conventional Commits, hooks versionados en el repo y una comprobación en el PR que nadie se puede saltar
+subtitle: Por qué un hook local no basta y cómo combinar un hook versionado que se instala con el build con un check obligatorio en el PR
 date: 2026-09-18
 topic: desarrollo
 published: false

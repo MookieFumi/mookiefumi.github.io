@@ -8,7 +8,7 @@ published: false
 
 En los posts sobre gobernanza de soluciones .NET dejamos las normas en ficheros del repositorio: [Directory.Build.props](/2026-09-12-directory-build-props-contrato-calidad), [Central Package Management](/2026-09-13-central-package-management-nuget) y los [estándares de lenguaje y calidad](/2026-09-14-estandares-lenguaje-calidad-dotnet). Esos ficheros solo valen si algo comprueba que se cumplen en cada cambio. En un repositorio de GitHub ese algo es un workflow de Actions.
 
-Parto de la solución de ejemplo de esos posts (`Payments.sln` con `src/` y `tests/`) y añado un workflow que comprueba cada decisión que ya habíamos tomado.
+Parto de una solución como la de esos posts, pero con todo dentro de `src/`: la solución, los ficheros de configuración, los proyectos y los tests (el árbol completo está al final). Añado un workflow que comprueba cada decisión que ya habíamos tomado.
 
 ## Lo que ya tenemos y lo que falta
 
@@ -31,7 +31,7 @@ Para que el restore bloqueado funcione, `Directory.Build.props` tiene que activa
 </PropertyGroup>
 ```
 
-Y hay que haber generado y subido los `packages.lock.json` con un `dotnet restore` local. Sin esos ficheros, `--locked-mode` falla en el primer pull request.
+Y hay que haber generado y subido los `packages.lock.json` con un `dotnet restore` local desde `src/`. Sin esos ficheros, `--locked-mode` falla en el primer pull request.
 
 ## net-governance: todas las comprobaciones en un solo paso
 
@@ -52,11 +52,14 @@ name: net-governance
 description: Checks the governance rules of a .NET solution
 
 inputs:
+  working-directory:
+    description: Folder where the solution, Directory.Build.props and global.json live
+    default: "."
   solution:
-    description: Solution or project to run dotnet against. Leave empty if there is only one in the working directory
+    description: Solution or project to run dotnet against. Leave empty if there is only one in working-directory
     default: ""
   paths:
-    description: Space-separated folders to scan for .csproj files that redefine centralized properties
+    description: Space-separated folders, relative to working-directory, to scan for .csproj files that redefine centralized properties
     default: "."
   fail-on-severity:
     description: Minimum severity that makes dependency-review fail
@@ -73,6 +76,7 @@ runs:
   steps:
     - name: Properties that must only live in Directory.Build.props
       shell: bash
+      working-directory: ${{ inputs.working-directory }}
       env:
         PATHS: ${{ inputs.paths }}
       run: |
@@ -84,12 +88,14 @@ runs:
 
     - name: Restore (locked)
       shell: bash
+      working-directory: ${{ inputs.working-directory }}
       env:
         SOLUTION: ${{ inputs.solution }}
       run: dotnet restore $SOLUTION --locked-mode
 
     - name: Build
       shell: bash
+      working-directory: ${{ inputs.working-directory }}
       env:
         SOLUTION: ${{ inputs.solution }}
       run: dotnet build $SOLUTION --no-restore -c Release
@@ -97,17 +103,19 @@ runs:
     - name: Format
       if: inputs.check-format == 'true'
       shell: bash
+      working-directory: ${{ inputs.working-directory }}
       env:
         SOLUTION: ${{ inputs.solution }}
       run: dotnet format $SOLUTION --verify-no-changes --no-restore
 
     - name: Vulnerable packages (including transitive)
       shell: bash
+      working-directory: ${{ inputs.working-directory }}
       env:
         SOLUTION: ${{ inputs.solution }}
       run: |
-        dotnet list $SOLUTION package --vulnerable --include-transitive --no-restore 2>&1 | tee report.txt
-        if grep -q "has the following vulnerable packages" report.txt; then
+        dotnet list $SOLUTION package --vulnerable --include-transitive --no-restore 2>&1 | tee "$RUNNER_TEMP/vulnerable.txt"
+        if grep -q "has the following vulnerable packages" "$RUNNER_TEMP/vulnerable.txt"; then
           echo "::error::Vulnerable packages found"
           exit 1
         fi
@@ -132,7 +140,7 @@ Con CPM activo no hace falta un paso para las versiones de paquetes: un `Package
 
 Todo `run` de una composite action necesita `shell` explícito, y las condiciones de los pasos leen los inputs con `inputs.<nombre>`. Los inputs llegan siempre como texto, así que se comparan con `'true'`.
 
-Lo que depende de cada repositorio, como el nombre de la solución o las carpetas del código, entra como input con un valor por defecto razonable. Si `solution` va vacío, `dotnet` busca el único `.sln` o proyecto de la carpeta actual, y si hay varios falla con `MSB1011`. Si tu `.sln` vive dentro de `src/`, pasa `solution: src/Payments.sln`. Con `paths` a `.` el `grep` recorre todo el repositorio y no depende de cómo organices las carpetas; si prefieres limitarlo a `src`, pásalo en `paths`. Los inputs se pasan a los scripts a través de `env` y no escribiendo `${{ inputs.x }}` dentro del `run`, para que un valor raro no pueda inyectar comandos en el shell.
+Lo que depende de cada repositorio entra como input con un valor por defecto razonable. `working-directory` es la carpeta donde viven la solución, `Directory.Build.props` y `global.json`: con el código dentro de `src/`, se pasa `working-directory: src`, y así todos los comandos de `dotnet` corren ahí, igual que en tu máquina. Si `solution` va vacío, `dotnet` busca el único `.sln` o proyecto de esa carpeta, y si hay varios falla con `MSB1011`. Con `paths` a `.`, el `grep` recorre la carpeta de trabajo entera y no depende de cómo organices los proyectos dentro. Los inputs se pasan a los scripts a través de `env` y no escribiendo `${{ inputs.x }}` dentro del `run`, para que un valor raro no pueda inyectar comandos en el shell.
 
 El workflow de cada repositorio se queda con lo que el preset no puede adivinar: el checkout, el SDK y los tests.
 
@@ -160,16 +168,19 @@ jobs:
 
       - uses: actions/setup-dotnet@v4
         with:
-          global-json-file: global.json
+          global-json-file: src/global.json
           cache: true
           cache-dependency-path: "**/packages.lock.json"
 
       - uses: ./.github/actions/net-governance
+        with:
+          working-directory: src
 
       - run: dotnet test --no-build -c Release
+        working-directory: src
 ```
 
-En este workflow, `cache-dependency-path` apunta a los lock files, así que la caché de NuGet se invalida solo cuando cambian las dependencias. `global-json-file` evita repetir la versión del SDK; si no tienes `global.json`, usa `dotnet-version: 10.0.x`. `concurrency` cancela la ejecución anterior de la misma rama cuando subes otro commit, que ahorra minutos en PRs con varios empujes seguidos.
+En este workflow, `cache-dependency-path` apunta a los lock files, así que la caché de NuGet se invalida solo cuando cambian las dependencias. `global-json-file` apunta al `global.json` de `src/` y evita repetir la versión del SDK; si no tienes uno, usa `dotnet-version: 10.0.x`. Los comandos de `run` que no pasan por el preset, como los tests, necesitan su propio `working-directory`. `concurrency` cancela la ejecución anterior de la misma rama cuando subes otro commit, que ahorra minutos en PRs con varios empujes seguidos.
 
 Para añadir `net-governance` a un workflow que ya tienes, basta con insertar el `uses` después del checkout y del `setup-dotnet`.
 
@@ -178,7 +189,7 @@ Si lo defines en un repositorio central, por ejemplo `contoso/platform-actions`,
 ```yaml
 - uses: contoso/platform-actions/net-governance@v1
   with:
-    solution: Payments.sln
+    working-directory: src
     check-format: "false"   # until the solution is formatted
 ```
 
@@ -195,15 +206,15 @@ Todo lo anterior comprueba el código. Quién puede cambiar las reglas lo contro
 
 ```text
 # .github/CODEOWNERS
-/Directory.Build.props        @contoso/architecture
-/Directory.Build.targets      @contoso/architecture
-/tests/Directory.Build.props  @contoso/architecture
-/Directory.Packages.props     @contoso/architecture
-/nuget.config                 @contoso/architecture
-/.editorconfig                @contoso/architecture
-/global.json                  @contoso/architecture
-/.github/workflows/           @contoso/architecture
-/.github/actions/             @contoso/architecture
+/src/Directory.Build.props        @contoso/architecture
+/src/Directory.Build.targets      @contoso/architecture
+/src/tests/Directory.Build.props  @contoso/architecture
+/src/Directory.Packages.props     @contoso/architecture
+/src/nuget.config                 @contoso/architecture
+/src/.editorconfig                @contoso/architecture
+/src/global.json                  @contoso/architecture
+/.github/workflows/               @contoso/architecture
+/.github/actions/                 @contoso/architecture
 ```
 
 Las dos últimas líneas son las que más se olvidan. Si cualquiera puede editar los workflows, puede quitar los checks que acabamos de montar, así que `.github/workflows/` y `.github/actions/` también tienen que pasar por arquitectura.
@@ -217,31 +228,34 @@ Si la solución ya tiene años, activar estos checks de golpe pone todos los PRs
 1. Empieza con `check-format: "false"` y con warnings solo como avisos.
 2. Abre un PR dedicado con el resultado de `dotnet format`, sin cambios de lógica, y activa entonces el formato.
 3. Activa los pasos de vulnerabilidades y `dependency-review`, que suelen estar limpios o tienen un arreglo de una línea en `Directory.Packages.props`.
-4. Marca el check como obligatorio en la protección de rama cuando lleven una semana en verde.
+4. Marca el check como obligatorio en la protección de rama cuando lleve una semana en verde.
 5. Añade `CODEOWNERS` el último, cuando el equipo de arquitectura sepa cuántas revisiones va a recibir.
 
 ## Cómo queda el repositorio
 
-Así queda la parte de gobernanza del repositorio. Los ficheros de la raíz describen las normas, un único workflow las comprueba en cada pull request y `CODEOWNERS` decide quién puede cambiarlas.
+Así queda la parte de gobernanza del repositorio. Los ficheros de `src/` describen las normas, un único workflow las comprueba en cada pull request y `CODEOWNERS` decide quién puede cambiarlas.
 
 ```text
 repo/
-├── Payments.sln
-├── Directory.Build.props
-├── Directory.Packages.props
-├── nuget.config
-├── .editorconfig
-├── global.json
-├── src/
-│   ├── Payments.Api/
-│   └── Payments.Domain/
-├── tests/
-│   └── Payments.Api.Tests/
-└── .github/
-    ├── CODEOWNERS
-    ├── dependabot.yml
-    ├── actions/
-    │   └── net-governance/action.yml
-    └── workflows/
-        └── ci.yml
+├── .github/
+│   ├── CODEOWNERS
+│   ├── dependabot.yml
+│   ├── actions/
+│   │   └── net-governance/action.yml
+│   └── workflows/
+│       └── ci.yml
+└── src/
+    ├── Payments.sln
+    ├── Directory.Build.props
+    ├── Directory.Packages.props
+    ├── nuget.config
+    ├── .editorconfig
+    ├── global.json
+    ├── Payments.Api/
+    ├── Payments.Domain/
+    └── tests/
+        ├── Directory.Build.props
+        └── Payments.Api.Tests/
 ```
+
+Con todo dentro de `src/`, `dependabot.yml` también tiene que apuntar ahí: en su entrada de `nuget`, `directory: "/src"` en lugar de `"/"`.

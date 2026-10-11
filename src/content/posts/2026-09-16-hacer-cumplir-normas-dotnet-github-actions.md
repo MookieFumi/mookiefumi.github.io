@@ -226,11 +226,17 @@ Así queda la parte de gobernanza del repositorio. Los ficheros de la raíz desc
 
 ```text
 repo/
+├── Payments.sln
 ├── Directory.Build.props
 ├── Directory.Packages.props
 ├── nuget.config
 ├── .editorconfig
 ├── global.json
+├── src/
+│   ├── Payments.Api/
+│   └── Payments.Domain/
+├── tests/
+│   └── Payments.Api.Tests/
 └── .github/
     ├── CODEOWNERS
     ├── dependabot.yml

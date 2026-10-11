@@ -231,10 +231,6 @@ Si lo que quieres es que revisen los mantenedores, hay un matiz. Maintain es un 
 
 Si prefieres no editar el fichero cada vez que cambia el grupo, en un repositorio de una organización puedes crear un equipo, por ejemplo `@contoso/maintainers`, darle permiso de escritura y poner el equipo en las reglas. Entonces cambiar quién revisa es cambiar los miembros del equipo. Los roles como Maintain están pensados para repositorios de organización; en un repositorio personal los colaboradores solo tienen acceso de escritura, y ahí se listan las personas.
 
-Con un único dueño hay un límite: el autor de un PR no puede aprobar el suyo, así que si es el único dueño, la regla le bloquea a él mismo. Un administrador puede saltársela, y con dos dueños el problema desaparece.
-
-Para que el fichero tenga efecto, `CODEOWNERS` tiene que estar en la rama base (en `.github/`, en la raíz o en `docs/`). En la regla de protección de la rama principal hay que marcar dos cosas: exigir la revisión de los code owners y exigir que pase el check `build`, que reúne todos los pasos anteriores. Sin eso los workflows avisan y los dueños reciben la petición, pero se puede fusionar igualmente.
-
 ## Antes de poner todo en obligatorio
 
 Si la solución ya tiene años, activar estos checks de golpe pone todos los PRs en rojo. Mantengo el orden de adopción del post de estándares de calidad:

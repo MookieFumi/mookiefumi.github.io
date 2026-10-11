@@ -62,7 +62,7 @@ jobs:
       - name: Propiedades que solo pueden definirse en Directory.Build.props
         run: |
           if grep -rlE "<(TargetFramework|Nullable|LangVersion|TreatWarningsAsErrors)>" \
-               --include=*.csproj src tests; then
+               --include=*.csproj .; then
             echo "::error::Common properties must be defined in Directory.Build.props"
             exit 1
           fi
@@ -198,7 +198,7 @@ inputs:
     default: ""
   paths:
     description: Carpetas donde buscar .csproj con propiedades centralizadas, separadas por espacios
-    default: "src tests"
+    default: "."
   fail-on-severity:
     description: Severidad mínima que hace fallar dependency-review
     default: moderate
@@ -262,7 +262,7 @@ runs:
 
 Todo `run` de una composite action necesita `shell` explícito, y las condiciones de los pasos leen los inputs con `inputs.<nombre>`. Los inputs llegan siempre como texto, así que se comparan con `'true'`.
 
-Lo que depende de cada repositorio, como el nombre de la solución o las carpetas del código, entra como input con un valor por defecto razonable. Si `solution` va vacío, `dotnet` busca el único `.sln` o proyecto de la carpeta actual, y si hay varios falla con `MSB1011`. Los inputs se pasan a los scripts a través de `env` y no escribiendo `${{ inputs.x }}` dentro del `run`, para que un valor raro no pueda inyectar comandos en el shell.
+Lo que depende de cada repositorio, como el nombre de la solución o las carpetas del código, entra como input con un valor por defecto razonable. Si `solution` va vacío, `dotnet` busca el único `.sln` o proyecto de la carpeta actual, y si hay varios falla con `MSB1011`. Si tu `.sln` vive dentro de `src/`, pasa `solution: src/Payments.sln`. Con `paths` a `.` el `grep` recorre todo el repositorio y no depende de cómo organices las carpetas; si prefieres limitarlo a `src`, pásalo en `paths`. Los inputs se pasan a los scripts a través de `env` y no escribiendo `${{ inputs.x }}` dentro del `run`, para que un valor raro no pueda inyectar comandos en el shell.
 
 El workflow del repositorio se queda con lo que el preset no puede adivinar: el checkout, el SDK y los tests.
 

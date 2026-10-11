@@ -68,10 +68,7 @@ Si ya usas Node en el repo, [commitlint](https://commitlint.js.org) con `@commit
 
 ## Capa 3: la red que no se salta
 
-Lo anterior avisa pronto y en local, pero un hook se puede saltar. Un check obligatorio de la rama protegida no, así que la garantía tiene que estar en el servidor.
-
-1. Activa en el repositorio **Squash merge** con "Default to pull request title".
-2. Valida el título del PR con [action-semantic-pull-request](https://github.com/amannn/action-semantic-pull-request):
+Lo anterior avisa pronto y en local, pero un hook se puede saltar. Un check obligatorio de la rama protegida no, así que la garantía tiene que estar en el servidor. Sin depender de acciones de terceros, basta con un workflow de un paso que valide el título del PR:
 
 ```yaml
 name: PR title
@@ -82,11 +79,16 @@ jobs:
   title:
     runs-on: ubuntu-latest
     steps:
-      - uses: amannn/action-semantic-pull-request@v5
+      - name: Check Conventional Commits title
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          echo "$PR_TITLE" | grep -qE '^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-z0-9-]+\))?!?: .{1,72}$' \
+            || { echo "::error::El título del PR debe seguir Conventional Commits: $PR_TITLE"; exit 1; }
 ```
 
-3. Márcalo como check obligatorio en la protección de rama.
+No hace falta `actions/checkout`, porque el título viaja en el evento del PR y no se lee ningún fichero del repo. El título pasa por una variable de entorno y no se interpola dentro del script, para que un título con comillas o `$(...)` no ejecute nada. La regex es la misma que la del hook: si cambias una, cambia la otra.
 
-Con squash, lo que queda en `main` es el título del PR. Los commits intermedios de la rama pueden ser un desastre, porque el historial de `main` seguirá cumpliendo el formato. Este check encaja junto al resto de comprobaciones del [workflow de gobernanza .NET](/2026-09-16-hacer-cumplir-normas-dotnet-github-actions).
+Después, en la protección de rama, marca este job como check obligatorio y activa **Squash merge** con "Default to pull request title". Con squash, lo que queda en `main` es el título del PR. Los commits intermedios de la rama pueden ser un desastre, porque el historial de `main` seguirá cumpliendo el formato. Este check encaja junto al resto de comprobaciones del [workflow de gobernanza .NET](/2026-09-16-hacer-cumplir-normas-dotnet-github-actions).
+
+Si tu organización tiene GitHub Enterprise, hay otra vía sin workflow: un ruleset sobre `main` con la regla de metadatos de commit ("Restrict commit metadata" y "Must match a given regex pattern"), con la misma regex. Comprueba que tu plan la incluye antes de apoyarte en ella.

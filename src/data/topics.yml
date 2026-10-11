@@ -6,8 +6,8 @@
   name: IA
 - id: k8s
   name: k8s
-- id: seguridad
-  name: Seguridad
+- id: dotnet
+  name: .NET
 - id: xamarin
   name: Xamarin
 - id: testing

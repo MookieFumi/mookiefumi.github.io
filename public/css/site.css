@@ -188,7 +188,7 @@ h4 {
 .topic-desarrollo { --topic: var(--topic-desarrollo); }
 .topic-ia { --topic: var(--topic-ia); }
 .topic-k8s { --topic: var(--topic-k8s); }
-.topic-seguridad { --topic: var(--topic-seguridad); }
+.topic-dotnet { --topic: var(--topic-dotnet); }
 
 .chip {
   display: inline-flex;
@@ -1440,7 +1440,7 @@ a.chip:hover {
   margin-top: 0;
 }
 
-.nf-err { color: var(--topic-seguridad); }
+.nf-err { color: var(--topic-dotnet); }
 .nf-warn { color: var(--topic-aspnet); }
 .nf-muted { color: var(--color-text-muted); }
 

@@ -56,9 +56,6 @@ inputs:
   solution:
     description: Solution or project to run dotnet against. Leave empty if there is only one in working-directory
     default: ""
-  paths:
-    description: Space-separated folders, relative to working-directory, to scan for .csproj files that redefine centralized properties
-    default: "."
   fail-on-severity:
     description: Minimum severity that makes dependency-review fail
     default: moderate
@@ -75,11 +72,9 @@ runs:
     - name: Properties that must only live in Directory.Build.props
       shell: bash
       working-directory: ${{ inputs.working-directory }}
-      env:
-        PATHS: ${{ inputs.paths }}
       run: |
         if grep -rlE "<(TargetFramework|Nullable|LangVersion|TreatWarningsAsErrors)>" \
-             --include=*.csproj $PATHS; then
+             --include=*.csproj .; then
           echo "::error::Common properties must be defined in Directory.Build.props"
           exit 1
         fi
@@ -138,7 +133,7 @@ Con CPM activo no hace falta un paso para las versiones de paquetes: un `Package
 
 Todo `run` de una composite action necesita `shell` explícito, y las condiciones de los pasos leen los inputs con `inputs.<nombre>`. Los inputs llegan siempre como texto, así que se comparan con `'true'`.
 
-Lo que depende de cada repositorio entra como input con un valor por defecto razonable. `working-directory` es la carpeta donde viven la solución, `Directory.Build.props` y `global.json`: con el código dentro de `src/`, se pasa `working-directory: src`, y así todos los comandos de `dotnet` corren ahí, igual que en tu máquina. Si `solution` va vacío, `dotnet` busca el único `.sln` o proyecto de esa carpeta, y si hay varios falla con `MSB1011`. Con `paths` a `.`, el `grep` recorre la carpeta de trabajo entera y no depende de cómo organices los proyectos dentro. Los inputs se pasan a los scripts a través de `env` y no escribiendo `${{ inputs.x }}` dentro del `run`, para que un valor raro no pueda inyectar comandos en el shell.
+Lo que depende de cada repositorio entra como input con un valor por defecto razonable. `working-directory` es la carpeta donde viven la solución, `Directory.Build.props` y `global.json`: con el código dentro de `src/`, se pasa `working-directory: src`, y así todos los comandos de `dotnet` corren ahí, igual que en tu máquina. Si `solution` va vacío, `dotnet` busca el único `.sln` o proyecto de esa carpeta, y si hay varios falla con `MSB1011`. El `grep` recorre la carpeta de trabajo entera y encuentra solo todos los `.csproj`, así que no hace falta decirle dónde están. Los inputs se pasan a los scripts a través de `env` y no escribiendo `${{ inputs.x }}` dentro del `run`, para que un valor raro no pueda inyectar comandos en el shell.
 
 El workflow de cada repositorio se queda con lo que el preset no puede adivinar: el checkout, el SDK y los tests.
 

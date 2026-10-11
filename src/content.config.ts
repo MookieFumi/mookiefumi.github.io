@@ -20,7 +20,7 @@ const posts = defineCollection({
 // `.topic-<id>` y como ancla en /temas. `order` guarda la posición en el
 // fichero, porque las colecciones no garantizan el orden.
 const topics = defineCollection({
-  loader: file('./src/data/temas.yml', {
+  loader: file('./src/data/topics.yml', {
     parser: (text) => parse(text).map((topic: object, order: number) => ({ ...topic, order })),
   }),
   schema: z.object({

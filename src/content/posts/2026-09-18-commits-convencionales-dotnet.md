@@ -6,7 +6,25 @@ topic: desarrollo
 published: false
 ---
 
-Muchos equipos acaban usando [Conventional Commits](https://www.conventionalcommits.org): `tipo(ámbito): descripción`, con tipos como `feat`, `fix`, `docs`, `refactor`, `test` o `chore`, y `!` o `BREAKING CHANGE:` cuando rompes algo. No es la única opción (hay equipos que usan el número del ticket, `JIRA-123: ...`, o su propio prefijo), pero es la que más herramientas entiende: changelogs automáticos, versionado semántico y un historial que se lee de un vistazo.
+Muchos equipos acaban usando [Conventional Commits](https://www.conventionalcommits.org): `tipo(ámbito): descripción`. No es la única opción (hay equipos que usan el número del ticket, `JIRA-123: ...`, o su propio prefijo), pero es la que más herramientas entiende: changelogs automáticos, versionado semántico y un historial que se lee de un vistazo.
+
+Los tipos más habituales:
+
+| Tipo | Para qué se usa |
+| --- | --- |
+| `feat` | Una funcionalidad nueva |
+| `fix` | La corrección de un bug |
+| `docs` | Solo documentación |
+| `style` | Formato del código, sin cambiar su comportamiento |
+| `refactor` | Reestructurar código sin añadir funcionalidad ni corregir bugs |
+| `perf` | Una mejora de rendimiento |
+| `test` | Añadir o corregir tests |
+| `build` | Cambios en el build o en las dependencias |
+| `ci` | Cambios en los pipelines de CI |
+| `chore` | Tareas de mantenimiento que no encajan en las anteriores |
+| `revert` | Deshacer un commit anterior |
+
+Si el cambio rompe la compatibilidad, lo marcas de una de dos formas: con un `!` justo antes de los dos puntos (`feat(api)!: remove the v1 endpoints`) o con un pie `BREAKING CHANGE:` al final del mensaje que explique qué se rompe. Puedes usar las dos a la vez. Las herramientas lo interpretan como un cambio mayor de versión (la `X` de `X.y.z` en el versionado semántico). La especificación pide `BREAKING CHANGE` en mayúsculas para que sea inconfundible con texto normal y las herramientas lo detecten sin ambigüedad.
 
 El ámbito es opcional y va entre paréntesis: indica qué parte del código toca el cambio, normalmente un módulo, un proyecto o una capa. En una solución .NET puede ser el nombre del proyecto o del área:
 

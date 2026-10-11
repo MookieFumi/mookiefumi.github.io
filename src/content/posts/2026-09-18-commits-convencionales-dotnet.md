@@ -8,6 +8,16 @@ published: false
 
 Muchos equipos acaban usando [Conventional Commits](https://www.conventionalcommits.org): `tipo(ámbito): descripción`, con tipos como `feat`, `fix`, `docs`, `refactor`, `test` o `chore`, y `!` o `BREAKING CHANGE:` cuando rompes algo. No es la única opción (hay equipos que usan el número del ticket, `JIRA-123: ...`, o su propio prefijo), pero es la que más herramientas entiende: changelogs automáticos, versionado semántico y un historial que se lee de un vistazo.
 
+El ámbito es opcional y va entre paréntesis: indica qué parte del código toca el cambio, normalmente un módulo, un proyecto o una capa. En una solución .NET puede ser el nombre del proyecto o del área:
+
+```text
+feat(orders): añade el endpoint para cancelar pedidos
+fix(auth): corrige la expiración del refresh token
+refactor(infrastructure)!: cambia el repositorio base de EF Core
+```
+
+Si el cambio no encaja en un ámbito concreto, lo omites (`docs: actualiza el README`). Conviene acordar en el equipo la lista de ámbitos, o al menos que sean nombres de proyecto, para que no aparezcan tres variantes del mismo.
+
 Elegir el formato lleva cinco minutos. Conseguir que se cumpla en todos los clones del repo es más complicado.
 
 ## Por qué falla el hook que solo vive en tu máquina

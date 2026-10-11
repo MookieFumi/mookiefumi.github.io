@@ -193,6 +193,12 @@ name: dotnet-governance
 description: Comprueba las normas de gobernanza de una solución .NET
 
 inputs:
+  solution:
+    description: Solución o proyecto sobre el que ejecutar dotnet. Vacío si solo hay una en la raíz
+    default: ""
+  paths:
+    description: Carpetas donde buscar .csproj con propiedades centralizadas, separadas por espacios
+    default: "src tests"
   fail-on-severity:
     description: Severidad mínima que hace fallar dependency-review
     default: moderate
@@ -208,30 +214,40 @@ runs:
   steps:
     - name: Propiedades que solo pueden definirse en Directory.Build.props
       shell: bash
+      env:
+        PATHS: ${{ inputs.paths }}
       run: |
         if grep -rlE "<(TargetFramework|Nullable|LangVersion|TreatWarningsAsErrors)>" \
-             --include=*.csproj .; then
+             --include=*.csproj $PATHS; then
           echo "::error::Common properties must be defined in Directory.Build.props"
           exit 1
         fi
 
     - name: Restore (bloqueado)
       shell: bash
-      run: dotnet restore --locked-mode
+      env:
+        SOLUTION: ${{ inputs.solution }}
+      run: dotnet restore $SOLUTION --locked-mode
 
     - name: Build
       shell: bash
-      run: dotnet build --no-restore -c Release
+      env:
+        SOLUTION: ${{ inputs.solution }}
+      run: dotnet build $SOLUTION --no-restore -c Release
 
     - name: Formato
       if: inputs.check-format == 'true'
       shell: bash
-      run: dotnet format --verify-no-changes --no-restore
+      env:
+        SOLUTION: ${{ inputs.solution }}
+      run: dotnet format $SOLUTION --verify-no-changes --no-restore
 
     - name: Paquetes vulnerables (incluye transitivos)
       shell: bash
+      env:
+        SOLUTION: ${{ inputs.solution }}
       run: |
-        dotnet list package --vulnerable --include-transitive --no-restore 2>&1 | tee report.txt
+        dotnet list $SOLUTION package --vulnerable --include-transitive --no-restore 2>&1 | tee report.txt
         if grep -q "has the following vulnerable packages" report.txt; then
           echo "::error::Vulnerable packages found"
           exit 1
@@ -245,6 +261,8 @@ runs:
 ```
 
 Todo `run` de una composite action necesita `shell` explícito, y las condiciones de los pasos leen los inputs con `inputs.<nombre>`. Los inputs llegan siempre como texto, así que se comparan con `'true'`.
+
+Lo que depende de cada repositorio, como el nombre de la solución o las carpetas del código, entra como input con un valor por defecto razonable. Si `solution` va vacío, `dotnet` busca el único `.sln` o proyecto de la carpeta actual, y si hay varios falla con `MSB1011`. Los inputs se pasan a los scripts a través de `env` y no escribiendo `${{ inputs.x }}` dentro del `run`, para que un valor raro no pueda inyectar comandos en el shell. Lo que el preset no puede adivinar, como el SDK o el checkout, se queda en el workflow que lo llama.
 
 El workflow del repositorio queda en lo que cambia de un proyecto a otro: el checkout, el SDK y los tests.
 
@@ -272,6 +290,7 @@ Para añadirlo a un workflow que ya tienes, basta con insertar el `uses` despué
 ```yaml
 - uses: contoso/platform-actions/dotnet-governance@v1
   with:
+    solution: Payments.sln
     check-format: "false"   # mientras la solución no esté formateada
 ```
 

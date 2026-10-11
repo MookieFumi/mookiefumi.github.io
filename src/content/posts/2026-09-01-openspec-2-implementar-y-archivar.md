@@ -8,14 +8,14 @@ published: true
 
 En el [primer post](/2026-09-01-openspec-1-del-init-al-change) instalamos OpenSpec, recorrimos la anatomía del proyecto y la CLI de solo lectura, y dejamos el change `add-transactions-pagination` propuesto, revisado y validado, con el máximo de página en 100. Todavía no se ha escrito ninguna línea de código de producción.
 
-Ahora cerramos el ciclo: implementamos, archivamos y vemos cómo queda la spec. Después repasamos el perfil ampliado, el mantenimiento y el resto de la CLI, y terminamos con una chuleta de todos los comandos y con cómo llevar OpenSpec a un equipo.
+Ahora toca cerrar el ciclo: implementar, archivar y ver cómo queda la spec. Después repaso el perfil ampliado, el mantenimiento y el resto de la CLI, y termino con una chuleta de comandos y con cómo llevar OpenSpec a un equipo.
 
 <figure class="diagram">
   <img class="diagram-light" width="510" height="690" src="/img/diagrams/07-openspec-ciclo-light.svg" alt="Ciclo de un change en OpenSpec: explore, propose, apply y archive en secuencia, con update y sync como pasos opcionales; al archivar, los deltas pasan a openspec/specs.">
   <img class="diagram-dark" width="510" height="690" src="/img/diagrams/07-openspec-ciclo-dark.svg" alt="Ciclo de un change en OpenSpec: explore, propose, apply y archive en secuencia, con update y sync como pasos opcionales; al archivar, los deltas pasan a openspec/specs.">
 </figure>
 
-Seguimos en el mismo ciclo: ya hemos explorado y propuesto, y toca implementar y archivar. Las cajas con borde discontinuo son pasos opcionales.
+Ya hemos explorado y propuesto, así que quedan implementar y archivar. Las cajas con borde discontinuo son pasos opcionales.
 
 ## /opsx-apply: implementar las tareas
 
@@ -26,7 +26,7 @@ Seguimos en el mismo ciclo: ya hemos explorado y propuesto, y toca implementar y
 ```
 
 - Con un solo change activo lo infiere; con varios, indícale el nombre: `/opsx-apply add-transactions-pagination`.
-- Puede retomarse donde se quedó. El estado vive en las casillas de `tasks.md`, no en el chat.
+- Puede retomarse donde se quedó, porque el estado vive en las casillas de `tasks.md` y no en el chat.
 - Si una tarea exige cambiar el plan, el agente puede ajustar los artefactos sobre la marcha.
 
 ```text
@@ -46,7 +46,7 @@ IA:  Implementing add-transactions-pagination...
      All tasks complete.
 ```
 
-El resultado en el código, representativo, sería parecido a esto:
+El código resultante sería parecido a esto, a modo de ejemplo:
 
 ```csharp
 public record PagedResult<T>(IReadOnlyList<T> Items, int Page, int PageSize, int TotalCount);
@@ -99,17 +99,17 @@ public async Task PageSizeAboveMaximum_ReturnsBadRequest()
 }
 ```
 
-Fíjate en la trazabilidad: cada escenario de la spec acaba siendo un test, y cada valor del código (50, 100, `Deprecation`) sale de un requisito escrito y revisado antes.
+Cada escenario de la spec acaba siendo un test, y cada valor del código (50, 100, `Deprecation`) sale de un requisito que se escribió y se revisó antes.
 
 ### Si el comportamiento cambia a mitad de camino
 
-A veces, implementando, negocio cambia de opinión o aparece un caso que nadie vio. La regla es **primero la spec, después el código**: corrige el plan con `/opsx-update`, o edita el delta a mano, y vuelve a ejecutar `/opsx-apply` para que el código se ajuste al plan revisado. Si no, la spec miente en cuanto termines, y esa es la forma más común de que una spec pierda valor.
+A veces, mientras implementas, negocio cambia de opinión o aparece un caso que nadie vio. Mi regla es corregir primero la spec y después el código: ajusta el plan con `/opsx-update`, o edita el delta a mano, y vuelve a ejecutar `/opsx-apply` para que el código siga el plan revisado. Si no, la spec miente en cuanto terminas, que es la forma más habitual de que una spec pierda valor.
 
 ## El perfil ampliado: new, continue, ff, verify, bulk-archive y onboard
 
-Hasta aquí hemos usado solo el perfil core, y para muchos equipos es suficiente. El perfil ampliado añade seis comandos para quien quiera un control más fino sobre cada paso.
+Hasta aquí hemos usado solo el perfil core, que a muchos equipos les basta. El perfil ampliado añade seis comandos para quien quiera más control sobre cada paso.
 
-Se activa en dos pasos: primero eliges los workflows en el asistente (es configuración global de tu máquina) y después aplicas la selección en cada proyecto.
+Se activa en dos pasos: eliges los workflows en el asistente (es configuración global de tu máquina) y después aplicas la selección en cada proyecto.
 
 ```bash
 openspec config profile   # marca los workflows que quieras
@@ -137,7 +137,7 @@ Tiene un equivalente en la terminal, `openspec new change <nombre>`, con las opc
 
 ### /opsx-continue
 
-Crea **un** artefacto por invocación: el primero que esté listo según el grafo de dependencias. Antes de crearlo te enseña qué está listo y qué bloqueado.
+Crea un artefacto por invocación, el primero que esté listo según el grafo de dependencias. Antes de crearlo te enseña qué está listo y qué bloqueado.
 
 ```text
 Tú:  /opsx-continue
@@ -152,11 +152,11 @@ IA:  Change: add-transactions-pagination
      Creating specs...
 ```
 
-Es el comando para cambios complejos en los que quieres revisar y editar cada artefacto antes de pasar al siguiente.
+Lo usaría en cambios complejos, donde quieres revisar y editar cada artefacto antes de pasar al siguiente.
 
 ### /opsx-ff
 
-*Fast-forward*: crea de golpe todos los artefactos de planificación en orden de dependencias y se detiene cuando ya se puede implementar. Es el equivalente a `/opsx-propose` partiendo de un change que ya existe.
+*Fast-forward*: crea de golpe todos los artefactos de planificación en orden de dependencias y para cuando ya se puede implementar. Viene a ser `/opsx-propose` partiendo de un change que ya existe.
 
 | Situación | Comando |
 | --- | --- |
@@ -168,7 +168,7 @@ Es el comando para cambios complejos en los que quieres revisar y editar cada ar
 
 ### /opsx-verify
 
-Comprueba que la implementación coincide con los artefactos en tres dimensiones: *completeness* (tareas hechas, requisitos implementados, escenarios cubiertos), *correctness* (la implementación respeta la intención de la spec) y *coherence* (el diseño se refleja en el código). Clasifica lo que encuentra como CRITICAL, WARNING o SUGGESTION. **No bloquea el archive**, pero lo señala.
+Comprueba que la implementación coincide con los artefactos en tres dimensiones: *completeness* (tareas hechas, requisitos implementados, escenarios cubiertos), *correctness* (la implementación respeta la intención de la spec) y *coherence* (el diseño se refleja en el código). Clasifica lo que encuentra como CRITICAL, WARNING o SUGGESTION. No bloquea el archive, pero lo señala.
 
 ```text
 Tú:  /opsx-verify
@@ -193,23 +193,23 @@ IA:  Verifying add-transactions-pagination...
      Ready to archive: Yes (with warnings)
 ```
 
-Este es justo el caso en el que verify se gana el sueldo: la tarea 4.1 estaba marcada, pero a un escenario le falta su test. Corrígelo antes de archivar.
+Aquí es donde verify se gana el sueldo: la tarea 4.1 estaba marcada, pero a un escenario le falta su test. Conviene corregirlo antes de archivar.
 
 ### /opsx-bulk-archive
 
-Archiva varios changes ya completados de una vez. Valida cada uno, detecta conflictos de spec entre ellos, los resuelve comprobando qué está realmente implementado en el código y archiva en orden cronológico. Es útil cuando hay varios flujos de trabajo en paralelo tocando las mismas capabilities.
+Archiva de una vez varios changes ya completados. Valida cada uno, detecta conflictos de spec entre ellos, los resuelve comprobando qué está realmente implementado en el código y archiva en orden cronológico. Viene bien cuando hay varios flujos en paralelo tocando las mismas capabilities.
 
 ### /opsx-onboard
 
-Es el tutorial guiado sobre tu código real que se explica en detalle en la sección «Atajo: /opsx-onboard» del [primer post](/2026-09-01-openspec-1-del-init-al-change). Necesita el perfil ampliado y modifica el repositorio, así que hazlo en una rama.
+Es el tutorial guiado sobre tu código real que conté en la sección «Atajo: /opsx-onboard» del [primer post](/2026-09-01-openspec-1-del-init-al-change). Necesita el perfil ampliado y modifica el repositorio, así que hazlo en una rama.
 
 ## /opsx-sync y /opsx-archive: cerrar el change
 
-Con el código verificado queda cerrar el ciclo: fusionar el delta en la spec principal y archivar el change. Ahí es donde la spec pasa de describir una propuesta a describir el sistema.
+Con el código verificado queda fusionar el delta en la spec principal y archivar el change. En ese momento la spec deja de describir una propuesta y pasa a describir el sistema.
 
 ### /opsx-sync (opcional)
 
-Fusiona los deltas del change en `openspec/specs/` **sin archivar**: el change sigue activo. Lee las secciones `ADDED`, `MODIFIED`, `REMOVED` y `RENAMED`, respeta el contenido que el delta no menciona y puede añadir escenarios a un requisito existente sin duplicarlo.
+Fusiona los deltas del change en `openspec/specs/` sin archivar, así que el change sigue activo. Lee las secciones `ADDED`, `MODIFIED`, `REMOVED` y `RENAMED`, respeta el contenido que el delta no menciona y puede añadir escenarios a un requisito existente sin duplicarlo.
 
 ```text
 Tú:  /opsx-sync
@@ -227,11 +227,11 @@ IA:  Syncing add-transactions-pagination delta specs...
      Change remains active. Run /opsx-archive when ready to complete.
 ```
 
-Normalmente no hace falta invocarlo, porque archive ofrece sincronizar si no se ha hecho. Úsalo a mano cuando un change dura mucho y quieres la spec en main antes de archivar, cuando varios changes en paralelo necesitan la base actualizada o cuando quieres revisar la fusión por separado.
+Normalmente no hace falta invocarlo, porque archive ofrece sincronizar si no se ha hecho. Yo lo lanzaría a mano cuando un change dura mucho y quiero la spec en main antes de archivar, cuando varios changes en paralelo necesitan la base actualizada o cuando quiero revisar la fusión por separado.
 
 ### /opsx-archive
 
-Cierra el change. Comprueba el estado de los artefactos y de las tareas (avisa si hay pendientes, pero no bloquea), ofrece sincronizar los deltas si aún no se hizo y mueve la carpeta a `openspec/changes/archive/YYYY-MM-DD-<nombre>/`, conservando todo como rastro de auditoría.
+Cierra el change. Comprueba el estado de los artefactos y de las tareas (avisa si hay pendientes, pero no bloquea), ofrece sincronizar los deltas si aún no se hizo y mueve la carpeta a `openspec/changes/archive/YYYY-MM-DD-<nombre>/`, de modo que todo queda como rastro de auditoría.
 
 ```text
 Tú:  /opsx-archive
@@ -271,7 +271,7 @@ openspec archive update-ci-config --skip-specs
 | `--skip-specs` | No actualiza las specs; para cambios de infraestructura, tooling o documentación |
 | `--no-validate` | Salta la validación (pide confirmación) |
 
-Lo que hace, en orden: valida el change (salvo `--no-validate`), pide confirmación (salvo `--yes`), fusiona los deltas en `openspec/specs/` y mueve la carpeta al archivo.
+Por orden, valida el change (salvo `--no-validate`), pide confirmación (salvo `--yes`), fusiona los deltas en `openspec/specs/` y mueve la carpeta al archivo.
 
 ### El resultado
 
@@ -285,11 +285,11 @@ openspec/
         └── 2026-10-03-add-transactions-pagination/
 ```
 
-Ahora puedes consultarla con `openspec list --specs`, `openspec show transactions --type spec` y `openspec validate --specs`. La spec describe el comportamiento real del endpoint: 50 elementos por defecto, máximo 100, orden estable, errores 400 y modo antiguo deprecado.
+Ya se puede consultar con `openspec list --specs`, `openspec show transactions --type spec` y `openspec validate --specs`. La spec recoge el comportamiento real del endpoint: 50 elementos por defecto, máximo 100, orden estable, errores 400 y modo antiguo deprecado.
 
 ### El siguiente change: por fin un MODIFIED
 
-Tres semanas después, producto pide bajar el tamaño por defecto de 50 a 25. Esta vez la spec ya existe, así que el delta usa `MODIFIED` y reproduce el requisito completo tal como debe quedar:
+Tres semanas después, producto pide bajar el tamaño por defecto de 50 a 25. Como la spec ya existe, el delta usa `MODIFIED` y reproduce el requisito completo tal como debe quedar:
 
 ```markdown
 ## MODIFIED Requirements
@@ -306,11 +306,11 @@ El tamaño de página por defecto SHALL ser 25 y el máximo 100.
 - **AND** `pageSize` es 25 y `items` contiene como máximo 25 transacciones
 ```
 
-El requisito se identifica por su cabecera, así que el archive sabe exactamente cuál sustituir. Para retirar algo existe `REMOVED`, y para renombrar un requisito, `RENAMED`.
+El requisito se identifica por su cabecera, así que el archive sabe cuál sustituir. Para retirar algo existe `REMOVED`, y para renombrar un requisito, `RENAMED`.
 
 ## Mantenimiento: openspec update, config y versiones
 
-Actualizar OpenSpec son siempre dos pasos separados: la CLI de tu máquina y los ficheros que generó en cada repo.
+Actualizar OpenSpec son dos pasos separados: la CLI de tu máquina y los ficheros que generó en cada repo.
 
 ### openspec update
 
@@ -323,13 +323,13 @@ openspec update --force                      # regenera aunque parezca al día
 openspec update ./otro-proyecto              # sobre otro directorio
 ```
 
-Las specs y los changes no se tocan: `update` solo regenera los ficheros del agente. Por eso hay una regla de oro: **no edites a mano lo que genera OpenSpec**, porque el siguiente `update` lo pisará. Tus reglas van en `config.yaml` (contexto y reglas por artefacto) y en tus propias instrucciones de repo, como `.github/copilot-instructions.md`.
+Las specs y los changes no se tocan, porque `update` solo regenera los ficheros del agente. Por eso no edito a mano lo que genera OpenSpec: el siguiente `update` lo pisaría. Mis reglas van en `config.yaml` (contexto y reglas por artefacto) y en tus propias instrucciones de repo, como `.github/copilot-instructions.md`.
 
-En un equipo con muchos repos, conviene que un workflow programado ejecute `openspec update` con la versión fijada y abra un PR. Así la actualización se revisa como cualquier otro cambio.
+En un equipo con muchos repos, conviene que un workflow programado ejecute `openspec update` con la versión fijada y abra un PR, para revisar la actualización como cualquier otro cambio.
 
 ### openspec config
 
-Ve y modifica la configuración **global** de OpenSpec, la de tu máquina, no la del proyecto.
+Sirve para ver y modificar la configuración global de OpenSpec, la de tu máquina y no la del proyecto.
 
 | Subcomando | Qué hace |
 | --- | --- |
@@ -363,15 +363,15 @@ openspec config profile core   # preajuste: vuelve a los workflows core
 
 ### Telemetría y variables de entorno
 
-Si trabajas en un entorno corporativo, puedes desactivar la telemetría con `OPENSPEC_TELEMETRY=0`, con la señal estándar `DO_NOT_TRACK=1` o con `openspec config set telemetry.enabled false`. Otras variables útiles: `OPENSPEC_CONCURRENCY` (paralelismo de `validate`), `EDITOR` o `VISUAL` (para `config edit`) y `NO_COLOR`.
+En un entorno corporativo puedes desactivar la telemetría con `OPENSPEC_TELEMETRY=0`, con la señal estándar `DO_NOT_TRACK=1` o con `openspec config set telemetry.enabled false`. Otras variables útiles: `OPENSPEC_CONCURRENCY` (paralelismo de `validate`), `EDITOR` o `VISUAL` (para `config edit`) y `NO_COLOR`.
 
 ## El resto de la CLI: schema, stores, doctor, context, workset, feedback y completion
 
-Estos comandos no los necesitarás el primer día, pero completan el mapa de la herramienta.
+Estos comandos no hacen falta el primer día, pero completan el mapa de la herramienta.
 
 ### openspec schema: flujos propios
 
-Si el esquema `spec-driven` se te queda corto o largo, puedes definir el tuyo: por ejemplo, añadir un artefacto de revisión de seguridad antes de `tasks`, o reducirlo a `proposal` y `tasks` para equipos pequeños.
+Si el esquema `spec-driven` se te queda corto o largo, puedes definir el tuyo. Por ejemplo, con un artefacto de revisión de seguridad antes de `tasks`, o reducido a `proposal` y `tasks` para equipos pequeños.
 
 ```bash
 openspec schema init research-first
@@ -391,7 +391,7 @@ La precedencia al resolver un esquema es: primero el del proyecto (`openspec/sch
 
 ### Stores, doctor, context y workset
 
-Estos comandos están en **beta**: los nombres, las opciones y los formatos pueden cambiar entre versiones.
+Estos comandos están en beta, así que los nombres, las opciones y los formatos pueden cambiar entre versiones.
 
 Un *store* es un repositorio OpenSpec independiente (por ejemplo, uno de planificación o uno de contratos entre servicios) que registras en tu máquina. Una vez registrado, los comandos normales (`list`, `show`, `status`, `validate`, `new change`, `archive`...) pueden actuar sobre él desde cualquier sitio con `--store <id>`.
 
@@ -400,7 +400,7 @@ Un *store* es un repositorio OpenSpec independiente (por ejemplo, uno de planifi
 | `store setup [id]` | Crea y registra un store local (`--path`, `--remote`, `--init-git` o `--no-init-git`, `--json`) |
 | `store register [path]` | Registra un store que ya existe (`--id`, `--yes`, `--json`) |
 | `store unregister <id>` | Olvida el registro sin borrar ficheros |
-| `store remove <id>` | Olvida el registro **y borra** la carpeta (`--yes` en modo no interactivo) |
+| `store remove <id>` | Olvida el registro y borra la carpeta (`--yes` en modo no interactivo) |
 | `store list` (`ls`) | Lista los stores registrados |
 | `store doctor [id]` | Diagnostica el registro, los metadatos y la presencia de Git |
 
@@ -412,15 +412,15 @@ references:
   - team-context
 ```
 
-Con eso, `openspec instructions` incluye un índice de las specs de cada store referenciado, como contexto de solo lectura. Nunca cambia dónde se escribe.
+Con eso, `openspec instructions` incluye un índice de las specs de cada store referenciado, como contexto de solo lectura, y no cambia dónde se escribe.
 
-Tres comandos más completan este bloque:
+Hay tres comandos más:
 
-- **`openspec doctor [--store <id>] [--json]`**: informa de la salud de la raíz OpenSpec y de las referencias. Es solo diagnóstico: nunca clona, sincroniza ni repara.
-- **`openspec context [--store <id>] [--json] [--code-workspace <ruta>]`**: ensambla el conjunto de trabajo (la raíz más los stores referenciados). Con `--code-workspace` genera un fichero de workspace de VS Code que los incluye.
-- **`openspec workset create | list | open | remove`**: vistas personales y locales de las carpetas con las que trabajas a la vez. `open` abre tu editor, o tu agente de CLI, con todas ellas adjuntas.
+- `openspec doctor [--store <id>] [--json]`: informa de la salud de la raíz OpenSpec y de las referencias. Es solo diagnóstico: nunca clona, sincroniza ni repara.
+- `openspec context [--store <id>] [--json] [--code-workspace <ruta>]`: ensambla el conjunto de trabajo (la raíz más los stores referenciados). Con `--code-workspace` genera un fichero de workspace de VS Code que los incluye.
+- `openspec workset create | list | open | remove`: vistas personales y locales de las carpetas con las que trabajas a la vez. `open` abre tu editor, o tu agente de CLI, con todas ellas adjuntas.
 
-Te interesarán si varios servicios comparten contratos y quieres una única fuente de verdad para ellos.
+Interesan sobre todo si varios servicios comparten contratos y quieres una única fuente de verdad para ellos.
 
 ### openspec feedback y openspec completion
 
@@ -433,7 +433,7 @@ openspec completion install zsh
 
 ## Chuleta: todos los comandos de un vistazo
 
-Dos tablas: lo que escribes en el chat del asistente y lo que escribes en la terminal.
+Dos tablas: una con lo que escribes en el chat del asistente y otra con lo que escribes en la terminal.
 
 ### Comandos slash (en el chat)
 
@@ -481,21 +481,21 @@ En Claude Code, Cursor y otras herramientas la sintaxis cambia ligeramente (`/op
 
 ## Conclusiones: qué aporta y cómo llevarlo a un equipo
 
-OpenSpec no hace mejor al agente: cambia *cuándo* se toman las decisiones, que pasan a tomarse antes de programar, por escrito y de forma revisable.
+OpenSpec no hace mejor al agente. Lo que cambia es cuándo se toman las decisiones: antes de programar, por escrito y de forma revisable.
 
-En nuestro ejemplo, las preguntas incómodas de la paginación (offset o cursor, compatibilidad con los clientes actuales, tamaño máximo de página) se contestaron en artefactos que un humano pudo leer y corregir antes de que existiera una línea de código. Al terminar, la spec describe el comportamiento real del endpoint, cada escenario tiene su test y el archivo conserva el porqué.
+En el ejemplo, las preguntas incómodas de la paginación (offset o cursor, compatibilidad con los clientes actuales, tamaño máximo de página) se contestaron en artefactos que una persona pudo leer y corregir antes de que existiera una línea de código. Al terminar, la spec recoge el comportamiento real del endpoint, cada escenario tiene su test y el archivo guarda el porqué.
 
-Lo que te llevas:
+Lo que me quedo:
 
-- **Un flujo mínimo.** Tres comandos (`propose`, `apply`, `archive`), con `explore` delante y `update` o `sync` cuando hacen falta.
-- **Specs que crecen solo donde trabajas.** No hay que documentar el legacy entero para empezar.
-- **Revisión de intención.** El delta es mucho más corto que el diff de código y dice qué cambia y por qué.
+- Un flujo mínimo: tres comandos (`propose`, `apply`, `archive`), con `explore` delante y `update` o `sync` cuando hacen falta.
+- Specs que crecen solo donde trabajas, sin documentar el legacy entero para empezar.
+- Revisión de intención, porque el delta es mucho más corto que el diff de código y dice qué cambia y por qué.
 
-Los límites, sin maquillaje:
+Los límites:
 
-- **Nada obliga.** `validate` solo comprueba estructura y `verify` no bloquea el archive. Que el flujo se cumpla depende de la disciplina del equipo y de lo que automatices.
-- **La spec puede desviarse.** Si alguien cambia el código sin tocar el delta, la spec deja de reflejar la realidad.
-- **No todo merece un change.** Para un bug trivial el ciclo completo sobra, y los cambios de infraestructura o documentación pueden archivarse con `--skip-specs`.
+- Nada obliga. `validate` solo comprueba estructura y `verify` no bloquea el archive, así que que el flujo se cumpla depende de la disciplina del equipo y de lo que automatices.
+- La spec puede desviarse. Si alguien cambia el código sin tocar el delta, deja de reflejar la realidad.
+- No todo merece un change. Para un bug trivial el ciclo completo sobra, y los cambios de infraestructura o documentación pueden archivarse con `--skip-specs`.
 
 Si lo vas a llevar a un equipo, un buen punto de partida es este:
 
@@ -505,7 +505,7 @@ Si lo vas a llevar a un equipo, un buen punto de partida es este:
 4. `openspec update` periódico con la versión de la CLI fijada.
 5. Para arrancar, `/opsx-onboard` en una rama, con el perfil ampliado activado solo durante la adopción.
 
-Todo lo que has visto aquí se reproduce con un repositorio mínimo: una API con un endpoint, un `openspec init` y las ganas de escribir la spec antes que el código.
+Todo esto se reproduce con un repositorio mínimo: una API con un endpoint y un `openspec init`.
 
 ## Fuentes
 

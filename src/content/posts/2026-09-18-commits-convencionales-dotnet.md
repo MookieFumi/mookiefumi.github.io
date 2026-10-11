@@ -6,19 +6,17 @@ topic: desarrollo
 published: false
 ---
 
-Casi todos los equipos acaban usando [Conventional Commits](https://www.conventionalcommits.org): `tipo(ámbito): descripción`, con tipos como `feat`, `fix`, `docs`, `refactor`, `test` o `chore`, y `!` o `BREAKING CHANGE:` cuando rompes algo. No es la única opción (hay equipos que usan el número del ticket, `JIRA-123: ...`, o su propio prefijo), pero es la que más herramientas entiende: changelogs automáticos, versionado semántico y un historial que se lee de un vistazo.
+Muchos equipos acaban usando [Conventional Commits](https://www.conventionalcommits.org): `tipo(ámbito): descripción`, con tipos como `feat`, `fix`, `docs`, `refactor`, `test` o `chore`, y `!` o `BREAKING CHANGE:` cuando rompes algo. No es la única opción (hay equipos que usan el número del ticket, `JIRA-123: ...`, o su propio prefijo), pero es la que más herramientas entiende: changelogs automáticos, versionado semántico y un historial que se lee de un vistazo.
 
 Elegir el formato lleva cinco minutos. Conseguir que se cumpla en todos los clones del repo es más complicado.
 
 ## Por qué falla el hook que solo vive en tu máquina
 
-Yo lo intenté con un `commit-msg` en una carpeta que no era la de por defecto. Funcionaba en mi clon y en ningún otro, por tres motivos:
+Yo lo intenté con un `commit-msg` en una carpeta que no era la de por defecto. Funcionaba en mi clon y en ningún otro, y si cada dev tiene que acordarse de activarlo, la regla acaba siendo opcional. Tres motivos:
 
 - `.git/hooks` no se versiona y no viaja con el `git clone`.
 - Una carpeta propia, por ejemplo `.githooks`, se puede versionar, pero Git solo la usa si cada dev ejecuta `git config core.hooksPath .githooks`. Esa config es local.
 - Aunque el hook esté activo, `git commit --no-verify` lo salta, y algunos clientes gráficos ni lo ejecutan.
-
-Si cada uno tiene que acordarse de activarla, la regla es opcional.
 
 ## Capa 1: el hook viaja con el repo y se activa solo
 
@@ -68,7 +66,7 @@ Si ya usas Node en el repo, [commitlint](https://commitlint.js.org) con `@commit
 
 ## Capa 3: la red que no se salta
 
-Lo anterior avisa pronto y en local, pero un hook se puede saltar. Un check obligatorio de la rama protegida no, así que la garantía tiene que estar en el servidor. Sin depender de acciones de terceros, basta con un workflow de un paso que valide el título del PR:
+Lo anterior avisa pronto y en local, pero un hook se puede saltar. Un check obligatorio de la rama protegida no, así que la garantía tiene que estar en el servidor. Un workflow de un solo paso, sin acciones de terceros, puede validar el título del PR:
 
 ```yaml
 name: PR title

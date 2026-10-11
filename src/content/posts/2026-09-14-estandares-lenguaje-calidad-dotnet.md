@@ -3,7 +3,7 @@ title: "Estándares de lenguaje y calidad en .NET: que el compilador haga cumpli
 subtitle: Analizadores, .editorconfig, warnings como errores y cómo adoptarlo en una solución que ya existe
 date: 2026-09-14
 topic: desarrollo
-published: false
+published: true
 ---
 
 Toda empresa tiene una guía de estilo y unas buenas prácticas de código. El problema es que casi siempre viven en una wiki, y lo que vive en una wiki se olvida. Este post complementa la serie sobre gobernanza de soluciones .NET: si no has leído el de [Directory.Build.props](/2026-09-12-directory-build-props-contrato-calidad), empieza por ahí.

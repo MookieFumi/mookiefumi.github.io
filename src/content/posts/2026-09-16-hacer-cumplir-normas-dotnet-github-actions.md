@@ -189,45 +189,6 @@ Dos cosas a tener en cuenta con el repositorio central:
 
 Separar en varios jobs solo compensa cuando una parte tarda de verdad, por ejemplo una batería de tests de varios minutos. Aun así, cada job extra paga otra vez el checkout y el restore, así que conviene medirlo antes.
 
-## Informe semanal de paquetes desactualizados
-
-Para lo que no debe bloquear nada, un workflow programado que deje el informe en el resumen de la ejecución. Aquí sí tiene sentido un fichero aparte, porque el disparador es otro y no hay pull request de por medio:
-
-```yaml
-# .github/workflows/outdated.yml
-name: outdated
-
-on:
-  schedule:
-    - cron: "0 7 * * 1"
-  workflow_dispatch:
-
-permissions:
-  contents: read
-
-jobs:
-  report:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-dotnet@v4
-        with:
-          global-json-file: global.json
-
-      - name: Report
-        run: |
-          dotnet restore
-          {
-            echo '## Outdated packages'
-            echo '~~~text'
-            dotnet list package --outdated --include-transitive
-            echo '~~~'
-          } >> "$GITHUB_STEP_SUMMARY"
-```
-
-No sustituye a Dependabot, que ya abre los PRs de actualización agrupados como vimos en el post de Central Package Management. Sirve para ver de un vistazo cuánto se ha acumulado cuando los PRs del bot llevan tiempo sin revisarse.
-
 ## Quién revisa los cambios del estándar
 
 Todo lo anterior comprueba el código. Quién puede cambiar las reglas lo controla `CODEOWNERS` junto con la protección de rama, no Actions. El fichero reúne lo que fuimos listando en los tres posts:
@@ -276,6 +237,5 @@ repo/
     ├── actions/
     │   └── net-governance/action.yml
     └── workflows/
-        ├── ci.yml
-        └── outdated.yml
+        └── ci.yml
 ```

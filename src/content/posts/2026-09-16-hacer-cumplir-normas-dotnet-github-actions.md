@@ -1,6 +1,6 @@
 ---
 title: "Hacer cumplir las normas y estándares de .NET con GitHub Actions"
-subtitle: Restore bloqueado, warnings como errores, formato, vulnerabilidades y CODEOWNERS ejecutados en cada pull request
+subtitle: Un único workflow comprueba en cada pull request lo que definen Directory.Build.props, Central Package Management y el .editorconfig
 date: 2026-09-16
 topic: desarrollo
 published: false
@@ -8,7 +8,7 @@ published: false
 
 En los posts sobre gobernanza de soluciones .NET dejamos las normas en ficheros del repositorio: [Directory.Build.props](/2026-09-12-directory-build-props-contrato-calidad), [Central Package Management](/2026-09-13-central-package-management-nuget) y los [estándares de lenguaje y calidad](/2026-09-14-estandares-lenguaje-calidad-dotnet). Esos ficheros solo valen si algo comprueba que se cumplen en cada cambio. En un repositorio de GitHub ese algo es un workflow de Actions.
 
-Este laboratorio es corto. Parto de la solución de ejemplo de esos posts (`Payments.sln` con `src/` y `tests/`) y añado un workflow por cada decisión que ya habíamos tomado. Cada apartado indica de qué post viene.
+Este laboratorio es corto. Parto de la solución de ejemplo de esos posts (`Payments.sln` con `src/` y `tests/`) y añado un workflow que comprueba cada decisión que ya habíamos tomado. La tabla indica de qué post viene cada una.
 
 ## Lo que ya tenemos y lo que falta
 
@@ -33,9 +33,9 @@ Para que el restore bloqueado funcione, `Directory.Build.props` tiene que activa
 
 Y hay que haber generado y subido los `packages.lock.json` con un `dotnet restore` local. Sin esos ficheros, `--locked-mode` falla en el primer pull request.
 
-## El workflow principal: restore, build, formato y tests
+## Un solo workflow, un solo checkout
 
-Un solo fichero cubre lo que cualquier PR debe cumplir:
+Lo más caro de un workflow de .NET es todo lo que ocurre antes de comprobar nada: el checkout, la instalación del SDK y el restore. Cada job arranca en un runner limpio y lo repite, mientras que las comprobaciones en sí tardan segundos. Por eso van todas en un único job, un paso por cada norma, con las baratas primero para que el PR falle cuanto antes:
 
 ```yaml
 # .github/workflows/ci.yml
@@ -59,6 +59,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Propiedades que solo pueden definirse en Directory.Build.props
+        run: |
+          if grep -rlE "<(TargetFramework|Nullable|LangVersion|TreatWarningsAsErrors)>" \
+               --include=*.csproj src tests; then
+            echo "::error::Common properties must be defined in Directory.Build.props"
+            exit 1
+          fi
+
       - uses: actions/setup-dotnet@v4
         with:
           global-json-file: global.json
@@ -76,97 +84,41 @@ jobs:
 
       - name: Tests
         run: dotnet test --no-build -c Release
-```
-
-Varias cosas de este fichero tienen su origen en la serie:
-
-- `--locked-mode` hace fallar el restore si alguna dependencia, transitivas incluidas, no coincide con el lock file. Es lo que garantiza que CI compila lo mismo que compilaste tú.
-- El paso de build no lleva ningún flag de warnings. `Directory.Build.props` detecta la variable `GITHUB_ACTIONS` y activa `TreatWarningsAsErrors` solo en CI, tal como lo dejamos en el post de estándares de calidad. En local sigues trabajando con libertad y el PR no se puede fusionar con avisos.
-- `dotnet format --verify-no-changes` termina con código distinto de cero si hay algo sin formatear. Cuando falla, el arreglo es ejecutar `dotnet format` en local y subir el resultado.
-- `cache-dependency-path` apunta a los lock files, así que la caché de NuGet se invalida solo cuando cambian las dependencias.
-- `global-json-file` evita repetir la versión del SDK en el workflow. Si no tienes `global.json`, usa `dotnet-version: 10.0.x`.
-- `concurrency` cancela la ejecución anterior de la misma rama cuando subes otro commit, que ahorra minutos en PRs con varios empujes seguidos.
-
-## Que nadie se salte Directory.Build.props
-
-En el post de Directory.Build.props propusimos un paso que falla si un `.csproj` redefine propiedades que deberían vivir en el fichero central. Aquí queda como un job aparte, que tarda un segundo y da un mensaje claro:
-
-```yaml
-# .github/workflows/governance.yml
-name: governance
-
-on:
-  pull_request:
-
-permissions:
-  contents: read
-
-jobs:
-  centralized-properties:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Propiedades que solo pueden definirse en Directory.Build.props
-        run: |
-          if grep -rlE "<(TargetFramework|Nullable|LangVersion|TreatWarningsAsErrors)>" \
-               --include=*.csproj src tests; then
-            echo "::error::Common properties must be defined in Directory.Build.props"
-            exit 1
-          fi
-```
-
-El prefijo `::error::` hace que el mensaje aparezca como anotación en el PR, no enterrado en el log. Como avisé allí, mete aquí solo las propiedades que no admiten excepciones. Si un proyecto tiene una excepción documentada, mantén una lista de proyectos excluidos dentro del script en lugar de relajar la regla para todos.
-
-Con CPM activo no hace falta un check equivalente para las versiones de paquetes: un `PackageReference` con `Version` ya rompe el build con `NU1008`, y uno sin su `PackageVersion` con `NU1010`.
-
-## Vulnerabilidades en cada pull request
-
-NuGetAudit avisa durante el restore, pero un warning no impide fusionar. Para que sí lo impida hay dos opciones y se complementan.
-
-La primera es mirar el estado real de la solución con el CLI. `dotnet list package --vulnerable` devuelve siempre código 0, así que hay que leer su salida:
-
-```yaml
-  vulnerabilities:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-dotnet@v4
-        with:
-          global-json-file: global.json
 
       - name: Paquetes vulnerables (incluye transitivos)
         run: |
-          dotnet restore --locked-mode
-          dotnet list package --vulnerable --include-transitive 2>&1 | tee report.txt
+          dotnet list package --vulnerable --include-transitive --no-restore 2>&1 | tee report.txt
           if grep -q "has the following vulnerable packages" report.txt; then
             echo "::error::Vulnerable packages found"
             exit 1
           fi
-```
 
-Este job va en `governance.yml`, debajo del anterior. Detecta lo que ya está en la solución, así que también saltará cuando aparezca un aviso nuevo sobre un paquete que llevabas meses usando. Es el comportamiento que queremos, pero conviene avisar al equipo de que un PR ajeno puede ponerse rojo por eso.
-
-La segunda es mirar solo lo que cambia el PR con la acción de revisión de dependencias de GitHub:
-
-```yaml
-  dependency-review:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/dependency-review-action@v4
+      - name: Dependencias nuevas del PR
+        if: github.event_name == 'pull_request'
+        uses: actions/dependency-review-action@v4
         with:
           fail-on-severity: moderate
 ```
 
-Compara el grafo de dependencias de la rama base con el del PR y falla si se añade algo con una vulnerabilidad de severidad moderada o superior. Es la más útil para dependencias nuevas, porque señala el paquete que introduce el PR y no el estado general. Necesita que el grafo de dependencias esté activo en el repositorio, y en repositorios privados requiere GitHub Advanced Security.
+Qué hace cada paso y de dónde sale:
+
+- El `grep` es el paso que propusimos en el post de Directory.Build.props: falla si un `.csproj` redefine propiedades que deberían vivir en el fichero central. El prefijo `::error::` hace que el mensaje aparezca como anotación en el PR, no enterrado en el log. Mete aquí solo las propiedades que no admiten excepciones. Si un proyecto tiene una excepción documentada, mantén una lista de proyectos excluidos dentro del script en lugar de relajar la regla para todos.
+- `--locked-mode` hace fallar el restore si alguna dependencia, transitivas incluidas, no coincide con el lock file. Es lo que garantiza que CI compila lo mismo que compilaste tú.
+- El paso de build no lleva ningún flag de warnings. `Directory.Build.props` detecta la variable `GITHUB_ACTIONS` y activa `TreatWarningsAsErrors` solo en CI, tal como lo dejamos en el post de estándares de calidad. En local sigues trabajando con libertad y el PR no se puede fusionar con avisos.
+- `dotnet format --verify-no-changes` termina con código distinto de cero si hay algo sin formatear. Cuando falla, el arreglo es ejecutar `dotnet format` en local y subir el resultado.
+- `dotnet list package --vulnerable` devuelve siempre código 0, así que hay que leer su salida. Reutiliza el restore de antes con `--no-restore`. Detecta lo que ya está en la solución, así que también saltará cuando aparezca un aviso nuevo sobre un paquete que llevabas meses usando. Es lo que queremos, pero conviene avisar al equipo de que un PR ajeno puede ponerse rojo por eso.
+- `dependency-review-action` compara el grafo de dependencias de la rama base con el del PR y falla si se añade algo con una vulnerabilidad de severidad moderada o superior. Señala el paquete que introduce el PR y no el estado general, por eso solo se ejecuta en pull requests. Necesita que el grafo de dependencias esté activo en el repositorio, y en repositorios privados requiere GitHub Advanced Security.
+- `cache-dependency-path` apunta a los lock files, así que la caché de NuGet se invalida solo cuando cambian las dependencias.
+- `global-json-file` evita repetir la versión del SDK en el workflow. Si no tienes `global.json`, usa `dotnet-version: 10.0.x`.
+- `concurrency` cancela la ejecución anterior de la misma rama cuando subes otro commit, que ahorra minutos en PRs con varios empujes seguidos.
+
+Con CPM activo no hace falta un paso para las versiones de paquetes: un `PackageReference` con `Version` ya rompe el build con `NU1008`, y uno sin su `PackageVersion` con `NU1010`.
+
+Separar en varios jobs solo compensa cuando una parte tarda de verdad, por ejemplo una batería de tests de varios minutos. Aun así, cada job extra paga otra vez el checkout y el restore, así que conviene medirlo antes.
 
 ## Informe semanal de paquetes desactualizados
 
-Para lo que no debe bloquear nada, un workflow programado que deje el informe en el resumen de la ejecución:
+Para lo que no debe bloquear nada, un workflow programado que deje el informe en el resumen de la ejecución. Aquí sí tiene sentido un fichero aparte, porque el disparador es otro y no hay pull request de por medio:
 
 ```yaml
 # .github/workflows/outdated.yml
@@ -221,7 +173,7 @@ Todo lo anterior comprueba el código. Falta controlar quién puede cambiar las 
 
 La última línea es la que se olvida con más facilidad. Si cualquiera puede editar los workflows, puede quitar los checks que acabamos de montar, así que las carpetas de `.github/workflows/` también tienen que pasar por arquitectura.
 
-En la regla de protección de la rama principal hay que marcar dos cosas: exigir la revisión de los code owners y exigir que pasen los checks `build`, `centralized-properties`, `vulnerabilities` y `dependency-review`. Sin eso los workflows avisan, pero se puede fusionar igualmente.
+En la regla de protección de la rama principal hay que marcar dos cosas: exigir la revisión de los code owners y exigir que pase el check `build`, que reúne todos los pasos anteriores. Sin eso los workflows avisan, pero se puede fusionar igualmente.
 
 ## Llevarlo a varios repositorios
 
@@ -249,15 +201,15 @@ En el repositorio de plataforma, el workflow `dotnet-ci.yml` declara `on: workfl
 
 Si la solución ya tiene años, activar estos checks de golpe pone todos los PRs en rojo. Mantengo el orden de adopción del post de estándares de calidad:
 
-1. Empieza con `build` sin la comprobación de formato, y con warnings solo como avisos.
+1. Empieza con el workflow sin el paso de formato, y con warnings solo como avisos.
 2. Abre un PR dedicado con el resultado de `dotnet format`, sin cambios de lógica, y activa entonces el paso de formato.
-3. Activa `vulnerabilities` y `dependency-review`, que suelen estar limpios o tienen un arreglo de una línea en `Directory.Packages.props`.
-4. Marca los checks como obligatorios en la protección de rama cuando lleven una semana en verde.
+3. Activa los pasos de vulnerabilidades y `dependency-review`, que suelen estar limpios o tienen un arreglo de una línea en `Directory.Packages.props`.
+4. Marca el check como obligatorio en la protección de rama cuando lleven una semana en verde.
 5. Añade `CODEOWNERS` el último, cuando el equipo de arquitectura sepa cuántas revisiones va a recibir.
 
 ## Cómo queda el repositorio
 
-Con esto, la raíz del repositorio ya no solo describe las normas del equipo: un workflow las comprueba en cada pull request y `CODEOWNERS` decide quién puede cambiarlas.
+Con esto, la raíz del repositorio ya no solo describe las normas del equipo: un único workflow las comprueba en cada pull request y `CODEOWNERS` decide quién puede cambiarlas.
 
 ```text
 repo/
@@ -271,6 +223,5 @@ repo/
     ├── dependabot.yml
     └── workflows/
         ├── ci.yml
-        ├── governance.yml
         └── outdated.yml
 ```

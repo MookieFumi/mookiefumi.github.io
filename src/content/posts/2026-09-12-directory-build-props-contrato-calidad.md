@@ -1,7 +1,7 @@
 ---
 title: "Directory.Build.props: el contrato de calidad de tu solución .NET"
 subtitle: Cómo MSBuild lo encuentra, qué conviene centralizar, qué no y cómo gobernarlo en equipo
-date: 2026-09-02
+date: 2026-09-12
 topic: desarrollo
 published: false
 ---
@@ -158,7 +158,7 @@ Un punto de partida mínimo:
 | `AnalysisLevel` | Activa los analizadores de .NET con el conjunto de reglas recomendado. |
 | `EnforceCodeStyleInBuild` | Las reglas de estilo del `.editorconfig` se comprueban al compilar, no solo en el IDE. |
 
-Hay mucho más que contar aquí: qué nivel de analizadores elegir, cómo se reparte el trabajo entre `Directory.Build.props` y `.editorconfig`, cuándo convertir warnings en errores y cómo activarlo en una solución existente sin bloquear al equipo. Todo eso lo desarrollo en [otro post](/2026-09-04-estandares-lenguaje-calidad-dotnet).
+Hay mucho más que contar aquí: qué nivel de analizadores elegir, cómo se reparte el trabajo entre `Directory.Build.props` y `.editorconfig`, cuándo convertir warnings en errores y cómo activarlo en una solución existente sin bloquear al equipo. Todo eso lo desarrollo en [otro post](/2026-09-14-estandares-lenguaje-calidad-dotnet).
 
 ## Versionado centralizado de los artefactos
 

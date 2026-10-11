@@ -1,12 +1,12 @@
 ---
 title: "Estándares de lenguaje y calidad en .NET: que el compilador haga cumplir las normas"
 subtitle: Analizadores, .editorconfig, warnings como errores y cómo adoptarlo en una solución que ya existe
-date: 2026-09-04
+date: 2026-09-14
 topic: desarrollo
 published: false
 ---
 
-Toda empresa tiene una guía de estilo y unas buenas prácticas de código. El problema es que casi siempre viven en una wiki, y lo que vive en una wiki se olvida. Este post complementa la serie sobre gobernanza de soluciones .NET: si no has leído el de [Directory.Build.props](/2026-09-02-directory-build-props-contrato-calidad), empieza por ahí.
+Toda empresa tiene una guía de estilo y unas buenas prácticas de código. El problema es que casi siempre viven en una wiki, y lo que vive en una wiki se olvida. Este post complementa la serie sobre gobernanza de soluciones .NET: si no has leído el de [Directory.Build.props](/2026-09-12-directory-build-props-contrato-calidad), empieza por ahí.
 
 Aquí llevamos esas normas a `Directory.Build.props` y `.editorconfig` para que el compilador las aplique en cada build, y vemos cómo hacerlo en una solución existente sin bloquear al equipo. Al final cuento el efecto que más se nota cuando esto funciona.
 
@@ -142,7 +142,7 @@ Los analizadores del SDK cubren mucho, pero no todo. Algunos paquetes populares 
 
 No los añadas todos a la vez. Muchas reglas se solapan y, con tanto ruido, el equipo deja de leer los avisos. Empieza por uno, ajusta sus reglas en `.editorconfig` y suma el siguiente solo si aporta algo que no tengas.
 
-Para incluirlos en todos los proyectos, el sitio correcto es `GlobalPackageReference` en `Directory.Packages.props`, como vimos en el post de [Central Package Management](/2026-09-03-central-package-management-nuget). Así no se propagan a quien consuma tus librerías.
+Para incluirlos en todos los proyectos, el sitio correcto es `GlobalPackageReference` en `Directory.Packages.props`, como vimos en el post de [Central Package Management](/2026-09-13-central-package-management-nuget). Así no se propagan a quien consuma tus librerías.
 
 ## Adopción gradual en una solución existente
 

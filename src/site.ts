@@ -15,8 +15,8 @@ export const SITE = {
   // Enlaces de la barra de navegación: texto y ruta (sin barra inicial).
   navbarLinks: [
     { label: 'posts', path: '' },
-    { label: 'temas', path: 'temas' },
-    { label: 'recursos', path: 'recursos' },
+    { label: 'temas', path: 'topics' },
+    { label: 'recursos', path: 'resources' },
     { label: 'sobre-mí', path: 'aboutme' },
   ],
   // Cloudflare Web Analytics (sin cookies). Vacío para desactivarla.

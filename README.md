@@ -50,7 +50,7 @@ published: true
 | `title` | Título del post. No repitas el título como `# Título` al principio del cuerpo: el layout ya lo pinta. |
 | `subtitle` | Opcional. Se usa como extracto en la portada y como descripción para buscadores y redes. Sin él, el extracto son las primeras palabras del post. |
 | `date` | Fecha de publicación. Ordena los posts y se muestra en español. |
-| `topic` | Id de un tema de `src/data/topics.yml`. Decide el color y la sección de `/temas`. |
+| `topic` | Id de un tema de `src/data/topics.yml`. Decide el color y la sección de `/topics`. |
 | `published` | Con `false`, el post existe en el repo pero no se publica ni aparece en ningún listado. |
 
 Mientras escribes, deja `pnpm dev` abierto y entra en `http://localhost:4321/aaaa-mm-dd-slug` para ver el post según guardas.
@@ -142,9 +142,8 @@ Si un diagrama merece movimiento, se dibuja a mano como SVG con animación (SMIL
 | --- | --- |
 | `src/content/posts/` | Los artículos |
 | `src/content.config.ts` | Esquema de los posts, temas y recursos |
-| `src/data/` | Temas (`topics.yml`) y enlaces de `/recursos` (`resources.yml`) |
+| `src/data/` | Temas (`topics.yml`) y enlaces de `/resources` (`resources.yml`) |
 | `src/pages/` | Rutas del sitio: portada, paginación, posts, temas, recursos, sobre mí, 404 y RSS |
-| `src/views/` | Contenido de las páginas `/temas` y `/recursos`; las rutas de `src/pages/` solo lo montan |
 | `src/layouts/`, `src/components/` | Plantillas del sitio |
 | `src/lib/` | Fechas, tiempo de lectura, extractos y resaltado de código (Shiki) |
 | `src/site.ts` | Título, autor, enlaces de la barra y analítica |

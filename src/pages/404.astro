@@ -43,7 +43,7 @@ const nfPosts = JSON.stringify(posts).replace(/</g, '\\u003c');
           <dt>ls</dt><dd>últimos posts</dd>
           <dt>cd ~</dt><dd>volver a la portada</dd>
           <dt>cat sobre-mi.md</dt><dd>quién escribe esto</dd>
-          <dt>tree ~/temas</dt><dd>todos los temas</dd>
+          <dt>tree ~/topics</dt><dd>todos los temas</dd>
           <dt>sudo …</dt><dd>no lo intentes</dd>
         </dl>
       </div>
@@ -58,7 +58,7 @@ const nfPosts = JSON.stringify(posts).replace(/</g, '\\u003c');
 
   <div class="nf-actions">
     <a class="nf-btn nf-btn-primary" href="/">$ cd ~</a>
-    <a class="nf-btn" href="/temas">tree ~/temas</a>
+    <a class="nf-btn" href="/topics">tree ~/topics</a>
   </div>
 </div>
   <script is:inline slot="scripts" set:html={`window.NF_POSTS = ${nfPosts};`}></script>

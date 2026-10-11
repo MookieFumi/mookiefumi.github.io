@@ -1,4 +1,4 @@
-# Recursos enlazados desde /recursos. Cada sección se pinta como una ventana de terminal
+# Recursos enlazados desde /resources. Cada sección se pinta como una ventana de terminal
 # y cada elemento como una línea de `ls -l`. Para añadir un enlace basta con editar este fichero.
 - id: charlas
   title: Slides de mis charlas

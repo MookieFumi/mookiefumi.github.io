@@ -6,11 +6,11 @@ topic: seguridad
 published: false
 ---
 
-En el [laboratorio anterior](/2026-08-18-microservicios-oauth-keycloak-lab) protegimos nuestros servicios con Keycloak, desplegado en el mismo clúster de Kubernetes local. Ahora repetimos el escenario con **Microsoft Entra ID**, el proveedor de identidad de Microsoft.
+En el [laboratorio anterior](/2026-08-18-microservicios-oauth-keycloak-lab) protegimos nuestros servicios con Keycloak, desplegado en el mismo clúster de Kubernetes local. Ahora repetimos el escenario con Microsoft Entra ID, el proveedor de identidad de Microsoft.
 
-El objetivo es el mismo: que el servicio acepte a **usuarios** que inician sesión desde Visual Studio Code y a **aplicaciones** que se autentican con sus propias credenciales. Pero el recorrido cambia bastante, y esas diferencias son lo más interesante del artículo: algunas cosas que en Keycloak exigían configuración explícita aquí desaparecen, y aparecen otras nuevas.
+El objetivo es el mismo: que el servicio acepte a usuarios que inician sesión desde Visual Studio Code y a aplicaciones que se autentican con sus propias credenciales. El recorrido cambia bastante: lo que en Keycloak exigía configuración explícita aquí desaparece, y aparecen cosas nuevas.
 
-Y hay un detalle que conviene adelantar: **el código .NET es el mismo**. Al final del laboratorio, la misma imagen funcionará con Keycloak o con Entra ID según su configuración.
+El código .NET es el mismo. Al final del laboratorio, la misma imagen funciona con Keycloak o con Entra ID según su configuración.
 
 Como en el laboratorio de Keycloak, el ejemplo es el MCP Server de la serie, pero casi todo vale para cualquier microservicio en ASP.NET Core. Las piezas propias de MCP están marcadas, y al final hay un apartado con lo que cambia para una API normal.
 
@@ -22,11 +22,11 @@ Los conceptos de OAuth, la tabla de equivalencias entre los dos proveedores y el
 | --- | --- | --- |
 | Authorization server | En el clúster, expuesto en `/auth` | Externo: `login.microsoftonline.com` |
 | URLs que necesita el servicio | Dos: pública e interna | Una, pública. El pod necesita salida a internet |
-| Client de VS Code | Registro propio, con PKCE y redirect URIs | VS Code usa su propia aplicación de Microsoft. Solo hay que **autorizarla** |
+| Client de VS Code | Registro propio, con PKCE y redirect URIs | VS Code usa su propia aplicación de Microsoft. Solo hay que autorizarla |
 | Audiencia | Mapper explícito | La asigna la plataforma |
 | Roles | Anidados en `resource_access` y traducidos en código | Claim `roles` plano |
 | Scopes | Claim `scope` | Claim `scp` |
-| Permisos de aplicación | Basta con asignar el rol | Requieren **consentimiento de administrador** |
+| Permisos de aplicación | Basta con asignar el rol | Requieren consentimiento de administrador |
 
 ## Lo que vamos a montar
 
@@ -39,24 +39,24 @@ A diferencia del laboratorio anterior, el authorization server ya no vive en el 
 
 ## Conceptos nuevos
 
-* **Tenant**: el directorio de Entra ID de una organización, con sus usuarios y aplicaciones. Equivale al realm de Keycloak.
-* **App registration**: el registro de una aplicación en el tenant. Equivale al client de Keycloak. Cada uno tiene un **Application (client) ID**, un GUID.
-* **Application ID URI**: un identificador de la API en forma de URI, por defecto `api://<client-id>`. Sirve como prefijo de sus scopes.
-* **Expose an API**: la sección donde una aplicación define los **scopes** que otras pueden solicitar en nombre de un usuario.
-* **App role**: un rol definido en la aplicación. Según sus *allowed member types*, se asigna a usuarios y grupos, a aplicaciones o a ambos. Los de aplicaciones son los permisos del flujo client credentials.
-* **Authorized client applications**: aplicaciones a las que la API autoriza de antemano para pedir sus scopes, sin pantalla de consentimiento.
-* **Enterprise application (service principal)**: la instancia de una aplicación dentro de un tenant concreto. El app registration es la definición; la enterprise application es donde se gestionan los usuarios asignados y los consentimientos.
-* **Consentimiento de administrador**: los permisos de aplicación no tienen un usuario que los apruebe, así que debe concederlos un administrador del tenant.
-* **Versión del token**: Entra ID emite tokens v1 o v2. Cambian el issuer y la audiencia, y la API decide cuál recibe.
-* **Scope `/.default`**: en client credentials, pide un token con todos los permisos de aplicación concedidos para una API.
+* Tenant: el directorio de Entra ID de una organización, con sus usuarios y aplicaciones. Equivale al realm de Keycloak.
+* App registration: el registro de una aplicación en el tenant. Equivale al client de Keycloak. Cada uno tiene un Application (client) ID, un GUID.
+* Application ID URI: un identificador de la API en forma de URI, por defecto `api://<client-id>`. Sirve como prefijo de sus scopes.
+* Expose an API: la sección donde una aplicación define los scopes que otras pueden solicitar en nombre de un usuario.
+* App role: un rol definido en la aplicación. Según sus *allowed member types*, se asigna a usuarios y grupos, a aplicaciones o a ambos. Los de aplicaciones son los permisos del flujo client credentials.
+* Authorized client applications: aplicaciones a las que la API autoriza de antemano para pedir sus scopes, sin pantalla de consentimiento.
+* Enterprise application (service principal): la instancia de una aplicación dentro de un tenant concreto. El app registration es la definición; la enterprise application es donde se gestionan los usuarios asignados y los consentimientos.
+* Consentimiento de administrador: los permisos de aplicación no tienen un usuario que los apruebe, así que debe concederlos un administrador del tenant.
+* Versión del token: Entra ID emite tokens v1 o v2. Cambian el issuer y la audiencia, y la API decide cuál recibe.
+* Scope `/.default`: en client credentials, pide un token con todos los permisos de aplicación concedidos para una API.
 
 ## Requisitos: un tenant propio
 
-Para el laboratorio hay que poder hacer dos cosas: **registrar aplicaciones** y **dar consentimiento de administrador**. En la mayoría de los tenants corporativos, ambas están restringidas.
+Para el laboratorio hay que poder hacer dos cosas: registrar aplicaciones y dar consentimiento de administrador. En la mayoría de los tenants corporativos, ambas están restringidas.
 
-La opción más limpia es un **tenant de pruebas propio**, en el que seas administrador global. Si no tienes uno, la vía más sencilla es darte de alta en una [cuenta gratuita de Azure](https://azure.microsoft.com/pricing/purchase-options/azure-account): el alta crea un tenant nuevo y te hace su administrador. Desde un tenant que ya administras también puedes [crear otro](https://learn.microsoft.com/entra/fundamentals/create-new-tenant) (**Entra ID** → **Overview** → **Manage tenants** → **Create**), aunque Microsoft solo lo permite a clientes de pago. El nivel gratuito de Entra ID cubre todo lo que usamos aquí.
+La opción más limpia es un tenant de pruebas propio, en el que seas administrador global. Si no tienes uno, la vía más sencilla es darte de alta en una [cuenta gratuita de Azure](https://azure.microsoft.com/pricing/purchase-options/azure-account): el alta crea un tenant nuevo y te hace su administrador. Desde un tenant que ya administras también puedes [crear otro](https://learn.microsoft.com/entra/fundamentals/create-new-tenant) (**Entra ID** → **Overview** → **Manage tenants** → **Create**), aunque Microsoft solo lo permite a clientes de pago. El nivel gratuito de Entra ID cubre todo lo que usamos aquí.
 
-Ten en cuenta que los tenants nuevos tienen activados los **valores predeterminados de seguridad** (*security defaults*). Tras un margen de 24 horas desde su creación, todos los usuarios tienen que registrar un segundo factor, normalmente Microsoft Authenticator, en su siguiente inicio de sesión. Tú incluido, y también el usuario de prueba que crearemos más adelante.
+Ten en cuenta que los tenants nuevos tienen activados los valores predeterminados de seguridad (*security defaults*). Tras un margen de 24 horas desde su creación, todos los usuarios tienen que registrar un segundo factor, normalmente Microsoft Authenticator, en su siguiente inicio de sesión. Tú incluido, y también el usuario de prueba que crearemos más adelante.
 
 ## 1. El app registration del servicio
 
@@ -268,11 +268,11 @@ kubectl set env deployment/brent-mcp-deployment `
   "Mcp__ScopesSupported__0=api://$apiClientId/mcp.tools"
 ```
 
-* En ASP.NET Core, las **variables de entorno tienen prioridad** sobre `appsettings.json`, y el doble guion bajo sustituye a los dos puntos de las claves.
+* En ASP.NET Core, las variables de entorno tienen prioridad sobre `appsettings.json`, y el doble guion bajo sustituye a los dos puntos de las claves.
 * `kubectl set env` modifica el Deployment y lanza un despliegue nuevo.
 * Para volver a Keycloak, se eliminan las variables con un guion final: `Auth__Issuer-`, `Auth__MetadataAddress-`, etc.
 
-Con Entra ID **desaparece el problema de las dos URLs** que tuvimos con Keycloak: hay una única dirección pública, que el pod usa tanto para validar el issuer como para descargar las claves. A cambio, el pod necesita salida a internet.
+Con Entra ID desaparece el problema de las dos URLs que tuvimos con Keycloak: hay una única dirección pública, que el pod usa tanto para validar el issuer como para descargar las claves. A cambio, el pod necesita salida a internet.
 
 Como el parche de `imagePullPolicy` del laboratorio de Kubernetes, este cambio se pierde con un `helm upgrade`. Cómo gestionar bien esta configuración por entorno es justo el tema del próximo post.
 
@@ -280,24 +280,24 @@ Como el parche de `imagePullPolicy` del laboratorio de Kubernetes, este cambio s
 
 Las mismas pruebas que con Keycloak, con el `init.json` de aquel laboratorio:
 
-**Sin token**, `401` con `resource_metadata`:
+Sin token, `401` con `resource_metadata`:
 
 ```powershell
 curl.exe -i -X POST http://127.0.0.1/mcp
 ```
 
-**Los metadatos del recurso**, en `http://127.0.0.1/.well-known/oauth-protected-resource/mcp`, ahora anuncian Entra ID:
+Los metadatos del recurso, en `http://127.0.0.1/.well-known/oauth-protected-resource/mcp`, ahora anuncian Entra ID:
 
 * `authorization_servers`: `https://login.microsoftonline.com/<tenant-id>/v2.0`
 * `scopes_supported`: `api://<client-id>/mcp.tools`
 
-**Con el token de `mcp-app`**, `200`:
+Con el token de `mcp-app`, `200`:
 
 ```powershell
 curl.exe -i -X POST http://127.0.0.1/mcp -H "Authorization: Bearer $token" -H "Content-Type: application/json" -H "Accept: application/json, text/event-stream" -d "@init.json"
 ```
 
-**Con un token de Keycloak**, `401`. Es un token válido y firmado, pero por otro emisor: ni sus claves de firma son las que publica Entra ID ni su issuer coincide. En el log aparece como un fallo de validación de la firma, que es la primera comprobación que hace .NET. Es exactamente lo que debe ocurrir.
+Con un token de Keycloak, `401`. Es un token válido y firmado, pero por otro emisor: ni sus claves de firma son las que publica Entra ID ni su issuer coincide. En el log aparece como un fallo de validación de la firma, que es la primera comprobación que hace .NET.
 
 ## 7. Verificación con un usuario desde Visual Studio Code
 
@@ -335,11 +335,11 @@ Al iniciar el servidor desde VS Code:
 
 ## Restringir quién puede entrar
 
-Tal como está configurado, **cualquier usuario del tenant** puede usar el servicio. Hay dos niveles para restringirlo:
+Tal como está configurado, cualquier usuario del tenant puede usar el servicio. Hay dos niveles para restringirlo:
 
-**En el proveedor**: **Entra ID** → **Enterprise apps** → `mcp-server` → **Properties** → **Assignment required?** = *Yes*, y en **Users and groups** se asignan los usuarios autorizados. A los demás, Entra ID no les emite token. Dos detalles: la aplicación `mcp-app` no se ve afectada, porque el consentimiento de administrador ya le asignó su app role; y la restricción **no se aplica a los administradores globales**, así que pruébala con `test.user` y no con tu cuenta de administrador. En Keycloak no hay un ajuste equivalente tan directo: se consigue con un flujo de autenticación personalizado que deniega el acceso a quien no tenga un rol.
+En el proveedor: **Entra ID** → **Enterprise apps** → `mcp-server` → **Properties** → **Assignment required?** = *Yes*, y en **Users and groups** se asignan los usuarios autorizados. A los demás, Entra ID no les emite token. Dos detalles: la aplicación `mcp-app` no se ve afectada, porque el consentimiento de administrador ya le asignó su app role; y la restricción no se aplica a los administradores globales, así que pruébala con `test.user` y no con tu cuenta de administrador. En Keycloak no hay un ajuste equivalente tan directo: se consigue con un flujo de autenticación personalizado que deniega el acceso a quien no tenga un rol.
 
-**En la API**: un app role para usuarios (*Allowed member types* = *Users/Groups*) que la política del servicio exija. Funciona igual con los dos proveedores, y la API debería aplicarlo siempre, sin depender de que el proveedor haya filtrado antes. Es también la base para algo más fino: decidir qué tools puede usar cada usuario, que dejamos para un próximo artículo.
+En la API: un app role para usuarios (*Allowed member types* = *Users/Groups*) que la política del servicio exija. Funciona igual con los dos proveedores, y la API debería aplicarlo siempre, sin depender de que el proveedor haya filtrado antes. Es también la base para algo más fino: decidir qué tools puede usar cada usuario, que dejamos para un próximo artículo.
 
 ## ¿Y si no es un MCP Server?
 
@@ -370,13 +370,9 @@ En este laboratorio no tuvimos tropiezos, en buena parte porque los pasos ya los
 
 ## Conclusiones
 
-El mismo servicio, con el mismo código, funciona con dos proveedores de identidad muy distintos. Comparando los dos laboratorios:
+El mismo servicio, con el mismo código, funciona con dos proveedores de identidad muy distintos. Entra ID simplifica la parte técnica: una sola URL, audiencia y roles sin configuración extra, y VS Code autorizado sin registrar un client propio. A cambio trae conceptos propios, como las versiones de token, el consentimiento de administrador y la separación entre app registration y enterprise application. Keycloak da más control y se ejecuta donde tú decides, también sin conexión a internet, pero cada detalle (audiencia, roles, redirect URIs) hay que configurarlo a mano.
 
-* **Entra ID simplifica la parte técnica**: una sola URL, audiencia y roles sin configuración extra, y VS Code autorizado sin registrar un client propio.
-* **A cambio, introduce conceptos propios**: versiones de token, consentimiento de administrador y la separación entre app registration y enterprise application.
-* **Keycloak da más control** y se ejecuta donde tú decides, también sin conexión a internet, pero cada detalle (audiencia, roles, redirect URIs) hay que configurarlo a mano.
-
-Y el cambio de proveedor ha sido solo una cuestión de **configuración**, aplicada aquí con variables de entorno a mano. En el próximo artículo veremos cómo gestionarla bien en UAT y producción: variables, secretos y vault.
+El cambio de proveedor ha sido solo cuestión de configuración, aplicada aquí con variables de entorno a mano. En el próximo artículo veremos cómo gestionarla bien en UAT y producción: variables, secretos y vault.
 
 ## Referencias
 

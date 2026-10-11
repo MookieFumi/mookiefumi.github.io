@@ -14,9 +14,9 @@ El problema que resuelve es conocido: los requisitos viven en el historial del c
 
 Su modelo mental cabe en tres ideas:
 
-- **Spec**: describe el comportamiento *actual* del sistema. Vive en `openspec/specs/<capability>/spec.md` y es la fuente de verdad.
-- **Change**: una propuesta de modificación. Vive en `openspec/changes/<change-id>/` y agrupa `proposal.md`, `design.md`, `tasks.md` y los deltas.
-- **Delta**: la diferencia entre la spec actual y la deseada, escrita como requisitos `ADDED`, `MODIFIED` o `REMOVED`. Al archivar el change, los deltas se fusionan en la spec.
+- Spec: describe el comportamiento *actual* del sistema. Vive en `openspec/specs/<capability>/spec.md` y es la fuente de verdad.
+- Change: una propuesta de modificación. Vive en `openspec/changes/<change-id>/` y agrupa `proposal.md`, `design.md`, `tasks.md` y los deltas.
+- Delta: la diferencia entre la spec actual y la deseada, escrita como requisitos `ADDED`, `MODIFIED` o `REMOVED`. Al archivar el change, los deltas se fusionan en la spec.
 
 Esto lo hace muy adecuado para código existente (*brownfield*): no hay que documentar el sistema entero para empezar, basta con describir lo que cambia. El propio proyecto lo resume en cuatro principios: fluido y no rígido, iterativo y no waterfall, sencillo y no complejo, pensado para brownfield y no solo para proyectos nuevos.
 
@@ -29,7 +29,7 @@ Si vienes del mundo .NET, la analogía con EF Core ayuda: la spec es el *model s
 
 Un change se piensa (opcional), se propone, se implementa y se archiva; al archivar, sus deltas se fusionan en la spec viva. Las cajas con borde discontinuo son pasos opcionales.
 
-En esta serie de dos posts vamos a recorrer **todos los comandos** de OpenSpec con un caso real: una API de transacciones a la que hay que añadir paginación. Iremos de `openspec init` hasta el change archivado. Este primer post llega hasta tener el change propuesto, revisado y validado; el [segundo](/2026-09-01-openspec-2-implementar-y-archivar) lo implementa y lo archiva.
+En esta serie de dos posts vamos a recorrer todos los comandos de OpenSpec con un caso real: una API de transacciones a la que hay que añadir paginación. Iremos de `openspec init` hasta el change archivado. Este primer post llega hasta tener el change propuesto, revisado y validado; el [segundo](/2026-09-01-openspec-2-implementar-y-archivar) lo implementa y lo archiva.
 
 Si prefieres aprender haciendo, hay un atajo: `/opsx-onboard`, un tutorial guiado sobre tu propio código al que dedico una sección entera justo después de la instalación.
 
@@ -55,7 +55,7 @@ app.MapGet("/api/v1/transactions", async (ITransactionRepository repository) =>
 
 Con cientos de filas nadie se quejó. Con cientos de miles, la respuesta pesa muchos MB, tarda segundos y obliga al cliente a cargarla entera en memoria.
 
-La mejora que queremos es poder **consumir el endpoint de forma paginada**. Parece trivial, pero esconde decisiones de producto y de contrato que el código por sí solo no deja ver:
+La mejora que queremos es poder consumir el endpoint de forma paginada. Parece trivial, pero esconde decisiones de producto y de contrato que el código por sí solo no deja ver:
 
 - ¿Paginación por número de página (`page` y `pageSize`) o por cursor?
 - ¿Qué pasa con los clientes actuales, que esperan un array y no un sobre con metadatos?
@@ -103,7 +103,7 @@ openspec init --tools github-copilot
 | `--profile <perfil>` | Sobrescribe el perfil global solo para este init (`core` o `custom`) |
 | `--force` | Limpia ficheros legacy de versiones antiguas sin pedir confirmación |
 
-Sin más opciones, el init usa el perfil **core**, entrega **both** (skills y comandos) y los workflows `propose`, `explore`, `apply`, `sync` y `archive`.
+Sin más opciones, el init usa el perfil core, entrega both (skills y comandos) y los workflows `propose`, `explore`, `apply`, `sync` y `archive`.
 
 Un detalle importante si trabajáis con Copilot: los comandos se generan como *prompt files* en `.github/prompts/` y solo funcionan en las extensiones de IDE (VS Code, JetBrains y Visual Studio). Copilot CLI no admite por ahora prompt files personalizados.
 
@@ -156,9 +156,9 @@ Cada change lleva además un pequeño `.openspec.yaml` con sus metadatos (esquem
 
 ## Atajo: /opsx-onboard, tu primer change guiado sobre tu propio código
 
-Si prefieres aprender haciendo, `/opsx-onboard` te lleva de la mano por un ciclo completo de OpenSpec sobre tu propio repositorio, sin ejemplos de juguete.
+`/opsx-onboard` te lleva por un ciclo completo de OpenSpec sobre tu propio repositorio, sin ejemplos de juguete.
 
-Es un tutorial interactivo de entre 15 y 30 minutos. El agente escanea tu código, te propone mejoras pequeñas y seguras y, con la que elijas, crea un change de verdad, lo implementa, lo verifica y lo archiva, narrando cada paso. Es la versión guiada de lo que la documentación oficial recomienda para código existente: no documentar todo el sistema de golpe, sino empezar por un primer change pequeño y real, que deja la primera spec del área que tocas.
+Es un tutorial interactivo de entre 15 y 30 minutos. El agente escanea tu código, te propone mejoras pequeñas y seguras y, con la que elijas, crea un change de verdad, lo implementa, lo verifica y lo archiva, narrando cada paso. Es la versión guiada de lo que la documentación oficial recomienda para código existente: empezar por un primer change pequeño y real, sin documentar todo el sistema de golpe, que deja la primera spec del área que tocas.
 
 ### Cómo activarlo
 
@@ -210,10 +210,10 @@ Si eliges la tercera, acabarás en el mismo punto que el resto de este post, per
 
 ### Qué tener en cuenta
 
-- **Modifica tu repositorio.** Crea un change real, escribe código y lo archiva. Hazlo en una rama: el resultado es un change auténtico que puedes quedarte o descartar.
-- **Elige algo pequeño de verdad.** Los primeros changes sirven para aprender el ritmo del flujo con poco riesgo.
-- **Con Copilot, solo en el IDE.** Los comandos se generan como prompt files, que funcionan en las extensiones de VS Code, JetBrains y Visual Studio, pero no en Copilot CLI.
-- **Conserva lo aprendido.** Lo explorado vive en el chat. Pide que lo relevante quede recogido en `design.md` antes de archivar.
+- Modifica tu repositorio. Crea un change real, escribe código y lo archiva. Hazlo en una rama: el resultado es un change auténtico que puedes quedarte o descartar.
+- Elige algo pequeño de verdad. Los primeros changes sirven para aprender el ritmo del flujo con poco riesgo.
+- Con Copilot, solo en el IDE. Los comandos se generan como prompt files, que funcionan en las extensiones de VS Code, JetBrains y Visual Studio, pero no en Copilot CLI.
+- Conserva lo aprendido. Lo explorado vive en el chat. Pide que lo relevante quede recogido en `design.md` antes de archivar.
 
 ### Para equipos
 
@@ -316,9 +316,9 @@ IA:  Entendido. Propongo 50 elementos por defecto, máximo 200, orden por
 
 Tres cosas que conviene saber:
 
-- **Lo pensado vive en el chat, y el chat se pierde.** Lo que importa pasa a `proposal.md` y `design.md` cuando propones. Pide que las alternativas descartadas queden en `design.md`: es lo que dentro de seis meses explica por qué se hizo así.
-- **Es opcional.** Si ya sabes qué quieres, salta directamente a `/opsx-propose`.
-- **No toca nada.** Ni `openspec/` ni `src/`, así que puedes usarlo sin miedo en cualquier momento, incluso con un change a medias.
+- Lo pensado vive en el chat, y el chat se pierde. Lo que importa pasa a `proposal.md` y `design.md` cuando propones. Pide que las alternativas descartadas queden en `design.md`: es lo que dentro de seis meses explica por qué se hizo así.
+- Es opcional. Si ya sabes qué quieres, salta directamente a `/opsx-propose`.
+- No toca nada. Ni `openspec/` ni `src/`, así que puedes usarlo sin miedo en cualquier momento, incluso con un change a medias.
 
 ## /opsx-propose: de la idea al change completo
 
@@ -418,7 +418,7 @@ que 1, o `pageSize` sea menor que 1 o mayor que el máximo permitido.
 - **THEN** el sistema responde 400 con un `ProblemDetails`
 ```
 
-Fíjate en que esto describe **comportamiento observable**, no implementación. No dice cómo paginar en EF Core, sino qué ve un cliente.
+Esto describe comportamiento observable: no dice cómo paginar en EF Core, solo qué ve un cliente.
 
 ### design.md: el cómo y lo descartado
 
@@ -463,7 +463,7 @@ El endpoint carga todas las filas en memoria y las serializa de una vez.
 - [ ] 4.1 Un test por cada escenario de la spec
 ```
 
-Este es el momento más barato de corregir algo. En un equipo, aquí abrirías un PR que contenga **solo** `openspec/` y lo revisaría alguien antes de que se escriba una línea de código.
+Este es el momento más barato de corregir algo. En un equipo, aquí abrirías un PR que contenga solo `openspec/` y lo revisaría alguien antes de que se escriba una línea de código.
 
 ## Revisar y refinar: status, show, instructions, validate y /opsx-update
 
@@ -553,7 +553,7 @@ Validating add-dark-mode...
 1 warning found
 ```
 
-Ojo con lo que no hace: `validate` mira la **estructura** (formato de los deltas, escenarios, secciones). No sabe si la spec es buena ni si el código la cumple. Termina con código de salida 1 si hay errores, así que sirve tal cual en un pipeline.
+Ojo con lo que no hace: `validate` mira la estructura (formato de los deltas, escenarios, secciones). No sabe si la spec es buena ni si el código la cumple. Termina con código de salida 1 si hay errores, así que sirve tal cual en un pipeline.
 
 ### /opsx-update: corregir el plan
 
@@ -563,7 +563,7 @@ Ojo con lo que no hace: `validate` mira la **estructura** (formato de los deltas
 /opsx-update [nombre-del-change]
 ```
 
-Cómo trabaja: lee los artefactos, aplica la revisión que le pidas (o, si no le pides ninguna, busca contradicciones), propaga el cambio al resto de artefactos en la dirección que haga falta y **confirma contigo cada edición, artefacto a artefacto**, antes de escribir. Al terminar recomienda el siguiente paso.
+Cómo trabaja: lee los artefactos, aplica la revisión que le pidas (o, si no le pides ninguna, busca contradicciones), propaga el cambio al resto de artefactos en la dirección que haga falta y confirma contigo cada edición, artefacto a artefacto, antes de escribir. Al terminar recomienda el siguiente paso.
 
 En la revisión, alguien opina que 200 elementos por página es demasiado:
 
@@ -584,7 +584,7 @@ IA:  Leyendo los artefactos de add-transactions-pagination...
 
 También puedes editar los Markdown a mano y después pedir a `/opsx-update` que reconcilie el resto. Dos reglas: no crea artefactos que falten (eso es del flujo ampliado, con `/opsx-continue`), y si tu revisión cambia la *intención* del change, es mejor empezar uno nuevo que remendar este.
 
-Tras el cambio, vuelve a ejecutar `openspec validate add-transactions-pagination`. A partir de aquí el máximo es **100**.
+Tras el cambio, vuelve a ejecutar `openspec validate add-transactions-pagination`. A partir de aquí el máximo es 100.
 
 ## Dónde lo dejamos
 

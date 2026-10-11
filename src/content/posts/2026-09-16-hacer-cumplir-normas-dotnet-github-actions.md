@@ -44,7 +44,7 @@ GitHub ofrece dos formas de empaquetarlo y se eligen según lo que quieras reuti
 | Composite action | Un paso (`uses:`) dentro de un job | Añadir las comprobaciones a un workflow existente, compartiendo su checkout y su SDK |
 | Workflow reutilizable | Un job entero (`uses:` a nivel de job) | Imponer un pipeline completo, con su propio runner |
 
-Aquí encaja la composite action, porque corre dentro del job del llamador y el checkout, el SDK y el restore se hacen una sola vez. Se llama `net-governance` y vive en un `action.yml`:
+Aquí encaja la composite action, porque corre dentro del job del llamador y el checkout, el SDK y el restore se hacen una sola vez. Se llama `net-governance` y vive en un `action.yml`. GitHub exige que los workflows estén en `.github/workflows/`, pero una acción local puede estar en cualquier carpeta; `.github/actions/<nombre>/` es solo la convención habitual. El fichero de una acción siempre se llama `action.yml`, así que el nombre va en la carpeta:
 
 ```yaml
 # .github/actions/net-governance/action.yml

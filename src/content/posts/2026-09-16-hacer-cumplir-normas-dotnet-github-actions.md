@@ -52,7 +52,7 @@ description: Checks the governance rules of a .NET solution
 inputs:
   working-directory:
     description: Folder where the solution, Directory.Build.props and global.json live
-    default: "."
+    default: src
   solution:
     description: Solution or project to run dotnet against. Leave empty if there is only one in working-directory
     default: ""
@@ -133,7 +133,7 @@ Con CPM activo no hace falta un paso para las versiones de paquetes: un `Package
 
 Todo `run` de una composite action necesita `shell` explícito, y las condiciones de los pasos leen los inputs con `inputs.<nombre>`. Los inputs llegan siempre como texto, así que se comparan con `'true'`.
 
-Lo que depende de cada repositorio entra como input con un valor por defecto razonable. `working-directory` es la carpeta donde viven la solución, `Directory.Build.props` y `global.json`: con el código dentro de `src/`, se pasa `working-directory: src`, y así todos los comandos de `dotnet` corren ahí, igual que en tu máquina. Si `solution` va vacío, `dotnet` busca el único `.sln` o proyecto de esa carpeta, y si hay varios falla con `MSB1011`. El `grep` recorre la carpeta de trabajo entera y encuentra solo todos los `.csproj`, así que no hace falta decirle dónde están. Los inputs se pasan a los scripts a través de `env` y no escribiendo `${{ inputs.x }}` dentro del `run`, para que un valor raro no pueda inyectar comandos en el shell.
+Lo que depende de cada repositorio entra como input con un valor por defecto razonable. `working-directory` es la carpeta donde viven la solución, `Directory.Build.props` y `global.json`. Vale `src` por defecto, porque ahí está el código, y todos los comandos de `dotnet` corren en esa carpeta, igual que en tu máquina. Si tu solución está en otro sitio, se cambia con `working-directory: otra/carpeta`. Si `solution` va vacío, `dotnet` busca el único `.sln` o proyecto de esa carpeta, y si hay varios falla con `MSB1011`. El `grep` recorre la carpeta de trabajo entera y encuentra solo todos los `.csproj`, así que no hace falta decirle dónde están. Los inputs se pasan a los scripts a través de `env` y no escribiendo `${{ inputs.x }}` dentro del `run`, para que un valor raro no pueda inyectar comandos en el shell.
 
 El workflow de cada repositorio se queda con lo que el preset no puede adivinar: el checkout, el SDK y los tests.
 
@@ -166,8 +166,6 @@ jobs:
           cache-dependency-path: "**/packages.lock.json"
 
       - uses: ./.github/actions/net-governance
-        with:
-          working-directory: src
 
       - run: dotnet test --no-build -c Release
         working-directory: src
@@ -182,7 +180,6 @@ Si lo defines en un repositorio central, por ejemplo `contoso/platform-actions`,
 ```yaml
 - uses: contoso/platform-actions/net-governance@v1
   with:
-    working-directory: src
     check-format: "false"   # until the solution is formatted
 ```
 

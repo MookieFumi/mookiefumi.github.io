@@ -31,7 +31,7 @@ const topics = defineCollection({
 
 // Enlaces de /recursos, agrupados por sección.
 const resources = defineCollection({
-  loader: file('./src/data/recursos.yml', {
+  loader: file('./src/data/resources.yml', {
     parser: (text) => parse(text).map((group: object, order: number) => ({ ...group, order })),
   }),
   schema: z.object({

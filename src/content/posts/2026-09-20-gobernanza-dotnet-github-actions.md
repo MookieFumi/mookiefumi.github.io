@@ -1,14 +1,14 @@
 ---
-title: "Mini laboratorio: la gobernanza de .NET en GitHub Actions"
+title: "Hacer cumplir las normas y estándares de .NET con GitHub Actions"
 subtitle: Restore bloqueado, warnings como errores, formato, vulnerabilidades y CODEOWNERS ejecutados en cada pull request
 date: 2026-09-20
 topic: desarrollo
 published: false
 ---
 
-En la serie sobre gobernanza de soluciones .NET dejamos las normas en ficheros del repositorio: [Directory.Build.props](/2026-09-12-directory-build-props-contrato-calidad), [Central Package Management](/2026-09-13-central-package-management-nuget) y los [estándares de lenguaje y calidad](/2026-09-14-estandares-lenguaje-calidad-dotnet). Esos ficheros solo valen si algo comprueba que se cumplen en cada cambio. En un repositorio de GitHub ese algo es un workflow de Actions.
+En los posts sobre gobernanza de soluciones .NET dejamos las normas en ficheros del repositorio: [Directory.Build.props](/2026-09-12-directory-build-props-contrato-calidad), [Central Package Management](/2026-09-13-central-package-management-nuget) y los [estándares de lenguaje y calidad](/2026-09-14-estandares-lenguaje-calidad-dotnet). Esos ficheros solo valen si algo comprueba que se cumplen en cada cambio. En un repositorio de GitHub ese algo es un workflow de Actions.
 
-Este laboratorio es corto. Parto de la solución de ejemplo de la serie (`Payments.sln` con `src/` y `tests/`) y añado un workflow por cada decisión que ya habíamos tomado. Cada apartado indica de qué parte viene.
+Este laboratorio es corto. Parto de la solución de ejemplo de esos posts (`Payments.sln` con `src/` y `tests/`) y añado un workflow por cada decisión que ya habíamos tomado. Cada apartado indica de qué post viene.
 
 ## Lo que ya tenemos y lo que falta
 
@@ -16,14 +16,14 @@ El build local ya hace bastante, pero un pull request puede llegar con warnings,
 
 | Comprobación | Viene de | Cómo se ejecuta |
 | --- | --- | --- |
-| Restore reproducible | Parte 2 (lock files) | `dotnet restore --locked-mode` |
-| Warnings como errores | Parte 3 | `TreatWarningsAsErrors` cuando detecta `GITHUB_ACTIONS` |
-| Formato | Parte 3 | `dotnet format --verify-no-changes` |
-| Propiedades centralizadas | Parte 1 | Un `grep` sobre los `.csproj` |
-| Vulnerabilidades | Parte 2 (NuGetAudit) | `dotnet list package --vulnerable` |
-| Quién revisa los ficheros del estándar | Partes 1 y 2 | `CODEOWNERS` y protección de rama |
+| Restore reproducible | Central Package Management (lock files) | `dotnet restore --locked-mode` |
+| Warnings como errores | Estándares de lenguaje y calidad | `TreatWarningsAsErrors` cuando detecta `GITHUB_ACTIONS` |
+| Formato | Estándares de lenguaje y calidad | `dotnet format --verify-no-changes` |
+| Propiedades centralizadas | Directory.Build.props | Un `grep` sobre los `.csproj` |
+| Vulnerabilidades | Central Package Management (NuGetAudit) | `dotnet list package --vulnerable` |
+| Quién revisa los ficheros del estándar | Directory.Build.props y Central Package Management | `CODEOWNERS` y protección de rama |
 
-Para que el restore bloqueado funcione, `Directory.Build.props` tiene que activar los lock files, como vimos en la parte 2:
+Para que el restore bloqueado funcione, `Directory.Build.props` tiene que activar los lock files, como vimos en el post de Central Package Management:
 
 ```xml
 <PropertyGroup>
@@ -81,7 +81,7 @@ jobs:
 Varias cosas de este fichero tienen su origen en la serie:
 
 - `--locked-mode` hace fallar el restore si alguna dependencia, transitivas incluidas, no coincide con el lock file. Es lo que garantiza que CI compila lo mismo que compilaste tú.
-- El paso de build no lleva ningún flag de warnings. `Directory.Build.props` detecta la variable `GITHUB_ACTIONS` y activa `TreatWarningsAsErrors` solo en CI, tal como lo dejamos en la parte 3. En local sigues trabajando con libertad y el PR no se puede fusionar con avisos.
+- El paso de build no lleva ningún flag de warnings. `Directory.Build.props` detecta la variable `GITHUB_ACTIONS` y activa `TreatWarningsAsErrors` solo en CI, tal como lo dejamos en el post de estándares de calidad. En local sigues trabajando con libertad y el PR no se puede fusionar con avisos.
 - `dotnet format --verify-no-changes` termina con código distinto de cero si hay algo sin formatear. Cuando falla, el arreglo es ejecutar `dotnet format` en local y subir el resultado.
 - `cache-dependency-path` apunta a los lock files, así que la caché de NuGet se invalida solo cuando cambian las dependencias.
 - `global-json-file` evita repetir la versión del SDK en el workflow. Si no tienes `global.json`, usa `dotnet-version: 10.0.x`.
@@ -89,7 +89,7 @@ Varias cosas de este fichero tienen su origen en la serie:
 
 ## Que nadie se salte Directory.Build.props
 
-En la parte 1 propusimos un paso que falla si un `.csproj` redefine propiedades que deberían vivir en el fichero central. Aquí queda como un job aparte, que tarda un segundo y da un mensaje claro:
+En el post de Directory.Build.props propusimos un paso que falla si un `.csproj` redefine propiedades que deberían vivir en el fichero central. Aquí queda como un job aparte, que tarda un segundo y da un mensaje claro:
 
 ```yaml
 # .github/workflows/governance.yml
@@ -116,7 +116,7 @@ jobs:
           fi
 ```
 
-El prefijo `::error::` hace que el mensaje aparezca como anotación en el PR, no enterrado en el log. Como avisé en la parte 1, mete aquí solo las propiedades que no admiten excepciones. Si un proyecto tiene una excepción documentada, mantén una lista de proyectos excluidos dentro del script en lugar de relajar la regla para todos.
+El prefijo `::error::` hace que el mensaje aparezca como anotación en el PR, no enterrado en el log. Como avisé allí, mete aquí solo las propiedades que no admiten excepciones. Si un proyecto tiene una excepción documentada, mantén una lista de proyectos excluidos dentro del script en lugar de relajar la regla para todos.
 
 Con CPM activo no hace falta un check equivalente para las versiones de paquetes: un `PackageReference` con `Version` ya rompe el build con `NU1008`, y uno sin su `PackageVersion` con `NU1010`.
 
@@ -201,11 +201,11 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 ```
 
-No sustituye a Dependabot, que ya abre los PRs de actualización agrupados como vimos en la parte 2. Sirve para ver de un vistazo cuánto se ha acumulado cuando los PRs del bot llevan tiempo sin revisarse.
+No sustituye a Dependabot, que ya abre los PRs de actualización agrupados como vimos en el post de Central Package Management. Sirve para ver de un vistazo cuánto se ha acumulado cuando los PRs del bot llevan tiempo sin revisarse.
 
 ## Quién revisa los cambios del estándar
 
-Todo lo anterior comprueba el código. Falta controlar quién puede cambiar las reglas, y eso no lo hace Actions: lo hace `CODEOWNERS` junto con la protección de rama. El fichero reúne lo que fuimos listando en las tres partes:
+Todo lo anterior comprueba el código. Falta controlar quién puede cambiar las reglas, y eso no lo hace Actions: lo hace `CODEOWNERS` junto con la protección de rama. El fichero reúne lo que fuimos listando en los tres posts:
 
 ```text
 # .github/CODEOWNERS
@@ -247,7 +247,7 @@ En el repositorio de plataforma, el workflow `dotnet-ci.yml` declara `on: workfl
 
 ## Antes de poner todo en obligatorio
 
-Si la solución ya tiene años, activar estos checks de golpe pone todos los PRs en rojo. Mantengo el orden de adopción de la parte 3:
+Si la solución ya tiene años, activar estos checks de golpe pone todos los PRs en rojo. Mantengo el orden de adopción del post de estándares de calidad:
 
 1. Empieza con `build` sin la comprobación de formato, y con warnings solo como avisos.
 2. Abre un PR dedicado con el resultado de `dotnet format`, sin cambios de lógica, y activa entonces el paso de formato.
@@ -255,7 +255,7 @@ Si la solución ya tiene años, activar estos checks de golpe pone todos los PRs
 4. Marca los checks como obligatorios en la protección de rama cuando lleven una semana en verde.
 5. Añade `CODEOWNERS` el último, cuando el equipo de arquitectura sepa cuántas revisiones va a recibir.
 
-## Qué queda de la serie
+## Cómo queda el repositorio
 
 Con esto, la raíz del repositorio ya no solo describe las normas del equipo: un workflow las comprueba en cada pull request y `CODEOWNERS` decide quién puede cambiarlas.
 

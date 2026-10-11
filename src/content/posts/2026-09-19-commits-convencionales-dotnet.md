@@ -1,9 +1,9 @@
 ---
 title: "Conventional Commits en .NET sin fiarte de que el dev se acuerde"
 subtitle: Por qué un hook local no basta y cómo combinar un hook versionado que se instala con el build con un check obligatorio en el PR
-date: 2026-09-18
+date: 2026-09-19
 topic: desarrollo
-published: false
+published: true
 ---
 
 Muchos equipos acaban usando [Conventional Commits](https://www.conventionalcommits.org): `tipo(ámbito): descripción`. No es la única opción (hay equipos que usan el número del ticket, `JIRA-123: ...`, o su propio prefijo), pero es la que más herramientas entiende: changelogs automáticos, versionado semántico y un historial que se lee de un vistazo.

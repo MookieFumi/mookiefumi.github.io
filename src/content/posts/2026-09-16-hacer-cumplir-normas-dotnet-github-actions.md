@@ -210,29 +210,28 @@ El fichero reúne lo que fuimos listando en los tres posts:
 
 ```text
 # .github/CODEOWNERS
-/src/Directory.Build.props        @contoso/maintainers
-/src/Directory.Build.targets      @contoso/maintainers
-/src/tests/Directory.Build.props  @contoso/maintainers
-/src/Directory.Packages.props     @contoso/maintainers
-/src/nuget.config                 @contoso/maintainers
-/src/.editorconfig                @contoso/maintainers
-/src/global.json                  @contoso/maintainers
-/.github/workflows/               @contoso/maintainers
-/.github/actions/                 @contoso/maintainers
+/src/Directory.Build.props        @usuario1 @usuario2
+/src/Directory.Build.targets      @usuario1 @usuario2
+/src/tests/Directory.Build.props  @usuario1 @usuario2
+/src/Directory.Packages.props     @usuario1 @usuario2
+/src/nuget.config                 @usuario1 @usuario2
+/src/.editorconfig                @usuario1 @usuario2
+/src/global.json                  @usuario1 @usuario2
+/.github/workflows/               @usuario1 @usuario2
+/.github/actions/                 @usuario1 @usuario2
 ```
 
 Las dos últimas líneas son las que más se olvidan. Si cualquiera puede editar los workflows, puede quitar los checks que acabamos de montar, así que `.github/workflows/` y `.github/actions/` también tienen que pasar por los dueños.
 
 ### A quién se puede asignar
 
-Un dueño puede ser una persona (`@usuario`), un equipo de la organización (`@contoso/maintainers`) o una dirección de correo asociada a una cuenta de GitHub. Se pueden poner varios en la misma línea y basta con que apruebe uno. Todos necesitan permiso de escritura en el repositorio, y si una regla del fichero coincide con una ruta, manda la última que aparece.
+Un dueño puede ser una persona (`@usuario`), un equipo de la organización (`@org/equipo`) o una dirección de correo asociada a una cuenta de GitHub. Se pueden poner varios en la misma línea y basta con que apruebe uno. Todos necesitan permiso de escritura en el repositorio, y si varias reglas del fichero coinciden con una ruta, manda la última que aparece.
 
-`maintainers` no es un grupo especial de GitHub. Existe un rol de repositorio llamado Maintain, pero `CODEOWNERS` no acepta roles. Para que sean los mantenedores, hay dos caminos:
+Si lo que quieres es que revisen los mantenedores, hay un matiz. Maintain es un rol de repositorio que se concede a personas concretas, y `CODEOWNERS` no puede referirse a un rol. No existe una forma de escribir "todos los que tienen Maintain": hay que poner sus nombres de usuario, como en el ejemplo, y mantener la lista al día cuando cambie quién tiene el rol. Aunque tengan Maintain, quien no aparece en el fichero no recibe la petición de revisión.
 
-- En un repositorio de una organización, crea un equipo, por ejemplo `@contoso/maintainers`, y dale permiso de escritura. Es lo más cómodo, porque cambiar quién revisa es cambiar los miembros del equipo y no editar el fichero.
-- En un repositorio personal no hay equipos, así que se listan las personas: `/src/Directory.Build.props @usuario1 @usuario2`.
+Si prefieres no editar el fichero cada vez que cambia el grupo, en un repositorio de una organización puedes crear un equipo, por ejemplo `@contoso/maintainers`, darle permiso de escritura y poner el equipo en las reglas. Entonces cambiar quién revisa es cambiar los miembros del equipo. Los roles como Maintain están pensados para repositorios de organización; en un repositorio personal los colaboradores solo tienen acceso de escritura, y ahí se listan las personas.
 
-Con un único mantenedor hay un límite: el autor de un PR no puede aprobar el suyo, así que si es el único dueño, la regla le bloquea a él mismo. Un administrador puede saltársela, y con dos dueños el problema desaparece.
+Con un único dueño hay un límite: el autor de un PR no puede aprobar el suyo, así que si es el único dueño, la regla le bloquea a él mismo. Un administrador puede saltársela, y con dos dueños el problema desaparece.
 
 Para que el fichero tenga efecto, `CODEOWNERS` tiene que estar en la rama base (en `.github/`, en la raíz o en `docs/`). En la regla de protección de la rama principal hay que marcar dos cosas: exigir la revisión de los code owners y exigir que pase el check `build`, que reúne todos los pasos anteriores. Sin eso los workflows avisan y los dueños reciben la petición, pero se puede fusionar igualmente.
 

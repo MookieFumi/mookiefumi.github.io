@@ -19,7 +19,5 @@ export const SITE = {
     { label: 'recursos', path: 'resources' },
     { label: 'sobre-mí', path: 'aboutme' },
   ],
-  // Cloudflare Web Analytics (sin cookies). Vacío para desactivarla.
-  cloudflareAnalyticsToken: '8607a246a64647feb5441c86af7234bc',
   postsPerPage: 10,
 };

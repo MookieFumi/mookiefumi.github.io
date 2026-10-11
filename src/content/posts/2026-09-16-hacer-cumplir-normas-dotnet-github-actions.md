@@ -169,40 +169,125 @@ Todo lo anterior comprueba el código. Falta controlar quién puede cambiar las 
 /.editorconfig                @contoso/architecture
 /global.json                  @contoso/architecture
 /.github/workflows/           @contoso/architecture
+/.github/actions/             @contoso/architecture
 ```
 
-La última línea es la que se olvida con más facilidad. Si cualquiera puede editar los workflows, puede quitar los checks que acabamos de montar, así que las carpetas de `.github/workflows/` también tienen que pasar por arquitectura.
+La última línea es la que se olvida con más facilidad. Si cualquiera puede editar los workflows, puede quitar los checks que acabamos de montar, así que las carpetas `.github/workflows/` y `.github/actions/` también tienen que pasar por arquitectura.
 
 En la regla de protección de la rama principal hay que marcar dos cosas: exigir la revisión de los code owners y exigir que pase el check `build`, que reúne todos los pasos anteriores. Sin eso los workflows avisan, pero se puede fusionar igualmente.
 
-## Llevarlo a varios repositorios
+## Empaquetarlo como preset
 
-Con un repositorio es un copiar y pegar. Con diez, los workflows también acaban divergiendo. GitHub permite definir un workflow reutilizable en un repositorio central y llamarlo desde los demás:
+Tener los pasos en un `ci.yml` está bien para un repositorio. Para aplicarlos a otro, o a un workflow que ya existe, interesa más un preset: un bloque que se añade con una línea. GitHub ofrece dos formas de hacerlo y se eligen según lo que quieras reutilizar:
+
+| Opción | Se usa como | Cuándo encaja |
+| --- | --- | --- |
+| Composite action | Un paso (`uses:`) dentro de un job | Añadir las comprobaciones a un workflow existente, compartiendo su checkout y su SDK |
+| Workflow reutilizable | Un job entero (`uses:` a nivel de job) | Imponer un pipeline completo, con su propio runner |
+
+Para lo que pedía este post encaja la composite action, porque corre dentro del job del llamador: el checkout, el SDK y el restore se hacen una sola vez, que era el objetivo. Los pasos de comprobación quedan en un `action.yml`:
 
 ```yaml
-# En cada repositorio: .github/workflows/ci.yml
-name: ci
+# .github/actions/dotnet-governance/action.yml
+name: dotnet-governance
+description: Comprueba las normas de gobernanza de una solución .NET
 
-on:
-  pull_request:
-  push:
-    branches: [main]
+inputs:
+  fail-on-severity:
+    description: Severidad mínima que hace fallar dependency-review
+    default: moderate
+  check-format:
+    description: Ejecutar dotnet format --verify-no-changes
+    default: "true"
+  dependency-review:
+    description: Ejecutar dependency-review en pull requests
+    default: "true"
 
-jobs:
-  dotnet:
-    uses: contoso/platform-workflows/.github/workflows/dotnet-ci.yml@v1
-    with:
-      solution: Payments.sln
+runs:
+  using: composite
+  steps:
+    - name: Propiedades que solo pueden definirse en Directory.Build.props
+      shell: bash
+      run: |
+        if grep -rlE "<(TargetFramework|Nullable|LangVersion|TreatWarningsAsErrors)>" \
+             --include=*.csproj .; then
+          echo "::error::Common properties must be defined in Directory.Build.props"
+          exit 1
+        fi
+
+    - name: Restore (bloqueado)
+      shell: bash
+      run: dotnet restore --locked-mode
+
+    - name: Build
+      shell: bash
+      run: dotnet build --no-restore -c Release
+
+    - name: Formato
+      if: inputs.check-format == 'true'
+      shell: bash
+      run: dotnet format --verify-no-changes --no-restore
+
+    - name: Paquetes vulnerables (incluye transitivos)
+      shell: bash
+      run: |
+        dotnet list package --vulnerable --include-transitive --no-restore 2>&1 | tee report.txt
+        if grep -q "has the following vulnerable packages" report.txt; then
+          echo "::error::Vulnerable packages found"
+          exit 1
+        fi
+
+    - name: Dependencias nuevas del PR
+      if: inputs.dependency-review == 'true' && github.event_name == 'pull_request'
+      uses: actions/dependency-review-action@v4
+      with:
+        fail-on-severity: ${{ inputs.fail-on-severity }}
 ```
 
-En el repositorio de plataforma, el workflow `dotnet-ci.yml` declara `on: workflow_call` con el input `solution` y contiene los pasos de restore, build, formato y tests de arriba. Cada repositorio mantiene una llamada de seis líneas, y cambiar una norma de CI es publicar una versión nueva de ese fichero. La etiqueta `@v1` importa: apuntar a una rama haría que cualquier cambio llegara a todos los repositorios sin que nadie lo revise.
+Todo `run` de una composite action necesita `shell` explícito, y las condiciones de los pasos leen los inputs con `inputs.<nombre>`. Los inputs llegan siempre como texto, así que se comparan con `'true'`.
+
+El workflow del repositorio queda en lo que cambia de un proyecto a otro: el checkout, el SDK y los tests.
+
+```yaml
+# .github/workflows/ci.yml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+          cache: true
+          cache-dependency-path: "**/packages.lock.json"
+
+      - uses: ./.github/actions/dotnet-governance
+
+      - run: dotnet test --no-build -c Release
+```
+
+Para añadirlo a un workflow que ya tienes, basta con insertar el `uses` después del checkout y del `setup-dotnet`. Si lo defines en un repositorio central, por ejemplo `contoso/platform-actions`, cada repositorio lo llama por ruta y versión:
+
+```yaml
+- uses: contoso/platform-actions/dotnet-governance@v1
+  with:
+    check-format: "false"   # mientras la solución no esté formateada
+```
+
+Dos cosas a tener en cuenta con el repositorio central:
+
+- Fija siempre una etiqueta como `@v1`. Apuntar a una rama haría que cualquier cambio llegara a todos los repositorios sin que nadie lo revise.
+- Si el repositorio central es privado, hay que permitir el acceso desde los demás en Settings > Actions > General > Access.
+
+La composite action sirve además para el escalón de adopción gradual: los inputs permiten activar cada comprobación cuando el repositorio esté preparado, en lugar de editar un workflow por proyecto.
 
 ## Antes de poner todo en obligatorio
 
 Si la solución ya tiene años, activar estos checks de golpe pone todos los PRs en rojo. Mantengo el orden de adopción del post de estándares de calidad:
 
-1. Empieza con el workflow sin el paso de formato, y con warnings solo como avisos.
-2. Abre un PR dedicado con el resultado de `dotnet format`, sin cambios de lógica, y activa entonces el paso de formato.
+1. Empieza con `check-format: "false"` y con warnings solo como avisos.
+2. Abre un PR dedicado con el resultado de `dotnet format`, sin cambios de lógica, y activa entonces el formato.
 3. Activa los pasos de vulnerabilidades y `dependency-review`, que suelen estar limpios o tienen un arreglo de una línea en `Directory.Packages.props`.
 4. Marca el check como obligatorio en la protección de rama cuando lleven una semana en verde.
 5. Añade `CODEOWNERS` el último, cuando el equipo de arquitectura sepa cuántas revisiones va a recibir.
@@ -221,6 +306,8 @@ repo/
 └── .github/
     ├── CODEOWNERS
     ├── dependabot.yml
+    ├── actions/
+    │   └── dotnet-governance/action.yml
     └── workflows/
         ├── ci.yml
         └── outdated.yml

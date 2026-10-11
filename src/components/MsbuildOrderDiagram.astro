@@ -9,16 +9,9 @@
     <span class="msb-dot" style="background:#ff5f56"></span><span class="msb-dot" style="background:#ffbd2e"></span><span class="msb-dot" style="background:#27c93f"></span>
     <span class="path">~/payments · orden de importación</span>
   </div>
-  <div class="legend" id="msb-legend"></div>
   <div class="main">
         <div class="stage-wrap"><div class="stage" id="msb-stage"><div class="canvas" id="msb-canvas"><svg id="msb-svg" viewBox="0 0 720 590"></svg></div></div></div>
     <div class="rail"><div class="rail-title">qué pasa en cada punto</div><div class="rail-list" id="msb-rail"></div></div>
-  </div>
-  <div class="statusbar">
-    <span class="msb-cmd">$ dotnet build</span>
-    <span id="msb-metric">importados 0/3</span>
-    <span class="note">traza ilustrativa · el orden sale del post</span>
-    <span class="controls"><button type="button" class="ctrl-btn" id="msb-btnPlay">pausa</button><button type="button" class="ctrl-btn" id="msb-btnSpeed">1x</button></span>
   </div>
 </div>
 
@@ -34,10 +27,6 @@
 .titlebar{display:flex;align-items:center;gap:7px;padding:9px 12px;border-bottom:1px solid var(--line)}
 .msb-dot{width:10px;height:10px;border-radius:50%}
 .titlebar .path{margin-left:8px;color:var(--muted);font-size:11px}
-.legend{display:flex;flex-wrap:wrap;gap:6px 18px;padding:9px 14px;border-bottom:1px solid var(--line);font-size:11px}
-.legend span.i{display:inline-flex;align-items:center;gap:6px;color:var(--fg)}
-.legend span.i b{display:inline-block;width:9px;height:9px}
-.legend span.i em{font-style:normal;color:var(--muted)}
 .main{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"stage" "rail"}
 .stage-wrap{grid-area:stage;min-width:0;padding:14px;border-bottom:1px solid var(--line);display:flex;justify-content:center}
 .rail{grid-area:rail;padding:14px 12px;display:flex;flex-direction:column}
@@ -60,12 +49,6 @@ path.edge{fill:none;stroke:var(--line);stroke-width:1}
 .rail-dot{position:absolute;left:0;top:2px;background:var(--win);line-height:1.2}
 .rail-item.on{color:var(--fg);background:var(--hi)}
 .rail-item .tg{display:block;color:var(--muted);font-size:10px}
-.statusbar{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;padding:8px 14px;border-top:1px solid var(--line);font-size:11px}
-.statusbar .msb-cmd{color:var(--c-props)}
-.statusbar .note{color:var(--muted)}
-.controls{margin-left:auto;display:flex;gap:6px}
-.ctrl-btn{font:11px var(--mono);background:transparent;color:var(--fg);border:1px solid var(--line);padding:2px 8px;cursor:pointer}
-.ctrl-btn:hover,.ctrl-btn:focus-visible{border-color:var(--fg);outline:none}
 
 }
 </style>
@@ -75,7 +58,6 @@ path.edge{fill:none;stroke:var(--line);stroke-width:1}
 
 var spec = {
   roles: { entry:"#56d4dd", props:"#57d38c", proj:"#6cb6ff", targ:"#b392f0" },
-  roleNames: [["entry","entrada","dotnet build"],["props","Directory.Build.props","antes"],["proj","proyecto","en medio"],["targ","Directory.Build.targets","después"]],
   nodes: [
     { id:"build",  role:"entry", row:0, col:0, w:300, title:"dotnet build", sub:"Payments.Api.csproj", rows:[["busca","Directory.Build.props"],["desde","carpeta del proyecto, hacia arriba"]], state:"idle" },
     { id:"props",  role:"props", row:1, col:0, w:340, title:"Directory.Build.props", sub:"1 · antes del .csproj", rows:[["contiene","TargetFramework, Nullable"],["al evaluarse","el .csproj aún no se ha leído"]], state:"idle" },
@@ -104,16 +86,13 @@ var spec = {
     { at:2300, do:"rail", id:"r2" },
     { at:3000, do:"rail", id:"r3" },
     { at:3800, do:"state", node:"props", value:"done" },
-    { at:3800, do:"tick" },
     { at:3900, do:"fire", edge:"e2" },
     { at:4700, do:"state", node:"csproj", value:"running" },
     { at:5900, do:"state", node:"csproj", value:"done" },
-    { at:5900, do:"tick" },
     { at:6000, do:"fire", edge:"e3" },
     { at:6800, do:"state", node:"targets", value:"running" },
     { at:6800, do:"rail", id:"r4" },
     { at:8000, do:"state", node:"targets", value:"done" },
-    { at:8000, do:"tick" },
     { at:8100, do:"fire", edge:"e4" },
     { at:8900, do:"state", node:"result", value:"done" },
   ],
@@ -126,12 +105,6 @@ var railEl = document.getElementById("msb-rail");
 var NS = "http://www.w3.org/2000/svg";
 var STATE_SYM = { idle:"◇ idle", running:"◐ running", done:"✓ done" };
 
-var lg = document.getElementById("msb-legend");
-spec.roleNames.forEach(function(r){
-  var s = document.createElement("span"); s.className = "i";
-  s.innerHTML = '<b style="background:' + spec.roles[r[0]] + '"></b>' + r[1] + ' <em>' + r[2] + '</em>';
-  lg.appendChild(s);
-});
 
 var defs = document.createElementNS(NS, "defs");
 defs.innerHTML = '<marker id="msb-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#6e7681"/></marker>';
@@ -442,15 +415,13 @@ function rescale(){
 }
 
 /* ---- simulación ---- */
-var loopT = 0, nextEv = 0, paused = false, speed = 1, imported = 0, packets = [];
-var speeds = [0.5, 1, 2], speedIdx = 1;
+var loopT = 0, nextEv = 0, paused = false, speed = 1, packets = [];
 var reduced = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 function setState(id, v){
   nodesById[id].state = v;
   document.getElementById("msb-st-" + id).textContent = STATE_SYM[v];
 }
-function setMetric(){ document.getElementById("msb-metric").textContent = "importados " + imported + "/3"; }
 function highlight(targetId){
   spec.nodes.forEach(function(n){ document.getElementById("msb-" + n.id).classList.toggle("hl", n.id === targetId); });
 }
@@ -469,11 +440,10 @@ function fire(e, instant){
 function apply(ev, instant){
   if (ev.do === "state") setState(ev.node, ev.value);
   else if (ev.do === "rail") railOn(ev.id);
-  else if (ev.do === "tick"){ imported++; setMetric(); }
   else if (ev.do === "fire") fire(edgesById[ev.edge], instant);
 }
 function resetLoop(){
-  loopT = 0; nextEv = 0; imported = 0; packets = [];
+  loopT = 0; nextEv = 0; packets = [];
   packetLayer.innerHTML = "";
   spec.nodes.forEach(function(n){ setState(n.id, "idle"); });
   spec.rail.forEach(function(r){
@@ -481,7 +451,6 @@ function resetLoop(){
   });
   highlight(null);
   spec.edges.forEach(function(e){ e._pathEl.style.stroke = ""; });
-  setMetric();
 }
 function drawPackets(){
   packetLayer.innerHTML = "";
@@ -511,9 +480,6 @@ function frame(t){
   requestAnimationFrame(frame);
 }
 
-var btnPlay = document.getElementById("msb-btnPlay"), btnSpeed = document.getElementById("msb-btnSpeed");
-btnPlay.addEventListener("click", function(){ paused = !paused; btnPlay.textContent = paused ? "play" : "pausa"; last = performance.now(); });
-btnSpeed.addEventListener("click", function(){ speedIdx = (speedIdx + 1) % speeds.length; speed = speeds[speedIdx]; btnSpeed.textContent = speed + "x"; });
 
 resetLoop();
 layoutDiagram();
@@ -522,7 +488,7 @@ window.addEventListener("resize", rescale);
 if (reduced){
   spec.script.forEach(function(ev){ apply(ev, true); });
   spec.nodes.forEach(function(n){ setState(n.id, "done"); });
-  paused = true; btnPlay.textContent = "play";
+  paused = true;
 }
 requestAnimationFrame(frame);
 

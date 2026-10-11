@@ -59,7 +59,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Propiedades que solo pueden definirse en Directory.Build.props
+      - name: Properties that must only live in Directory.Build.props
         run: |
           if grep -rlE "<(TargetFramework|Nullable|LangVersion|TreatWarningsAsErrors)>" \
                --include=*.csproj .; then
@@ -73,19 +73,19 @@ jobs:
           cache: true
           cache-dependency-path: "**/packages.lock.json"
 
-      - name: Restore (bloqueado)
+      - name: Restore (locked)
         run: dotnet restore --locked-mode
 
       - name: Build
         run: dotnet build --no-restore -c Release
 
-      - name: Formato
+      - name: Format
         run: dotnet format --verify-no-changes --no-restore
 
       - name: Tests
         run: dotnet test --no-build -c Release
 
-      - name: Paquetes vulnerables (incluye transitivos)
+      - name: Vulnerable packages (including transitive)
         run: |
           dotnet list package --vulnerable --include-transitive --no-restore 2>&1 | tee report.txt
           if grep -q "has the following vulnerable packages" report.txt; then
@@ -93,7 +93,7 @@ jobs:
             exit 1
           fi
 
-      - name: Dependencias nuevas del PR
+      - name: New dependencies in the PR
         if: github.event_name == 'pull_request'
         uses: actions/dependency-review-action@v4
         with:
@@ -142,11 +142,11 @@ jobs:
         with:
           global-json-file: global.json
 
-      - name: Informe
+      - name: Report
         run: |
           dotnet restore
           {
-            echo '## Paquetes desactualizados'
+            echo '## Outdated packages'
             echo '~~~text'
             dotnet list package --outdated --include-transitive
             echo '~~~'
@@ -190,29 +190,29 @@ Aquí encaja la composite action, porque corre dentro del job del llamador y el 
 ```yaml
 # .github/actions/dotnet-governance/action.yml
 name: dotnet-governance
-description: Comprueba las normas de gobernanza de una solución .NET
+description: Checks the governance rules of a .NET solution
 
 inputs:
   solution:
-    description: Solución o proyecto sobre el que ejecutar dotnet. Vacío si solo hay una en la raíz
+    description: Solution or project to run dotnet against. Leave empty if there is only one in the working directory
     default: ""
   paths:
-    description: Carpetas donde buscar .csproj con propiedades centralizadas, separadas por espacios
+    description: Space-separated folders to scan for .csproj files that redefine centralized properties
     default: "."
   fail-on-severity:
-    description: Severidad mínima que hace fallar dependency-review
+    description: Minimum severity that makes dependency-review fail
     default: moderate
   check-format:
-    description: Ejecutar dotnet format --verify-no-changes
+    description: Run dotnet format --verify-no-changes
     default: "true"
   dependency-review:
-    description: Ejecutar dependency-review en pull requests
+    description: Run dependency-review on pull requests
     default: "true"
 
 runs:
   using: composite
   steps:
-    - name: Propiedades que solo pueden definirse en Directory.Build.props
+    - name: Properties that must only live in Directory.Build.props
       shell: bash
       env:
         PATHS: ${{ inputs.paths }}
@@ -223,7 +223,7 @@ runs:
           exit 1
         fi
 
-    - name: Restore (bloqueado)
+    - name: Restore (locked)
       shell: bash
       env:
         SOLUTION: ${{ inputs.solution }}
@@ -235,14 +235,14 @@ runs:
         SOLUTION: ${{ inputs.solution }}
       run: dotnet build $SOLUTION --no-restore -c Release
 
-    - name: Formato
+    - name: Format
       if: inputs.check-format == 'true'
       shell: bash
       env:
         SOLUTION: ${{ inputs.solution }}
       run: dotnet format $SOLUTION --verify-no-changes --no-restore
 
-    - name: Paquetes vulnerables (incluye transitivos)
+    - name: Vulnerable packages (including transitive)
       shell: bash
       env:
         SOLUTION: ${{ inputs.solution }}
@@ -253,7 +253,7 @@ runs:
           exit 1
         fi
 
-    - name: Dependencias nuevas del PR
+    - name: New dependencies in the PR
       if: inputs.dependency-review == 'true' && github.event_name == 'pull_request'
       uses: actions/dependency-review-action@v4
       with:
@@ -291,7 +291,7 @@ Para añadirlo a un workflow que ya tienes, basta con insertar el `uses` despué
 - uses: contoso/platform-actions/dotnet-governance@v1
   with:
     solution: Payments.sln
-    check-format: "false"   # mientras la solución no esté formateada
+    check-format: "false"   # until the solution is formatted
 ```
 
 Dos cosas a tener en cuenta con el repositorio central:

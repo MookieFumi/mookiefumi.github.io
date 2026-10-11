@@ -11,12 +11,12 @@ Muchos equipos acaban usando [Conventional Commits](https://www.conventionalcomm
 El ámbito es opcional y va entre paréntesis: indica qué parte del código toca el cambio, normalmente un módulo, un proyecto o una capa. En una solución .NET puede ser el nombre del proyecto o del área:
 
 ```text
-feat(orders): añade el endpoint para cancelar pedidos
-fix(auth): corrige la expiración del refresh token
-refactor(infrastructure)!: cambia el repositorio base de EF Core
+feat(orders): add endpoint to cancel orders
+fix(auth): fix refresh token expiration
+refactor(infrastructure)!: change the EF Core base repository
 ```
 
-Si el cambio no encaja en un ámbito concreto, lo omites (`docs: actualiza el README`). Conviene acordar en el equipo la lista de ámbitos, o al menos que sean nombres de proyecto, para que no aparezcan tres variantes del mismo.
+Si el cambio no encaja en un ámbito concreto, lo omites (`docs: update the README`). Conviene acordar en el equipo la lista de ámbitos, o al menos que sean nombres de proyecto, para que no aparezcan tres variantes del mismo.
 
 Elegir el formato lleva cinco minutos. Conseguir que se cumpla en todos los clones del repo es más complicado.
 
@@ -43,13 +43,13 @@ Para que nadie tenga que ejecutar nada, un target en `src/Directory.Build.target
 
 ```xml
 <Target Name="Husky" BeforeTargets="Restore;CollectPackageReferences"
-        Condition="'$(HUSKY)' != '0' And '$(CI)' != 'true' And Exists('$(MSBuildThisFileDirectory)../.git')">
+        Condition="'$(HUSKY)' != '0' And '$(CI)' != 'true' And '$(Configuration)' != 'Release' And Exists('$(MSBuildThisFileDirectory)../.git')">
   <Exec Command="dotnet tool restore" StandardOutputImportance="Low" StandardErrorImportance="High" />
   <Exec Command="dotnet husky install" WorkingDirectory="$(MSBuildThisFileDirectory).." StandardOutputImportance="Low" StandardErrorImportance="High" />
 </Target>
 ```
 
-El dev clona, compila o restaura y `core.hooksPath` queda apuntando a `.husky`. Sin pasos extra en el README.
+El target no se ejecuta en CI (variable `CI`), ni con `-c Release`, ni si defines `HUSKY=0`: los hooks solo tienen sentido en la máquina de quien hace commits, no en un build de release ni en un agente de CI. El dev clona, compila o restaura en Debug y `core.hooksPath` queda apuntando a `.husky`. Sin pasos extra en el README.
 
 ## Capa 2: qué valida el hook
 
@@ -63,7 +63,7 @@ En `.husky/task-runner.json` puedes validar el mensaje con una expresión regula
       "command": "bash",
       "args": [
         "-c",
-        "grep -qE '^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\\([a-z0-9-]+\\))?!?: .{1,72}$' \"$1\" || { echo 'Usa Conventional Commits: tipo(ámbito): descripción'; exit 1; }",
+        "grep -qE '^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\\([a-z0-9-]+\\))?!?: .{1,72}$' \"$1\" || { echo 'Use Conventional Commits: type(scope): description'; exit 1; }",
         "--",
         "${args}"
       ]
@@ -92,7 +92,7 @@ jobs:
           PR_TITLE: ${{ github.event.pull_request.title }}
         run: |
           echo "$PR_TITLE" | grep -qE '^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\([a-z0-9-]+\))?!?: .{1,72}$' \
-            || { echo "::error::El título del PR debe seguir Conventional Commits: $PR_TITLE"; exit 1; }
+            || { echo "::error::PR title must follow Conventional Commits: $PR_TITLE"; exit 1; }
 ```
 
 No hace falta `actions/checkout`, porque el título viaja en el evento del PR y no se lee ningún fichero del repo. El título pasa por una variable de entorno y no se interpola dentro del script, para que un título con comillas o `$(...)` no ejecute nada. La regex es la misma que la del hook: si cambias una, cambia la otra.

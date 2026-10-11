@@ -1,14 +1,14 @@
 ---
 title: "Estándares de lenguaje y calidad en .NET: que el compilador haga cumplir las normas"
 subtitle: Analizadores, .editorconfig, warnings como errores y cómo adoptarlo en una solución que ya existe
-date: 2026-10-11
+date: 2026-09-04
 topic: desarrollo
-published: true
+published: false
 ---
 
-Toda empresa tiene una guía de estilo y unas buenas prácticas de código. El problema es que casi siempre viven en una wiki, y lo que vive en una wiki se olvida. Este post complementa la serie sobre gobernanza de soluciones .NET: si no has leído el de [Directory.Build.props](/2026-10-11-directory-build-props-contrato-calidad), empieza por ahí.
+Toda empresa tiene una guía de estilo y unas buenas prácticas de código. El problema es que casi siempre viven en una wiki, y lo que vive en una wiki se olvida. Este post complementa la serie sobre gobernanza de soluciones .NET: si no has leído el de [Directory.Build.props](/2026-09-02-directory-build-props-contrato-calidad), empieza por ahí.
 
-Aquí llevamos esas normas a `Directory.Build.props` y `.editorconfig` para que el compilador las aplique en cada build, y vemos cómo hacerlo en una solución existente sin bloquear al equipo. Al final cuento el efecto que más se nota cuando esto funciona, y no tiene nada que ver con el número de warnings.
+Aquí llevamos esas normas a `Directory.Build.props` y `.editorconfig` para que el compilador las aplique en cada build, y vemos cómo hacerlo en una solución existente sin bloquear al equipo. Al final cuento el efecto que más se nota cuando esto funciona.
 
 ## Lenguaje: la base común
 
@@ -142,7 +142,7 @@ Los analizadores del SDK cubren mucho, pero no todo. Algunos paquetes populares 
 
 No los añadas todos a la vez. Muchas reglas se solapan y, con tanto ruido, el equipo deja de leer los avisos. Empieza por uno, ajusta sus reglas en `.editorconfig` y suma el siguiente solo si aporta algo que no tengas.
 
-Para incluirlos en todos los proyectos, el sitio correcto es `GlobalPackageReference` en `Directory.Packages.props`, como vimos en el post de [Central Package Management](/2026-10-11-central-package-management-nuget). Así no se propagan a quien consuma tus librerías.
+Para incluirlos en todos los proyectos, el sitio correcto es `GlobalPackageReference` en `Directory.Packages.props`, como vimos en el post de [Central Package Management](/2026-09-03-central-package-management-nuget). Así no se propagan a quien consuma tus librerías.
 
 ## Adopción gradual en una solución existente
 
@@ -154,11 +154,11 @@ Activar todo esto de golpe en una solución con años de historia puede producir
 4. Documenta las excepciones y no las hagas nunca globales. Si un proyecto no puede cumplir una regla todavía, desactívala solo en ese proyecto, con un comentario y un ticket.
 5. Activa los errores en CI cuando la solución esté limpia. `TreatWarningsAsErrors` entra cuando los warnings llegan a cero, para que no vuelvan a subir.
 
-La regla de oro: el código nuevo cumple el estándar desde el primer día y el existente se va poniendo al día de forma incremental.
+Mi regla: el código nuevo cumple el estándar desde el primer día y el existente se va poniendo al día de forma incremental.
 
 ## Beneficios para equipos de desarrollo
 
-El efecto que más se nota no es tener menos warnings, sino que las code reviews cambian de tema. Cuando el build ya ha comprobado el estilo, la nulabilidad y los errores habituales, la revisión se dedica al diseño y a la lógica de negocio. Y de ahí viene el resto:
+Lo que más se nota es que las code reviews cambian de tema, más que el número de warnings. Cuando el build ya ha comprobado el estilo, la nulabilidad y los errores habituales, la revisión se dedica al diseño y a la lógica de negocio. Y de ahí viene el resto:
 
 - Nadie vuelve a comentar "falta un espacio" o "este `using` sobra".
 - Hay menos bugs en producción, porque Nullable y los analizadores detectan antes de compilar errores que de otro modo aparecerían en ejecución.
@@ -198,4 +198,4 @@ Con todo lo visto, la parte de calidad del `Directory.Build.props` queda así:
 </Project>
 ```
 
-Veinte líneas que sustituyen a una página de wiki. Junto con `.editorconfig` para el estilo y `Directory.Packages.props` para los analizadores de terceros, tu solución tiene unas normas de calidad que se cumplen solas en cada build.
+Son veinte líneas en lugar de una página de wiki. Junto con `.editorconfig` para el estilo y `Directory.Packages.props` para los analizadores de terceros, tu solución tiene unas normas de calidad que se cumplen solas en cada build.

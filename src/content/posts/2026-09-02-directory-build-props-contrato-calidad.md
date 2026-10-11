@@ -1,14 +1,14 @@
 ---
 title: "Directory.Build.props: el contrato de calidad de tu solución .NET"
 subtitle: Cómo MSBuild lo encuentra, qué conviene centralizar, qué no y cómo gobernarlo en equipo
-date: 2026-10-11
+date: 2026-09-02
 topic: desarrollo
-published: true
+published: false
 ---
 
 Un único `Directory.Build.props` en la raíz del repositorio convierte las reglas de tu equipo en algo que aplica el compilador, no en una página de wiki que nadie lee. Este es el primer post de una serie sobre gobernanza de soluciones .NET; en el segundo veremos Central Package Management.
 
-Aquí repaso cómo funciona, qué merece la pena centralizar y cómo evitar que se convierta en un cajón de sastre. Al final cuento qué gana de verdad un equipo cuando el build deja de depender de la memoria de las personas, y no es ahorrarse unas líneas de XML.
+Aquí repaso cómo funciona, qué merece la pena centralizar y cómo evitar que se convierta en un cajón de sastre. Al final cuento qué gana un equipo cuando el build deja de depender de la memoria de las personas.
 
 ## El problema: la misma configuración en cada .csproj
 
@@ -58,7 +58,7 @@ La forma más rápida de crearlo es con la plantilla del SDK, disponible desde .
 dotnet new buildprops
 ```
 
-Que gane el primero que se encuentra tiene dos consecuencias:
+Como gana el primero que se encuentra, hay dos consecuencias:
 
 1. Pon siempre uno en la raíz del repositorio. Así la búsqueda se detiene ahí y ningún fichero perdido en una carpeta superior (el perfil del usuario, el agente de CI) se cuela en tu build.
 2. Si añades otro en una subcarpeta, oculta al de la raíz salvo que lo importes de forma explícita. Lo vemos en el apartado de jerarquía.
@@ -158,7 +158,7 @@ Un punto de partida mínimo:
 | `AnalysisLevel` | Activa los analizadores de .NET con el conjunto de reglas recomendado. |
 | `EnforceCodeStyleInBuild` | Las reglas de estilo del `.editorconfig` se comprueban al compilar, no solo en el IDE. |
 
-Hay mucho más que contar aquí: qué nivel de analizadores elegir, cómo se reparte el trabajo entre `Directory.Build.props` y `.editorconfig`, cuándo convertir warnings en errores y cómo activarlo en una solución existente sin bloquear al equipo. Todo eso lo desarrollo en [otro post](/2026-10-11-estandares-lenguaje-calidad-dotnet).
+Hay mucho más que contar aquí: qué nivel de analizadores elegir, cómo se reparte el trabajo entre `Directory.Build.props` y `.editorconfig`, cuándo convertir warnings en errores y cómo activarlo en una solución existente sin bloquear al equipo. Todo eso lo desarrollo en [otro post](/2026-09-04-estandares-lenguaje-calidad-dotnet).
 
 ## Versionado centralizado de los artefactos
 
@@ -251,7 +251,7 @@ Esto es lo que cambia en el día a día de un equipo que adopta `Directory.Build
 
 ## Conclusión y siguiente paso
 
-`Directory.Build.props` no sirve para ahorrar líneas. Es el sitio donde un equipo .NET declara cómo se construye su software. Con un fichero en la raíz, otro en `tests/` y una regla de CODEOWNERS, cualquier proyecto nuevo nace cumpliendo el estándar.
+En `Directory.Build.props` un equipo .NET declara cómo se construye su software. Con un fichero en la raíz, otro en `tests/` y una regla de CODEOWNERS, cualquier proyecto nuevo nace cumpliendo el estándar.
 
 Lo que hemos centralizado:
 
@@ -259,4 +259,4 @@ Lo que hemos centralizado:
 - Calidad: analizadores y estilo comprobado en el build.
 - Versionado: una versión base y un sufijo que completa el pipeline.
 
-Queda fuera una pieza: las versiones de los paquetes NuGet. Ponerlas en `Directory.Build.props` es tentador, pero existe una herramienta pensada para eso. En la parte 2 veremos Central Package Management con `Directory.Packages.props`, cómo usar `GlobalPackageReference` para los analizadores y cómo sumar NuGetAudit y Package Source Mapping para proteger la cadena de suministro.
+Queda fuera una pieza: las versiones de los paquetes NuGet. Ponerlas en `Directory.Build.props` es tentador, pero hay una herramienta pensada para eso. En la parte 2 veremos Central Package Management con `Directory.Packages.props`, cómo usar `GlobalPackageReference` para los analizadores y cómo sumar NuGetAudit y Package Source Mapping para proteger la cadena de suministro.

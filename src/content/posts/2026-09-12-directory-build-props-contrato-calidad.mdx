@@ -6,6 +6,8 @@ topic: desarrollo
 published: true
 ---
 
+import MsbuildOrderDiagram from '../../components/MsbuildOrderDiagram.astro';
+
 Un único `Directory.Build.props` en la raíz del repositorio convierte las reglas de tu equipo en algo que aplica el compilador, no en una página de wiki que nadie lee. Este es el primer post de una serie sobre gobernanza de soluciones .NET; en el segundo veremos Central Package Management.
 
 Aquí repaso cómo funciona, qué merece la pena centralizar y cómo evitar que se convierta en un cajón de sastre. Al final cuento qué gana un equipo cuando el build deja de depender de la memoria de las personas.
@@ -68,6 +70,8 @@ Si un proyecto concreto necesita quedarse fuera, puede desactivarlo con `<Import
 ## .props frente a .targets: el orden de importación importa
 
 `Directory.Build.props` se importa al principio de la evaluación, antes del contenido del `.csproj`. `Directory.Build.targets` se importa al final, después del `.csproj` y de los targets del SDK. Esa diferencia decide qué va en cada fichero.
+
+<MsbuildOrderDiagram />
 
 | Fichero | Cuándo se importa | Para qué |
 | --- | --- | --- |

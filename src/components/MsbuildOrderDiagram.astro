@@ -1,0 +1,497 @@
+---
+// Diagrama animado del orden en que MSBuild importa Directory.Build.props, el .csproj
+// y Directory.Build.targets. El layout se calcula en el navegador a partir del
+// spec de abajo; no hay coordenadas escritas a mano. Con prefers-reduced-motion
+// arranca en pausa y muestra el estado final.
+---
+<div class="msb">
+  <div class="titlebar">
+    <span class="msb-dot" style="background:#ff5f56"></span><span class="msb-dot" style="background:#ffbd2e"></span><span class="msb-dot" style="background:#27c93f"></span>
+    <span class="path">~/payments · orden de importación</span>
+  </div>
+  <div class="main">
+        <div class="stage-wrap"><div class="stage" id="msb-stage"><div class="canvas" id="msb-canvas"><svg id="msb-svg" viewBox="0 0 720 590"></svg></div></div></div>
+    <div class="rail"><div class="rail-title">qué pasa en cada punto</div><div class="rail-list" id="msb-rail"></div></div>
+  </div>
+</div>
+
+<style is:global>
+.msb{
+  --bg:#0d1117; --win:#0d1117; --fg:#c9d1d9; --muted:#8b949e; --line:#30363d; --hi:#161b22;
+  --c-entry:#56d4dd; --c-props:#57d38c; --c-proj:#6cb6ff; --c-targ:#b392f0; --c-warn:#e3b341;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  width:100%;border:1px solid var(--line);background:var(--win);color:var(--fg);font:12px/1.45 var(--mono);margin-block:24px;overflow:hidden;
+  -webkit-text-size-adjust:100%;text-size-adjust:100%;
+
+&,& *{box-sizing:border-box}
+.titlebar{display:flex;align-items:center;gap:7px;padding:9px 12px;border-bottom:1px solid var(--line)}
+.msb-dot{width:10px;height:10px;border-radius:50%}
+.titlebar .path{margin-left:8px;color:var(--muted);font-size:11px}
+.main{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"stage" "rail"}
+.stage-wrap{grid-area:stage;min-width:0;padding:14px;border-bottom:1px solid var(--line);display:flex;justify-content:center}
+.rail{grid-area:rail;padding:14px 12px;display:flex;flex-direction:column}
+.rail-title{font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
+.stage{position:relative;overflow:hidden}
+.canvas{position:absolute;top:0;left:0;transform-origin:top left}
+#msb-svg{position:absolute;top:0;left:0;overflow:visible}
+.box{position:absolute;border:1px solid var(--line);padding:8px 10px 10px;transition:box-shadow .3s,background .3s}
+.box.hl{background:var(--hi);box-shadow:0 0 0 1px currentColor inset}
+.bt{font-weight:700;text-align:center;color:var(--fg)}
+.bs{text-align:center;margin-bottom:6px;font-size:11px}
+.st{color:var(--muted)}
+.br{display:flex;gap:8px;justify-content:space-between;font-size:11px}
+.br .k{color:var(--muted);flex:none}
+.br .v{text-align:right;overflow-wrap:anywhere}
+path.edge{fill:none;stroke:var(--line);stroke-width:1}
+.elabel{font-size:9.5px;fill:var(--muted);paint-order:stroke;stroke:var(--bg);stroke-width:3px;font-family:var(--mono)}
+.rail-list{position:relative;display:flex;flex-direction:row;flex-wrap:wrap;gap:8px 18px}
+.rail-item{position:relative;padding:2px 0 2px 14px;flex:1 1 180px;font-size:10.5px;color:var(--muted);transition:background .3s,color .3s}
+.rail-dot{position:absolute;left:0;top:2px;background:var(--win);line-height:1.2}
+.rail-item.on{color:var(--fg);background:var(--hi)}
+.rail-item .tg{display:block;color:var(--muted);font-size:10px}
+
+}
+</style>
+
+<script is:inline>
+(function(){
+
+var spec = {
+  roles: { entry:"#56d4dd", props:"#57d38c", proj:"#6cb6ff", targ:"#b392f0" },
+  nodes: [
+    { id:"build",  role:"entry", row:0, col:0, w:300, title:"dotnet build", sub:"Payments.Api.csproj", rows:[["busca","Directory.Build.props"],["desde","carpeta del proyecto, hacia arriba"]], state:"idle" },
+    { id:"props",  role:"props", row:1, col:0, w:340, title:"Directory.Build.props", sub:"1 · antes del .csproj", rows:[["contiene","TargetFramework, Nullable"],["al evaluarse","el .csproj aún no se ha leído"]], state:"idle" },
+    { id:"csproj", role:"proj",  row:2, col:0, w:340, title:"Payments.Api.csproj", sub:"2 · en medio", rows:[["contiene","lo que hace distinto al proyecto"],["puede","sobrescribir los valores por defecto"]], state:"idle" },
+    { id:"targets",role:"targ",  row:3, col:0, w:340, title:"Directory.Build.targets", sub:"3 · después del .csproj", rows:[["ve","$(TargetFramework) ya definido"],["sirve para","lógica e imposiciones"]], state:"idle" },
+    { id:"result", role:"entry", row:4, col:0, w:300, title:"proyecto evaluado", sub:"listo para compilar", rows:[["orden","props → csproj → targets"]], state:"idle" }
+  ],
+  edges: [
+    { id:"e1", from:"build",   to:"props",   label:"sube y toma el primero" },
+    { id:"e2", from:"props",   to:"csproj",  label:"se importa antes" },
+    { id:"e3", from:"csproj",  to:"targets", label:"se importa después" },
+    { id:"e4", from:"targets", to:"result",  label:"evaluación completa" }
+  ],
+  rail: [
+    { id:"r1", label:"msbuild sube carpeta a carpeta", target:"build" },
+    { id:"r2", label:"en el .props, $(TargetFramework) aún está vacío", target:"props" },
+    { id:"r3", label:"en el .props, $(MSBuildProjectName) sí existe", target:"props" },
+    { id:"r4", label:"en el .targets, la condición sobre $(TargetFramework) funciona", target:"targets" }
+  ],
+  script: [
+    { at:0,    do:"state", node:"build", value:"running" },
+    { at:0,    do:"rail", id:"r1" },
+    { at:900,  do:"fire", edge:"e1" },
+    { at:1700, do:"state", node:"build", value:"done" },
+    { at:1700, do:"state", node:"props", value:"running" },
+    { at:2300, do:"rail", id:"r2" },
+    { at:3000, do:"rail", id:"r3" },
+    { at:3800, do:"state", node:"props", value:"done" },
+    { at:3900, do:"fire", edge:"e2" },
+    { at:4700, do:"state", node:"csproj", value:"running" },
+    { at:5900, do:"state", node:"csproj", value:"done" },
+    { at:6000, do:"fire", edge:"e3" },
+    { at:6800, do:"state", node:"targets", value:"running" },
+    { at:6800, do:"rail", id:"r4" },
+    { at:8000, do:"state", node:"targets", value:"done" },
+    { at:8100, do:"fire", edge:"e4" },
+    { at:8900, do:"state", node:"result", value:"done" },
+  ],
+  loopMs: 11500
+};
+
+/* ---- DOM ---- */
+var canvas = document.getElementById("msb-canvas"), svg = document.getElementById("msb-svg");
+var railEl = document.getElementById("msb-rail");
+var NS = "http://www.w3.org/2000/svg";
+var STATE_SYM = { idle:"◇ idle", running:"◐ running", done:"✓ done" };
+
+
+var defs = document.createElementNS(NS, "defs");
+defs.innerHTML = '<marker id="msb-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#6e7681"/></marker>';
+svg.appendChild(defs);
+
+spec.nodes.forEach(function(n){
+  var d = document.createElement("div");
+  d.className = "box"; d.id = "msb-" + n.id; d.style.borderColor = spec.roles[n.role]; d.style.color = spec.roles[n.role];
+  var rows = n.rows.map(function(r){ return '<div class="br"><span class="k">' + r[0] + '</span><span class="v">' + r[1] + '</span></div>'; }).join("");
+  d.innerHTML = '<div class="bt">' + n.title + '</div><div class="bs">' + n.sub + ' <span class="st" id="msb-st-' + n.id + '"></span></div><div style="color:var(--fg)">' + rows + '</div>';
+  canvas.appendChild(d);
+});
+var packetLayer = document.createElementNS(NS, "g");
+spec.edges.forEach(function(e){
+  var p = document.createElementNS(NS, "path");
+  p.setAttribute("class", "edge"); p.id = "msb-" + e.id; p.setAttribute("marker-end", "url(#msb-arr)");
+  svg.appendChild(p); e._pathEl = p;
+  if (e.label){
+    var t = document.createElementNS(NS, "text"); t.setAttribute("class", "elabel"); svg.appendChild(t); e._labelEl = t;
+  }
+});
+svg.appendChild(packetLayer);
+
+spec.rail.forEach(function(r){
+  var d = document.createElement("div"); d.className = "rail-item"; d.id = "msb-rail-" + r.id;
+  d.innerHTML = '<span class="rail-dot">◇</span>' + r.label + '<span class="tg">┄▸ ' + r.target + '</span>';
+  railEl.appendChild(d);
+});
+
+/* ---- layout automático ---- */
+var nodesById = {}, edgesById = {};
+spec.nodes.forEach(function(n){ nodesById[n.id] = n; });
+spec.edges.forEach(function(e){ edgesById[e.id] = e; });
+var CW = 720, CH = 600, PAD = 20;
+var LANE_GAP = 14, GROUP_GAP = 22, LANE_STEP = 8;
+function cxOf(n){ return n.x + n.w/2; }
+
+function measureNodes(){
+  spec.edges.forEach(function(e){
+    if (e.label && e._lw === undefined){ e._labelEl.textContent = e.label; e._lw = e._labelEl.getBBox().width; }
+  });
+  var cols = spec.nodes.map(function(n){ return n.col; });
+  var nc = Math.max.apply(null, cols) + 1;
+  CW = Math.max(720, nc * 200);
+  var perRow = {};
+  spec.nodes.forEach(function(n){ (perRow[n.row] = perRow[n.row] || []).push(n); });
+  spec.nodes.forEach(function(n){
+    var alone = perRow[n.row].length === 1;
+    var maxW = alone ? CW - 2*PAD : CW/nc - 16;
+    n._w0 = n._w0 || n.w || 200;
+    n.w = Math.min(n._w0, maxW);
+    var el = document.getElementById("msb-" + n.id);
+    el.style.width = n.w + "px"; el.style.height = "auto";
+    for (var k = 0; k < 4 && el.scrollWidth > el.clientWidth && n.w < maxW; k++){
+      n.w = Math.min(maxW, n.w + (el.scrollWidth - el.clientWidth) + 2);
+      el.style.width = n.w + "px";
+    }
+    n.h = el.offsetHeight;
+    n.x = CW * (n.col + 0.5) / nc - n.w/2;
+    n.x = Math.max(PAD/2, Math.min(CW - PAD/2 - n.w, n.x));
+  });
+}
+
+function placeRows(extra){
+  var rows = {};
+  spec.nodes.forEach(function(n){ (rows[n.row] = rows[n.row] || []).push(n); });
+  var keys = Object.keys(rows).map(Number).sort(function(a, b){ return a - b; });
+  var y = PAD;
+  keys.forEach(function(r, i){
+    var h = Math.max.apply(null, rows[r].map(function(n){ return n.h; }));
+    rows[r].forEach(function(n){ n.y = y; });
+    var next = keys[i + 1];
+    if (next === undefined){ y += h; return; }
+    var lanes = spec.edges.filter(function(e){
+      var a = nodesById[e.from].row, b = nodesById[e.to].row;
+      return Math.min(a, b) <= r && Math.max(a, b) >= next &&
+             Math.abs(cxOf(nodesById[e.from]) - cxOf(nodesById[e.to])) > 2;
+    }).length;
+    y += h + 56 + 8 * lanes + extra;
+  });
+  CH = Math.ceil(y + PAD);
+}
+
+function routeEdges(){
+  var att = {};
+  spec.edges.forEach(function(e){
+    if (e.path) return;
+    var a = nodesById[e.from], b = nodesById[e.to];
+    var down = (b.y + b.h/2) >= (a.y + a.h/2);
+    e._sa = down ? "bottom" : "top";
+    e._sb = down ? "top" : "bottom";
+    [[a, e._sa, b, "a"], [b, e._sb, a, "b"]].forEach(function(t){
+      var k = t[0].id + "|" + t[1];
+      (att[k] = att[k] || []).push({ e:e, end:t[3], node:t[0], other:t[2] });
+    });
+  });
+  Object.keys(att).forEach(function(k){
+    var list = att[k], c = cxOf(list[0].node);
+    var groups = [], byId = {};
+    list.forEach(function(it){
+      var g = byId[it.other.id];
+      if (!g){ g = byId[it.other.id] = { other:it.other, items:[] }; groups.push(g); }
+      g.items.push(it);
+    });
+    groups.forEach(function(g){
+      var lab = g.items.filter(function(it){ return it.e.label; });
+      var rest = g.items.filter(function(it){ return !it.e.label; });
+      var front = [], back = [];
+      var lw = lab.reduce(function(m, it){ return Math.max(m, it.e._lw || 0); }, 0);
+      var leftX = c - (g.items.length - 1) * LANE_GAP / 2;
+      var node = list[0].node;
+      var rightRoom = node.x + node.w - 8 - (c + (g.items.length - 1) * LANE_GAP / 2 + lw + 8);
+      var flip = Math.abs(cxOf(g.other) - c) < 2 && lab.length > 0 && leftX - 6 - lw < 4 && rightRoom > 0;
+      lab.forEach(function(it, i){ ((i % 2 === 0) !== flip ? front : back).push(it); });
+      g.items = front.concat(rest, back.reverse());
+      g.w = (g.items.length - 1) * LANE_GAP;
+      g.dir = Math.sign(cxOf(g.other) - c);
+    });
+    var anchor = groups.filter(function(g){ return Math.abs(cxOf(g.other) - c) < 2; })[0];
+    var left  = groups.filter(function(g){ return g.dir < 0; }).sort(function(p, q){ return cxOf(q.other) - cxOf(p.other); });
+    var right = groups.filter(function(g){ return g.dir > 0; }).sort(function(p, q){ return cxOf(p.other) - cxOf(q.other); });
+    function place(g, x0){
+      var nd = list[0].node;
+      x0 = Math.max(nd.x + 8, Math.min(x0, nd.x + nd.w - 8 - g.w));
+      g.items.forEach(function(it, i){
+        it.e["_x" + it.end] = x0 + i * LANE_GAP;
+        it.e._k = i; it.e._m = g.items.length;
+      });
+    }
+    if (anchor){
+      place(anchor, c - anchor.w/2);
+      var lE = anchor.items[0].e, rE = anchor.items[anchor.items.length - 1].e;
+      var cl = c - anchor.w/2 - GROUP_GAP - (lE.label ? lE._lw + 8 : 0);
+      left.forEach(function(g){ place(g, cl - g.w); cl -= g.w + GROUP_GAP; });
+      var cr = c + anchor.w/2 + GROUP_GAP + (rE.label && rE !== lE ? rE._lw + 8 : 0);
+      right.forEach(function(g){ place(g, cr); cr += g.w + GROUP_GAP; });
+    } else {
+      var seq = left.slice().reverse().concat(right);
+      var total = seq.reduce(function(s, g){ return s + g.w; }, 0) + GROUP_GAP * (seq.length - 1);
+      var cc = c - total/2;
+      seq.forEach(function(g){ place(g, cc); cc += g.w + GROUP_GAP; });
+    }
+  });
+  assignLanes();
+}
+
+function assignLanes(){
+  var corr = {};
+  spec.edges.forEach(function(e){
+    if (e.path){ e._pts = e.path; return; }
+    var a = nodesById[e.from], b = nodesById[e.to];
+    var aUp = a.row < b.row, up = aUp ? a : b, lo = aUp ? b : a;
+    e._up = up; e._lo = lo; e._aUp = aUp;
+    e._xu = aUp ? e._xa : e._xb; e._xl = aUp ? e._xb : e._xa;
+    e._yu = up.y + up.h; e._yl = lo.y;
+    if (Math.abs(e._xu - e._xl) < 0.5){ e._lane = null; return; }
+    var k = up.row + "|" + lo.row;
+    (corr[k] = corr[k] || []).push(e);
+  });
+  function pc(e, Le, f, Lf){
+    var c = 0, lo = Math.min(f._xu, f._xl) + 1, hi = Math.max(f._xu, f._xl) - 1;
+    if (Lf < Le && e._xu > lo && e._xu < hi) c += 1;
+    if (Lf > Le && e._xl > lo && e._xl < hi) c += 1;
+    if (Math.abs(e._xu - f._xl) < 9 && Lf < Le) c += 100;
+    if (Math.abs(e._xl - f._xu) < 9 && Le < Lf) c += 100;
+    return c;
+  }
+  function cost(ord){
+    var c = 0;
+    for (var i = 0; i < ord.length; i++) for (var j = 0; j < ord.length; j++) if (i !== j) c += pc(ord[i], i, ord[j], j);
+    return c;
+  }
+  function improve(ord){
+    var best = cost(ord), moved = true, guard = 0;
+    while (moved && guard++ < 60){
+      moved = false;
+      for (var i = 0; i < ord.length; i++) for (var j = 0; j < ord.length; j++){
+        if (i === j) continue;
+        var t = ord.slice(); var it = t.splice(i, 1)[0]; t.splice(j, 0, it);
+        var cc = cost(t);
+        if (cc < best){ best = cc; ord = t; moved = true; }
+      }
+    }
+    return { ord:ord, cost:best };
+  }
+  Object.keys(corr).forEach(function(k){
+    var list = corr[k], up = list[0]._up, lo = list[0]._lo;
+    var span = function(e){ return Math.abs(e._xu - e._xl); };
+    var starts = [
+      list.slice().sort(function(p, q){ return span(q) - span(p); }),
+      list.slice().sort(function(p, q){ return span(p) - span(q); }),
+      list.slice().sort(function(p, q){ return p._xu - q._xu; })
+    ];
+    var bestRes = null;
+    starts.forEach(function(st){ var r = improve(st); if (!bestRes || r.cost < bestRes.cost) bestRes = r; });
+    var top = 0; spec.nodes.forEach(function(n){ if (n.row === up.row) top = Math.max(top, n.y + n.h); });
+    var bottom = lo.y, n = bestRes.ord.length;
+    var step = Math.min(LANE_STEP, (bottom - top - 20) / Math.max(n - 1, 1));
+    bestRes.ord.forEach(function(e, i){ e._lane = top + 10 + i * step; });
+  });
+  spec.edges.forEach(function(e){
+    if (e.path) return;
+    var pts;
+    if (e._lane === null) pts = [[e._xu, e._yu], [e._xl, e._yl]];
+    else pts = [[e._xu, e._yu], [e._xu, e._lane], [e._xl, e._lane], [e._xl, e._yl]];
+    e._pts = e._aUp ? pts : pts.reverse();
+  });
+}
+
+function placeLabels(){
+  var segs = [];
+  spec.edges.forEach(function(e){
+    for (var i = 0; i + 1 < e._pts.length; i++)
+      segs.push([e._pts[i][0], e._pts[i][1], e._pts[i+1][0], e._pts[i+1][1]]);
+  });
+  var rects = spec.nodes.map(function(n){ return { x:n.x - 3, y:n.y - 3, w:n.w + 6, h:n.h + 6 }; });
+  function segHit(s, r){
+    return Math.max(s[0], s[2]) > r.x && Math.min(s[0], s[2]) < r.x + r.w &&
+           Math.max(s[1], s[3]) > r.y && Math.min(s[1], s[3]) < r.y + r.h;
+  }
+  function rectHit(a, b){ return a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h; }
+  function free(r){
+    if (r.x < 2 || r.y < 2 || r.x + r.w > CW - 2 || r.y + r.h > CH - 2) return false;
+    for (var i = 0; i < segs.length; i++) if (segHit(segs[i], r)) return false;
+    for (var j = 0; j < rects.length; j++) if (rectHit(r, rects[j])) return false;
+    return true;
+  }
+  var failed = 0;
+  spec.edges.forEach(function(e){
+    if (!e.label) return;
+    var t = e._labelEl;
+    t.textContent = e.label;
+    var bb = t.getBBox(), w = bb.width, h = bb.height || 11;
+    var cands = [];
+    var s = [];
+    for (var i = 0; i + 1 < e._pts.length; i++) s.push([e._pts[i], e._pts[i+1]]);
+    s.sort(function(p, q){
+      return Math.hypot(q[1][0]-q[0][0], q[1][1]-q[0][1]) - Math.hypot(p[1][0]-p[0][0], p[1][1]-p[0][1]);
+    });
+    var offs = [0, -10, 10, -20, 20, -30, 30, -40, 40];
+    s.forEach(function(p){
+      var x1 = p[0][0], y1 = p[0][1], x2 = p[1][0], y2 = p[1][1];
+      if (Math.hypot(x2 - x1, y2 - y1) < 18) return;
+      if (x1 === x2){
+        var my = (y1 + y2) / 2;
+        offs.forEach(function(d){
+          [[1, "start", x1 + 6], [-1, "end", x1 - 6]].forEach(function(sd){
+            var tx = sd[2], ty = my + d + 3;
+            cands.push({ x:tx, y:ty, anchor:sd[1], r:{ x: sd[0] > 0 ? tx : tx - w, y:ty - h + 2, w:w, h:h } });
+          });
+        });
+      } else {
+        var mx = (x1 + x2) / 2;
+        offs.forEach(function(d){
+          [-5, 13].forEach(function(dy){
+            var tx = mx + d, ty = y1 + dy;
+            cands.push({ x:tx, y:ty, anchor:"middle", r:{ x:tx - w/2, y:ty - h + 2, w:w, h:h } });
+          });
+        });
+      }
+    });
+    var pick = null;
+    for (var c = 0; c < cands.length; c++) if (free(cands[c].r)){ pick = cands[c]; break; }
+    if (!pick){ failed++; pick = cands[0] || { x:e._pts[0][0], y:e._pts[0][1] - 6, anchor:"middle", r:{ x:0, y:0, w:0, h:0 } }; }
+    t.setAttribute("x", pick.x); t.setAttribute("y", pick.y); t.setAttribute("text-anchor", pick.anchor);
+    rects.push({ x:pick.r.x - 2, y:pick.r.y - 1, w:pick.r.w + 4, h:pick.r.h + 2 });
+  });
+  return failed;
+}
+
+function applyGeometry(){
+  spec.nodes.forEach(function(n){
+    var el = document.getElementById("msb-" + n.id);
+    el.style.left = n.x + "px"; el.style.top = n.y + "px"; el.style.width = n.w + "px"; el.style.height = n.h + "px";
+  });
+  canvas.style.width = CW + "px"; canvas.style.height = CH + "px";
+  svg.style.width = CW + "px"; svg.style.height = CH + "px";
+  svg.setAttribute("viewBox", "0 0 " + CW + " " + CH);
+  spec.edges.forEach(function(e){
+    e._pathEl.setAttribute("d", "M" + e._pts.map(function(p){ return p[0] + "," + p[1]; }).join(" L"));
+    e._len = e._pathEl.getTotalLength();
+  });
+}
+
+function layoutDiagram(){
+  var extra = 0, failed = 0;
+  for (var attempt = 0; attempt < 6; attempt++){
+    measureNodes();
+    placeRows(extra);
+    routeEdges();
+    applyGeometry();
+    failed = placeLabels();
+    if (!failed) break;
+    extra += 14;
+  }
+  if (failed && window.console) console.warn("[layout] " + failed + " etiqueta(s) sin lugar: acortarlas o mover nodos de fila/columna");
+  if (typeof rescale === "function") rescale();
+  return failed;
+}
+
+function rescale(){
+  var wrap = document.querySelector(".stage-wrap"), cs = getComputedStyle(wrap);
+  var avail = wrap.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+  var scale = Math.min(1, avail / CW);
+  document.getElementById("msb-canvas").style.transform = "scale(" + scale + ")";
+  var stage = document.getElementById("msb-stage");
+  stage.style.width = (CW * scale) + "px"; stage.style.height = (CH * scale) + "px";
+}
+
+/* ---- simulación ---- */
+var loopT = 0, nextEv = 0, paused = false, speed = 1, packets = [];
+var reduced = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function setState(id, v){
+  nodesById[id].state = v;
+  document.getElementById("msb-st-" + id).textContent = STATE_SYM[v];
+}
+function highlight(targetId){
+  spec.nodes.forEach(function(n){ document.getElementById("msb-" + n.id).classList.toggle("hl", n.id === targetId); });
+}
+function railOn(id){
+  spec.rail.forEach(function(r){
+    var el = document.getElementById("msb-rail-" + r.id), on = r.id === id;
+    el.classList.toggle("on", on);
+    el.querySelector(".rail-dot").textContent = on ? "◆" : "◇";
+    if (on) highlight(r.target);
+  });
+}
+function fire(e, instant){
+  if (instant) return;
+  packets.push({ e:e, t0:loopT, dur:800 });
+}
+function apply(ev, instant){
+  if (ev.do === "state") setState(ev.node, ev.value);
+  else if (ev.do === "rail") railOn(ev.id);
+  else if (ev.do === "fire") fire(edgesById[ev.edge], instant);
+}
+function resetLoop(){
+  loopT = 0; nextEv = 0; packets = [];
+  packetLayer.innerHTML = "";
+  spec.nodes.forEach(function(n){ setState(n.id, "idle"); });
+  spec.rail.forEach(function(r){
+    var el = document.getElementById("msb-rail-" + r.id); el.classList.remove("on"); el.querySelector(".rail-dot").textContent = "◇";
+  });
+  highlight(null);
+  spec.edges.forEach(function(e){ e._pathEl.style.stroke = ""; });
+}
+function drawPackets(){
+  packetLayer.innerHTML = "";
+  var keep = [];
+  packets.forEach(function(p){
+    var k = (loopT - p.t0) / p.dur, e = p.e;
+    if (k >= 1){ e._pathEl.style.stroke = ""; return; }
+    var role = spec.roles[nodesById[e.from].role];
+    e._pathEl.style.stroke = role;
+    var pt = e._pathEl.getPointAtLength(Math.max(0, k) * e._len);
+    var c = document.createElementNS(NS, "circle");
+    c.setAttribute("cx", pt.x); c.setAttribute("cy", pt.y); c.setAttribute("r", 3.5); c.setAttribute("fill", role);
+    packetLayer.appendChild(c);
+    keep.push(p);
+  });
+  packets = keep;
+}
+var last = performance.now();
+function frame(t){
+  var dt = Math.min(100, t - last); last = t;
+  if (!paused){
+    loopT += dt * speed;
+    while (nextEv < spec.script.length && spec.script[nextEv].at <= loopT) apply(spec.script[nextEv++], false);
+    if (loopT >= spec.loopMs) resetLoop();
+    drawPackets();
+  }
+  requestAnimationFrame(frame);
+}
+
+
+resetLoop();
+layoutDiagram();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(layoutDiagram);
+window.addEventListener("resize", rescale);
+if (reduced){
+  spec.script.forEach(function(ev){ apply(ev, true); });
+  spec.nodes.forEach(function(n){ setState(n.id, "done"); });
+  paused = true;
+}
+requestAnimationFrame(frame);
+
+
+})();
+</script>

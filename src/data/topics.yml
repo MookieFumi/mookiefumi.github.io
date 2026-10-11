@@ -1,5 +1,5 @@
 # Temas del blog. El id se usa en el front matter de cada post (topic: id),
-# en las clases CSS (.topic-id) y como ancla en /temas.
+# en las clases CSS (.topic-id) y como ancla en /topics.
 - id: maui
   name: .NET MAUI
 - id: ia

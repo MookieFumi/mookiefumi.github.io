@@ -17,7 +17,7 @@ const posts = defineCollection({
 });
 
 // Temas del blog: el id se usa en `topic:` de cada post, en las clases
-// `.topic-<id>` y como ancla en /temas. `order` guarda la posición en el
+// `.topic-<id>` y como ancla en /topics. `order` guarda la posición en el
 // fichero, porque las colecciones no garantizan el orden.
 const topics = defineCollection({
   loader: file('./src/data/topics.yml', {
@@ -29,7 +29,7 @@ const topics = defineCollection({
   }),
 });
 
-// Enlaces de /recursos, agrupados por sección.
+// Enlaces de /resources, agrupados por sección.
 const resources = defineCollection({
   loader: file('./src/data/resources.yml', {
     parser: (text) => parse(text).map((group: object, order: number) => ({ ...group, order })),

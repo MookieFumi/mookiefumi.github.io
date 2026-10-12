@@ -7,11 +7,11 @@ import Lanyard from '../components/Lanyard/Lanyard';
 
 // Layout de una página Markdown: recibe su front matter.
 interface Props {
-  frontmatter: { title: string };
+  frontmatter: { title: string; description?: string };
 }
-const { title } = Astro.props.frontmatter;
+const { title, description } = Astro.props.frontmatter;
 ---
-<Base title={title}>
+<Base title={title} description={description}>
   <div class="container about">
     <aside class="about-badge" aria-label="Credencial">
       <!-- Prueba: la credencial en 3D con el Lanyard de React Bits. La tarjeta es una

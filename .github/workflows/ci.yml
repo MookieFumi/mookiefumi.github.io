@@ -4,6 +4,13 @@ on:
   # Validate every pull request against main before merging.
   pull_request:
     branches: [main]
+  # Reused by deploy.yml, so the checks and the build live in a single place.
+  workflow_call:
+    inputs:
+      upload-pages-artifact:
+        description: Upload dist/ as the GitHub Pages artifact after a successful build.
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -33,3 +40,8 @@ jobs:
         run: pnpm build
       - name: Check internal links
         run: node scripts/check-links.mjs
+      - name: Upload the site
+        if: inputs.upload-pages-artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist

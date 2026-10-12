@@ -19,11 +19,13 @@ interface Props {
   // Fecha de publicación y tema del post (solo artículos).
   published?: Date;
   modified?: Date;
+  // Ruta de la imagen para compartir (con barra inicial); por defecto la de la marca.
+  image?: string;
   section?: string;
   // Id del tema, para el breadcrumb (`/topics/id`).
   sectionId?: string;
 }
-const { title, description, article = false, canonical, published, modified, section, sectionId } = Astro.props;
+const { title, description, article = false, canonical, published, modified, image, section, sectionId } = Astro.props;
 
 // Google corta los títulos hacia los 60 caracteres: la marca solo se añade si cabe.
 const homeTitle = 'Blog de arquitectura .NET, calidad, CI/CD e IA';
@@ -32,7 +34,9 @@ const withBrand = `${pageTitle} · ${SITE.title}`;
 const fullTitle = withBrand.length <= 60 ? withBrand : pageTitle;
 const metaDescription = description ?? SITE.description;
 // Las URLs públicas no llevan `.html` (`/topics`, `/page2/`, `/`).
-const ogImage = `${SITE.url}/img/brand/mookie-og.png`;
+const ogImage = `${SITE.url}${image ?? '/img/brand/mookie-og.png'}`;
+// El alt de la imagen de un post es su título; el de la marca, el nombre del blog.
+const ogImageAlt = image ? pageTitle : SITE.title;
 const path = Astro.url.pathname.replace(/\.html$/, '');
 
 // Datos estructurados (JSON-LD): el autor en todas las páginas, BlogPosting y
@@ -126,7 +130,7 @@ const jsonLd = graph.length ? JSON.stringify({ '@context': 'https://schema.org',
   <meta property="og:image" content={ogImage}>
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content={SITE.title}>
+  <meta property="og:image:alt" content={ogImageAlt}>
   {article && published && <meta property="article:published_time" content={published.toISOString()}>}
   {article && modified && <meta property="article:modified_time" content={modified.toISOString()}>}
   {article && <meta property="article:author" content={SITE.author.name}>}
@@ -138,5 +142,6 @@ const jsonLd = graph.length ? JSON.stringify({ '@context': 'https://schema.org',
   <meta name="twitter:title" content={pageTitle}>
   <meta name="twitter:description" content={metaDescription}>
   <meta name="twitter:image" content={ogImage}>
+  <meta name="twitter:image:alt" content={ogImageAlt}>
   {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
 </head>

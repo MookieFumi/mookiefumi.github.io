@@ -10,14 +10,15 @@ interface Props {
   canonical?: string;
   published?: Date;
   modified?: Date;
+  image?: string;
   section?: string;
   sectionId?: string;
 }
-const { title, description, article, canonical, published, modified, section, sectionId } = Astro.props;
+const { title, description, article, canonical, published, modified, image, section, sectionId } = Astro.props;
 ---
 <!DOCTYPE html>
 <html lang="es">
-  <Head title={title} description={description} article={article} canonical={canonical} published={published} modified={modified} section={section} sectionId={sectionId}><slot name="head" /></Head>
+  <Head title={title} description={description} article={article} canonical={canonical} published={published} modified={modified} image={image} section={section} sectionId={sectionId}><slot name="head" /></Head>
   <body>
     <Nav />
     <main id="contenido">

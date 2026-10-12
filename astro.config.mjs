@@ -24,13 +24,18 @@ const postOf = (page) => posts.get(new URL(page).pathname.slice(1));
 export default defineConfig({
   site: 'https://mookiefumi.com',
   integrations: [react(), mdx(), sitemap({
-      filter: (page) => !page.endsWith('/404') && !page.endsWith('/404.html') && !postOf(page)?.noindex,
-      // La paginación se sirve en `/page2/` (con barra final), igual que su canonical.
+      filter: (page) =>
+        !page.endsWith('/404') &&
+        !page.endsWith('/404.html') &&
+        // La paginación no entra en el sitemap: el valor está en los posts.
+        !/\/page\d+\/?$/.test(page) &&
+        !postOf(page)?.noindex,
+      // Las listas (`/series/`, `/topics/`) se sirven con barra final, igual que su canonical.
       serialize: (item) => {
         const date = postOf(item.url)?.date;
         return {
           ...item,
-          url: item.url.replace(/\/(page\d+|series|topics)$/, '/$1/'),
+          url: item.url.replace(/\/(series|topics)$/, '/$1/'),
           lastmod: date ? new Date(date).toISOString() : undefined,
         };
       },

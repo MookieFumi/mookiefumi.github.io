@@ -2,11 +2,16 @@
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import react from '@astrojs/react';
+import sitemap from '@astrojs/sitemap';
 import { mookieTheme, codeBlockWrapper } from './src/lib/shiki.mjs';
 
 export default defineConfig({
   site: 'https://mookiefumi.com',
-  integrations: [react(), mdx()],
+  integrations: [react(), mdx(), sitemap({
+      filter: (page) => !page.endsWith('/404') && !page.endsWith('/404.html'),
+      // La paginación se sirve en `/page2/` (con barra final), igual que su canonical.
+      serialize: (item) => ({ ...item, url: item.url.replace(/\/(page\d+)$/, '/$1/') }),
+    })],
   // Genera los ficheros tal como están en `src/pages`: `slug.html` para los
   // posts (`/AAAA-MM-DD-slug`, sin barra final) y
   // `page2/index.html` para la paginación (`/page2/`).

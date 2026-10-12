@@ -21,6 +21,7 @@ const path = Astro.url.pathname.replace(/\.html$/, '');
 
   <meta name="author" content={SITE.author.name}>
   <meta name="description" content={metaDescription}>
+  {path !== '/404' && <link rel="canonical" href={`${SITE.url}${path}`}>}
 
   <!-- Aplica el tema guardado antes de pintar para evitar un destello -->
   <script is:inline>

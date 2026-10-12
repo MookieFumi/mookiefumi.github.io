@@ -6,25 +6,28 @@ import sitemap from '@astrojs/sitemap';
 import { readdirSync, readFileSync } from 'node:fs';
 import { mookieTheme, codeBlockWrapper } from './src/lib/shiki.mjs';
 
-// `lastmod` de cada post para el sitemap: `updated` del front matter o, si falta, `date`.
+// Datos de cada post para el sitemap, leídos del front matter: `lastmod` (`updated` o, si
+// falta, `date`) y si el post es `noindex` (no entra en el sitemap).
 const postsDir = new URL('./src/content/posts/', import.meta.url);
-const lastmod = new Map(
+const posts = new Map(
   readdirSync(postsDir)
     .filter((file) => /\.mdx?$/.test(file))
     .map((file) => {
       const front = readFileSync(new URL(file, postsDir), 'utf8').split('---')[1] ?? '';
       const date = front.match(/^updated:\s*(\S+)/m)?.[1] ?? front.match(/^date:\s*(\S+)/m)?.[1];
-      return [file.replace(/\.mdx?$/, ''), date];
+      return [file.replace(/\.mdx?$/, ''), { date, noindex: /^noindex:\s*true/m.test(front) }];
     }),
 );
+/** @param {string} page */
+const postOf = (page) => posts.get(new URL(page).pathname.slice(1));
 
 export default defineConfig({
   site: 'https://mookiefumi.com',
   integrations: [react(), mdx(), sitemap({
-      filter: (page) => !page.endsWith('/404') && !page.endsWith('/404.html'),
+      filter: (page) => !page.endsWith('/404') && !page.endsWith('/404.html') && !postOf(page)?.noindex,
       // La paginación se sirve en `/page2/` (con barra final), igual que su canonical.
       serialize: (item) => {
-        const date = lastmod.get(new URL(item.url).pathname.slice(1));
+        const date = postOf(item.url)?.date;
         return {
           ...item,
           url: item.url.replace(/\/(page\d+|series|topics)$/, '/$1/'),

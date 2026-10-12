@@ -2,6 +2,7 @@
 title: Forzar Https en nuestra WebApi
 date: 2016-11-06
 topic: aspnet
+noindex: true
 subtitle: Como forzar Https en los controladores de nuestras WebApi
 published: true
 ---

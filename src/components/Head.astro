@@ -21,12 +21,14 @@ interface Props {
   modified?: Date;
   // Ruta de la imagen para compartir (con barra inicial); por defecto la de la marca.
   image?: string;
+  // Pide a los buscadores que no indexen la página.
+  noindex?: boolean;
   lang?: 'es' | 'en';
   section?: string;
   // Id del tema, para el breadcrumb (`/topics/id`).
   sectionId?: string;
 }
-const { title, description, article = false, canonical, published, modified, image, lang = 'es', section, sectionId } = Astro.props;
+const { title, description, article = false, canonical, published, modified, image, noindex, lang = 'es', section, sectionId } = Astro.props;
 
 // Google corta los títulos hacia los 60 caracteres: la marca solo se añade si cabe.
 const homeTitle = 'Blog de arquitectura .NET, calidad, CI/CD e IA';
@@ -99,7 +101,7 @@ const jsonLd = graph.length ? JSON.stringify({ '@context': 'https://schema.org',
 
   <meta name="author" content={SITE.author.name}>
   <meta name="description" content={metaDescription}>
-  <meta name="robots" content="max-image-preview:large">
+  <meta name="robots" content={noindex ? 'noindex, follow, max-image-preview:large' : 'max-image-preview:large'}>
   {path !== '/404' && <link rel="canonical" href={`${SITE.url}${canonical ?? path}`}>}
 
   <!-- Aplica el tema guardado antes de pintar para evitar un destello -->

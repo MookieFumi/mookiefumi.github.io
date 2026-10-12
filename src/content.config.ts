@@ -24,6 +24,8 @@ const posts = defineCollection({
     // español de una traducción): se usa como canonical.
     canonicalPost: z.string().optional(),
     // Idioma del post; por defecto español. Va a `<html lang>`, `og:locale` y los datos estructurados.
+    // Con `true` el post no se indexa ni entra en el sitemap (sigue visible en el blog).
+    noindex: z.boolean().default(false),
     lang: z.enum(['es', 'en']).default('es'),
     published: z.boolean().default(true),
   }),

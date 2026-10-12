@@ -18,7 +18,7 @@ interface Props {
   next?: Post;
 }
 const { post, previous, next } = Astro.props;
-const { title, subtitle, description, date, updated, canonicalPost, lang } = post.data;
+const { title, subtitle, description, date, updated, canonicalPost, lang, noindex } = post.data;
 const html = postHtml(post);
 const topic = await getEntry(post.data.topic);
 
@@ -40,7 +40,7 @@ const related = showSeries
       .sort((a, b) => Math.abs(a.data.date.valueOf() - date.valueOf()) - Math.abs(b.data.date.valueOf() - date.valueOf()))
       .slice(0, 3);
 ---
-<Base title={title} description={description ?? subtitle ?? metaDescription(html)} article canonical={canonicalPost && `/${canonicalPost}`} published={date} modified={updated ?? date} image={`/og/${post.id}.png`} lang={lang} section={topic?.data.name} sectionId={topic?.id}>
+<Base title={title} description={description ?? subtitle ?? metaDescription(html)} article canonical={canonicalPost && `/${canonicalPost}`} published={date} modified={updated ?? date} image={`/og/${post.id}.png`} lang={lang} noindex={noindex} section={topic?.data.name} sectionId={topic?.id}>
   <article class={`topic-${post.data.topic.id}`}>
     <header class="post-hero container-narrow">
       <div class="window">

@@ -15,6 +15,8 @@ const posts = defineCollection({
     description: z.string().optional(),
     date: z.coerce.date(),
     topic: reference('topics'),
+    // Serie o grupo de posts que se leen juntos (`id` de src/data/series.yml).
+    series: reference('series').optional(),
     // Id de otro post que es la versión principal de este (p. ej. el original en
     // español de una traducción): se usa como canonical.
     canonicalPost: z.string().optional(),
@@ -31,6 +33,19 @@ const topics = defineCollection({
   }),
   schema: z.object({
     name: z.string(),
+    order: z.number(),
+  }),
+});
+
+// Series de posts: el id se usa en `series:` de cada post y en /series/<id>.
+// Dentro de la serie los posts van por fecha, del más antiguo al más reciente.
+const series = defineCollection({
+  loader: file('./src/data/series.yml', {
+    parser: (text) => parse(text).map((item: object, order: number) => ({ ...item, order })),
+  }),
+  schema: z.object({
+    name: z.string(),
+    description: z.string(),
     order: z.number(),
   }),
 });
@@ -54,4 +69,4 @@ const resources = defineCollection({
   }),
 });
 
-export const collections = { posts, topics, resources };
+export const collections = { posts, topics, series, resources };

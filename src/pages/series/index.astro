@@ -1,0 +1,45 @@
+---
+import Base from '../../layouts/Base.astro';
+import Prompt from '../../components/Prompt.astro';
+import { formatDate } from '../../lib/dates';
+import { getSeries } from '../../lib/data';
+import { getSeriesPosts } from '../../lib/posts';
+
+const title = 'Series';
+const subtitle = 'Artículos que se leen mejor juntos, en orden';
+const series = (await Promise.all(
+  (await getSeries()).map(async (item) => ({ item, posts: await getSeriesPosts(item.id) })),
+)).filter(({ posts }) => posts.length > 0);
+---
+<Base title={title} description={`${subtitle}: gobernanza .NET, OAuth, MCP y OpenSpec.`}>
+  <div class="container-narrow">
+    <header class="page-hero">
+      <Prompt cmd="ls ~/series" />
+      <h1>{title}</h1>
+      <p>{subtitle}.</p>
+    </header>
+
+    <div class="topics-index">
+      {series.map(({ item, posts }) => (
+        <section class="topic-section series-section" id={item.id}>
+          <header>
+            <span class="topic-badge" aria-hidden="true">./</span>
+            <div>
+              <h2><a href={`/series/${item.id}`}>{item.data.name}</a></h2>
+              <span class="meta">{posts.length} {posts.length === 1 ? 'artículo' : 'artículos'}</span>
+            </div>
+          </header>
+          <p class="series-description">{item.data.description}</p>
+          <ol class="topic-posts">
+            {posts.map((post) => (
+              <li>
+                <a href={`/${post.id}`}>{post.data.title}</a>
+                <span class="meta">{formatDate(post.data.date, { short: true })}</span>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ))}
+    </div>
+  </div>
+</Base>

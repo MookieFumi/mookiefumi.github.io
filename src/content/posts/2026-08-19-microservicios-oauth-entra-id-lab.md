@@ -3,6 +3,7 @@ title: "Laboratorio: securizando microservicios con OAuth 2.1 y Microsoft Entra 
 subtitle: Los mismos servicios y el mismo código, con un proveedor de identidad gestionado
 date: 2026-08-19
 topic: dotnet
+series: oauth-microservicios
 published: false
 ---
 

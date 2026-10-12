@@ -1,0 +1,32 @@
+---
+import Base from '../../layouts/Base.astro';
+import Prompt from '../../components/Prompt.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getSeries } from '../../lib/data';
+import { getSeriesPosts } from '../../lib/posts';
+
+export async function getStaticPaths() {
+  const paths = [];
+  for (const item of await getSeries()) {
+    const posts = await getSeriesPosts(item.id);
+    if (posts.length > 0) paths.push({ params: { id: item.id }, props: { item, posts } });
+  }
+  return paths;
+}
+const { item, posts } = Astro.props;
+---
+<Base title={item.data.name} description={item.data.description}>
+  <div class="container-narrow">
+    <header class="page-hero">
+      <Prompt cmd={`ls ~/series/${item.id}`} />
+      <h1>{item.data.name}</h1>
+      <p>{item.data.description}</p>
+    </header>
+
+    <ol class="post-grid series-posts">
+      {posts.map((post) => <PostCard post={post} />)}
+    </ol>
+
+    <p class="series-all"><a href="/series/">← Todas las series</a></p>
+  </div>
+</Base>

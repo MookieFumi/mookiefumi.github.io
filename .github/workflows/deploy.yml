@@ -1,11 +1,9 @@
 name: Deploy to GitHub Pages
 
 on:
-  # Publica el blog en cada push a master.
+  # Publica el blog en cada push a main. Las PR las valida ci.yml.
   push:
-    branches: [master]
-  # En las PR solo se construye, para detectar errores antes de fusionar.
-  pull_request:
+    branches: [main]
   # Permite lanzarlo a mano desde la pestaña Actions.
   workflow_dispatch:
 
@@ -28,7 +26,6 @@ jobs:
         uses: withastro/action@v6
 
   deploy:
-    if: github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-latest
     environment:

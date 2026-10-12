@@ -21,11 +21,12 @@ interface Props {
   modified?: Date;
   // Ruta de la imagen para compartir (con barra inicial); por defecto la de la marca.
   image?: string;
+  lang?: 'es' | 'en';
   section?: string;
   // Id del tema, para el breadcrumb (`/topics/id`).
   sectionId?: string;
 }
-const { title, description, article = false, canonical, published, modified, image, section, sectionId } = Astro.props;
+const { title, description, article = false, canonical, published, modified, image, lang = 'es', section, sectionId } = Astro.props;
 
 // Google corta los títulos hacia los 60 caracteres: la marca solo se añade si cabe.
 const homeTitle = 'Blog de arquitectura .NET, calidad, CI/CD e IA';
@@ -72,7 +73,7 @@ if (path === '/') {
       dateModified: (modified ?? published)?.toISOString().slice(0, 10),
       author: { '@id': personId },
       image: ogImage,
-      inLanguage: 'es',
+      inLanguage: lang,
       mainEntityOfPage: pageUrl,
       publisher: { '@id': personId },
     },
@@ -122,7 +123,7 @@ const jsonLd = graph.length ? JSON.stringify({ '@context': 'https://schema.org',
 
   <!-- Open Graph -->
   <meta property="og:site_name" content={SITE.title}>
-  <meta property="og:locale" content="es_ES">
+  <meta property="og:locale" content={lang === 'en' ? 'en_US' : 'es_ES'}>
   <meta property="og:title" content={pageTitle}>
   <meta property="og:type" content={article ? 'article' : 'website'}>
   <meta property="og:url" content={`${SITE.url}${path}`}>

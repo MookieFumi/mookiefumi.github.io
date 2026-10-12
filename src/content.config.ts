@@ -23,6 +23,8 @@ const posts = defineCollection({
     // Id de otro post que es la versión principal de este (p. ej. el original en
     // español de una traducción): se usa como canonical.
     canonicalPost: z.string().optional(),
+    // Idioma del post; por defecto español. Va a `<html lang>`, `og:locale` y los datos estructurados.
+    lang: z.enum(['es', 'en']).default('es'),
     published: z.boolean().default(true),
   }),
 });

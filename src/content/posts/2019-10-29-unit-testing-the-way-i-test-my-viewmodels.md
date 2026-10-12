@@ -33,7 +33,7 @@ Please, check [this link](https://github.com/ghsukumar/SFDC_Best_Practices/wiki/
 
 I am going to use a LoginPage example with some use cases, it's a simple one (enough, i hope) and it will help us to show you how you can do it. This is our LoginPage.
 
-![LoginPage](/images/Screenshot2019-10-23_18.26.57.png)
+![LoginPage](../../assets/images/Screenshot2019-10-23_18.26.57.png)
 
 What are the main parts of my ViewModels I usually cover with unit testing?
 

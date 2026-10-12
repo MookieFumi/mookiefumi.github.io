@@ -35,7 +35,7 @@ A diferencia de la ruta del emulador de Android, esta ruta es local y es de nues
 
 * Nos encontramos un primer GUID que es nuestro dispositivo, si queremos saber la correspondencia entre el GUID y el emulador/ simulador tenemos que ir a **XCode -> Windows -> Devices and Simulators**. En este caso es el emulador/ simulador de un IPhone X.
 
-![alt text](/images/2018-06-24-12.08.18.png)
+![alt text](../../assets/images/2018-06-24-12.08.18.png)
 
 * El segundo GUID corresponde con la aplicación.
 

@@ -11,7 +11,7 @@ Ultimamente estamos desarrollando una WebApi que va a servir de backend a una ap
 ### ¿Qué significa Https? 
 La definición exacta es: protocolo seguro de transferencia de hipertexto (_**Hypertext Transfer Protocol Secure**_) y según podemos leer en la [Wikipedia](https://es.wikipedia.org/wiki/Hypertext_Transfer_Protocol_Secure) utiliza un cifrado basado en SSL/ TLS para crear el canal de comunicación. Siempre que entramos en cualquier página de un banco, de cualquier red social, en definitiva de cualquier web, etc. vemos en la barra de direcciones del navegador un icono de un candado y en el cual podemos ver la información del certificado.
 
-<img src="/images/https-info.png" alt="https" class="img-thumbnail"/>
+<img src="/images/https-info.webp" alt="https" class="img-thumbnail" width="1098" height="804" loading="lazy" decoding="async"/>
 
 ### ¿Qué contiene el certificado? 
 Un certificado digital contiene por normal general, información del sitio web, información del emisor (identificación), período de validez del mismo y una firma única. **Es esta última la que confirma que te estás comunicando con quien realmente te querías comunicar**. En la actualizad hay muchas autoridades de certificación, por ejemplo, VeriSign o la que hemos seleccionado nosotros GoDaddy. El motivo de la elección no ha sido otro que el sitio dónde tenemos contratados los dominios y por dejar en un único sitio este tipo de gestiones.
@@ -74,4 +74,4 @@ Para completar el proceso y tener nuestra WebApi trabajando sobre HTTPS en Azure
     * Cargar un certificado. Podemos cargar un certificado adquirido externamente o importar un certificado de servicio de la aplicación.
     * Enlaces SSL. Será desde aquí donde asignemos nuestro certificado cargado con nuestra WebApi.
 
-<img src="/images/https-azure.png" alt="https" class="img-thumbnail"/>
+<img src="/images/https-azure.webp" alt="https" class="img-thumbnail" width="1200" height="843" loading="lazy" decoding="async"/>

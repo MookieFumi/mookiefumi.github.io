@@ -12,7 +12,7 @@ Actualmente, como líder técnico en desarrollo de aplicaciones móviles, colabo
 
 Fue, hace aproximadamente 4 meses (Enero 2025), David Ortinau (*.NET Product Manager en Microsoft*) [anunciaba a través de las redes sociales](https://www.linkedin.com/posts/davidortinau_xamarin-to-net-upgrade-survey-activity-7153471606655193088-m0SG) unas fechas importantes respecto a Xamarin y que afectan tanto a los desarrolladores como a los desarrollos y despliegues en tienda (Google Play/ Apple Play Store).
 
-![Xamarin timeline](/images/xamarin-timeline.jpg "Xamarin timeline")
+![Xamarin timeline](../../assets/images/xamarin-timeline.jpg "Xamarin timeline")
 
 ### Timeline.
 

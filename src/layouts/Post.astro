@@ -26,15 +26,19 @@ const topic = await getEntry(post.data.topic);
 const series = post.data.series ? await getEntry(post.data.series) : undefined;
 const seriesPosts = series ? await getSeriesPosts(series.id) : [];
 
+// El cuadro de la serie sustituye a «Sigue leyendo»: por tema se acababa
+// sugiriendo posts antiguos y ajenos a la serie.
+const showSeries = series !== undefined && seriesPosts.length > 1;
+
 // Hasta 3 posts del mismo tema, los más cercanos en el tiempo. No se sugieren
-// las traducciones (posts con `canonicalPost`), este mismo post ni los que ya
-// salen en el cuadro de la serie.
-const related = (await getPublishedPosts())
-  .filter((other) => other.data.topic.id === post.data.topic.id && other.id !== post.id)
-  .filter((other) => !other.data.canonicalPost)
-  .filter((other) => !seriesPosts.some((inSeries) => inSeries.id === other.id))
-  .sort((a, b) => Math.abs(a.data.date.valueOf() - date.valueOf()) - Math.abs(b.data.date.valueOf() - date.valueOf()))
-  .slice(0, 3);
+// las traducciones (posts con `canonicalPost`) ni este mismo post.
+const related = showSeries
+  ? []
+  : (await getPublishedPosts())
+      .filter((other) => other.data.topic.id === post.data.topic.id && other.id !== post.id)
+      .filter((other) => !other.data.canonicalPost)
+      .sort((a, b) => Math.abs(a.data.date.valueOf() - date.valueOf()) - Math.abs(b.data.date.valueOf() - date.valueOf()))
+      .slice(0, 3);
 ---
 <Base title={title} description={description ?? subtitle ?? metaDescription(html)} article canonical={canonicalPost && `/${canonicalPost}`} published={date} modified={updated ?? date} section={topic?.data.name} sectionId={topic?.id}>
   <article class={`topic-${post.data.topic.id}`}>
@@ -65,7 +69,7 @@ const related = (await getPublishedPosts())
         <slot />
       </div>
 
-      {series && seriesPosts.length > 1 && (
+      {showSeries && (
         <nav class="series-box" aria-labelledby="series-title">
           <h2 id="series-title">Serie · <a href={`/series/${series.id}`}>{series.data.name}</a></h2>
           <ol>

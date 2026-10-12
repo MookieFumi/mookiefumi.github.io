@@ -40,3 +40,13 @@ export function excerpt(html: string, subtitle: string | undefined, count: numbe
 export function summary(html: string, count: number): string {
   return truncateWords(stripHtml(html), count);
 }
+
+// Descripción para buscadores: el texto de los primeros párrafos, cortado en una
+// palabra completa antes de `max` caracteres.
+export function metaDescription(html: string, max = 155): string {
+  const paragraphs = html.split('<p>').slice(1, 4).map((chunk) => chunk.split('</p>')[0]);
+  const text = words(stripHtml(paragraphs.join(' '))).join(' ');
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max - 1);
+  return `${cut.slice(0, cut.lastIndexOf(' '))}…`;
+}

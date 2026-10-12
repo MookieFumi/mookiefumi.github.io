@@ -1,5 +1,6 @@
 ---
 title: Unit testing tools using your MacOS terminal
+description: Tools to get detailed test results and code coverage for .NET unit tests from the macOS terminal, beyond the red/green summary.
 date: 2019-10-20
 topic: testing
 published: true

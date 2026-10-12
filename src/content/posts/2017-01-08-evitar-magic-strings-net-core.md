@@ -1,5 +1,6 @@
 ---
 title: Evitar magic string al internacionalizar una aplicación ASPNet Core
+description: Cómo evitar magic strings al localizar recursos con IStringLocalizer en ASP.NET Core usando constantes en lugar de claves sueltas.
 date: 2017-01-08
 topic: aspnet
 published: true

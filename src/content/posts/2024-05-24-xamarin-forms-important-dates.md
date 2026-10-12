@@ -1,5 +1,6 @@
 ---
 title: Fechas importantes en Xamarin
+description: "Fechas clave para equipos Xamarin: fin del soporte de Xamarin, de .NET 7 y de Visual Studio para Mac, y qué implica migrar a .NET MAUI."
 date: 2024-05-24
 topic: xamarin
 published: true

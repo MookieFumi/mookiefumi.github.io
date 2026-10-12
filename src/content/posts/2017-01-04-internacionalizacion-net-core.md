@@ -1,5 +1,6 @@
 ---
 title: Internacionalizar una aplicación ASPNet Core
+description: "Internacionalización, localización y globalización en ASP.NET Core: diferencias entre I18n, L10n y G11n y cómo localizar tu aplicación."
 date: 2017-01-04
 topic: aspnet
 published: true

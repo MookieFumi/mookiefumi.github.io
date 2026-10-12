@@ -1,5 +1,6 @@
 ---
 title: Unit testing, the way I test my ViewModels
+description: How I unit test ViewModels in Xamarin Forms with Prism, following the F.I.R.S.T principles. Part of the Xamarin Best Practices Challenge.
 date: 2019-10-29
 topic: testing
 published: true

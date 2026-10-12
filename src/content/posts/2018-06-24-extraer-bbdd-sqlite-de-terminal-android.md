@@ -1,5 +1,6 @@
 ---
 title: Extraer base de datos SQLite de un terminal Android
+description: Cómo extraer la base de datos SQLite de una app Xamarin Forms desde un terminal Android para inspeccionarla en tu equipo.
 date: 2018-06-24
 topic: xamarin
 published: true

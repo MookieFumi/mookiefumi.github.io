@@ -1,5 +1,6 @@
 ---
 title: Extraer base de datos SQLite de un emulador iOS
+description: Cómo encontrar y extraer la base de datos SQLite de una app Xamarin Forms que se ejecuta en el simulador de iOS desde tu Mac.
 date: 2018-06-24
 topic: xamarin
 published: true

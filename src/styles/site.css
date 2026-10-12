@@ -1001,9 +1001,15 @@ a.chip:hover {
   box-shadow: 0 0 0 2px var(--brand-signal);
 }
 
-.author-card h2 {
+.author-card .author-name {
   margin: 0 0 4px;
+  color: var(--color-text);
+  font-family: var(--font-display);
   font-size: 19px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
 }
 
 .author-card p {

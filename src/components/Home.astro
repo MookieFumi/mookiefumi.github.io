@@ -1,6 +1,7 @@
 ---
 // Portada y páginas de la paginación (`/`, `/page2/`, `/page3/`…).
 import { getEntry } from 'astro:content';
+import { SITE } from '../site';
 import Base from '../layouts/Base.astro';
 import WindowBar from './WindowBar.astro';
 import Prompt from './Prompt.astro';
@@ -19,12 +20,22 @@ interface Props {
 const { posts, page, totalPages } = Astro.props;
 
 const pagePath = (n: number) => (n === 1 ? '/' : `/page${n}/`);
+// Desde la página 2 cada página lleva título y descripción propios, para que no
+// compitan con la portada.
+const pageTitle = page > 1 ? `Artículos, página ${page}` : undefined;
+const pageDescription = page > 1
+  ? `Archivo del blog, página ${page} de ${totalPages}: ${posts.slice(0, 2).map((post) => post.data.title).join(', ')}.`
+  : undefined;
 const topics = await getTopics();
 const featured = page === 1 ? posts[0] : undefined;
 const featuredTopic = featured && (await getEntry(featured.data.topic));
 const listed = featured ? posts.slice(1) : posts;
 ---
-<Base>
+<Base title={pageTitle} description={pageDescription}>
+  <Fragment slot="head">
+    {page > 1 && <link rel="prev" href={`${SITE.url}${pagePath(page - 1)}`}>}
+    {page < totalPages && <link rel="next" href={`${SITE.url}${pagePath(page + 1)}`}>}
+  </Fragment>
   <div class="container">
     {featured && (
       <section class="home-intro">

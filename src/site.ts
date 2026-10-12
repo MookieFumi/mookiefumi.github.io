@@ -3,7 +3,7 @@ export const SITE = {
   url: 'https://mookiefumi.com',
   urlPretty: 'mookiefumi.com',
   title: '~/mookie',
-  description: 'Equipos .NET: convenciones, calidad, CI/CD e IA, explicados con laboratorios que puedes ejecutar',
+  description: 'Arquitectura .NET y equipos que escalan: calidad, CI/CD e IA',
   avatar: '/img/avatar-icon.jpg',
   author: {
     name: 'Miguel Angel Martin Hrdez',

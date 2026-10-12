@@ -160,6 +160,56 @@ refactor(infrastructure)!: change the EF Core  -> major
 
 La regex de validación del post de commits y estas tienen que ser coherentes: si el hook acepta un tipo que GitVersion no reconoce, el commit pasa el check pero no incrementa nada.
 
+## De la versión a la release
+
+La versión calculada solo sirve de algo si acaba en un tag y en una release. En GitHub hay dos piezas: el tag que fija la versión y la release que lo publica con sus notas. Un workflow en `main` puede hacer las dos cosas, con la rama configurada en `ContinuousDeployment` como en el ejemplo de GitHub flow:
+
+```yaml
+name: Release
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - run: dotnet tool restore
+
+      - name: Create the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION=$(dotnet gitversion /showvariable MajorMinorPatch)
+          if gh release view "v$VERSION" > /dev/null 2>&1; then
+            echo "Release v$VERSION already exists"
+          else
+            gh release create "v$VERSION" --target "$GITHUB_SHA" --generate-notes
+          fi
+```
+
+`gh release create` crea el tag si no existe, y `--generate-notes` pide a GitHub que escriba las notas. Con eso el tag y la release salen en el mismo paso, y el tag es el que GitVersion usará como punto de partida en la siguiente ejecución.
+
+Las notas salen de los pull requests mergeados desde la release anterior. Con squash merge el título del PR es el mensaje del commit, así que el resultado se parece mucho. Lo que GitHub agrupa son las etiquetas, y se configura en `.github/release.yml`:
+
+```yaml
+changelog:
+  categories:
+    - title: New features
+      labels: [feature]
+    - title: Bug fixes
+      labels: [bug]
+    - title: Other changes
+      labels: ["*"]
+```
+
+GitHub agrupa por la etiqueta del PR y el prefijo `feat` o `fix` del título no cuenta, así que alguien o algo tiene que poner la etiqueta. Si quieres notas agrupadas por el tipo del commit, hay herramientas que leen Conventional Commits directamente, como [release-please](https://github.com/googleapis/release-please), [git-cliff](https://git-cliff.org) o [semantic-release](https://semantic-release.gitbook.io). Tienen un inconveniente: cada una calcula también la versión, y entonces compiten con GitVersion. En un repo que ya usa GitVersion, las notas autogeneradas de GitHub suelen bastar.
+
 ## Cuándo lo usaría y cuándo no
 
 Lo usaría si publicas paquetes NuGet o varios servicios con versiones que importan, si tienes más de una persona integrando en paralelo y si ya tienes disciplina con los mensajes de commit.

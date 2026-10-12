@@ -1012,6 +1012,15 @@ a.chip:hover {
   color: var(--color-text-muted);
 }
 
+.related {
+  margin: 48px 0 32px;
+}
+
+.related h2 {
+  font-size: 20px;
+  margin: 0 0 18px;
+}
+
 .post-nav {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

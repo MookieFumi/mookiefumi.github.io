@@ -15,6 +15,9 @@ const posts = defineCollection({
     description: z.string().optional(),
     date: z.coerce.date(),
     topic: reference('topics'),
+    // Id de otro post que es la versión principal de este (p. ej. el original en
+    // español de una traducción): se usa como canonical.
+    canonicalPost: z.string().optional(),
     published: z.boolean().default(true),
   }),
 });

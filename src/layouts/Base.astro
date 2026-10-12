@@ -7,12 +7,13 @@ interface Props {
   title?: string;
   description?: string;
   article?: boolean;
+  canonical?: string;
 }
-const { title, description, article } = Astro.props;
+const { title, description, article, canonical } = Astro.props;
 ---
 <!DOCTYPE html>
 <html lang="es">
-  <Head title={title} description={description} article={article}><slot name="head" /></Head>
+  <Head title={title} description={description} article={article} canonical={canonical}><slot name="head" /></Head>
   <body>
     <Nav />
     <main id="contenido">

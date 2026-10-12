@@ -17,11 +17,11 @@ interface Props {
   next?: Post;
 }
 const { post, previous, next } = Astro.props;
-const { title, subtitle, description, date } = post.data;
+const { title, subtitle, description, date, canonicalPost } = post.data;
 const html = postHtml(post);
 const topic = await getEntry(post.data.topic);
 ---
-<Base title={title} description={description ?? subtitle ?? metaDescription(html)} article>
+<Base title={title} description={description ?? subtitle ?? metaDescription(html)} article canonical={canonicalPost && `/${canonicalPost}`}>
   <article class={`topic-${post.data.topic.id}`}>
     <header class="post-hero container-narrow">
       <div class="window">

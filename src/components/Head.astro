@@ -5,8 +5,10 @@ interface Props {
   title?: string;
   description?: string;
   article?: boolean;
+  // Ruta absoluta a usar como canonical en lugar de la propia (traducciones).
+  canonical?: string;
 }
-const { title, description, article = false } = Astro.props;
+const { title, description, article = false, canonical } = Astro.props;
 
 const fullTitle = title ? `${title} · ${SITE.title}` : `${SITE.title} · ${SITE.description}`;
 const metaDescription = description ?? SITE.description;
@@ -21,7 +23,7 @@ const path = Astro.url.pathname.replace(/\.html$/, '');
 
   <meta name="author" content={SITE.author.name}>
   <meta name="description" content={metaDescription}>
-  {path !== '/404' && <link rel="canonical" href={`${SITE.url}${path}`}>}
+  {path !== '/404' && <link rel="canonical" href={`${SITE.url}${canonical ?? path}`}>}
 
   <!-- Aplica el tema guardado antes de pintar para evitar un destello -->
   <script is:inline>

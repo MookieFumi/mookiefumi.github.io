@@ -2,7 +2,7 @@
 title: "Estándares de lenguaje y calidad en .NET: que el compilador haga cumplir las normas"
 subtitle: Analizadores, .editorconfig, warnings como errores y cómo adoptarlo en una solución que ya existe
 date: 2026-09-14
-topic: dotnet
+topic: desarrollo
 published: true
 ---
 

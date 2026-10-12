@@ -2,7 +2,7 @@
 title: "Central Package Management: una única fuente de verdad para tus paquetes NuGet"
 subtitle: Directory.Packages.props, excepciones controladas, transitive pinning y cadena de suministro
 date: 2026-09-13
-topic: dotnet
+topic: desarrollo
 published: true
 ---
 

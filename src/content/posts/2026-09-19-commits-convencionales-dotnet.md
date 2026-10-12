@@ -2,7 +2,7 @@
 title: "Conventional Commits en .NET sin fiarte de que el dev se acuerde"
 subtitle: Por qué un hook local no basta y cómo combinar un hook versionado que se instala con el build con un check obligatorio en el PR
 date: 2026-09-19
-topic: dotnet
+topic: desarrollo
 published: true
 ---
 

@@ -3,7 +3,7 @@ import { readdirSync, readFileSync, existsSync, statSync } from 'node:fs';
 import { join, dirname, resolve, extname } from 'node:path';
 
 const dist = resolve(process.argv[2] ?? 'dist');
-const site = 'https://mookiefumi.com';
+const siteOrigin = 'https://mookiefumi.com';
 
 function* walk(dir) {
   for (const name of readdirSync(dir)) {
@@ -24,8 +24,17 @@ for (const file of walk(dist)) {
   const html = readFileSync(file, 'utf8');
   for (const [, , raw] of html.matchAll(/\s(href|src)=["']([^"']+)["']/g)) {
     let url = raw.trim();
-    if (url.startsWith(site)) url = url.slice(site.length) || '/';
-    if (/^([a-z][a-z0-9+.-]*:|\/\/|#)/i.test(url)) continue; // external, mailto:, data: and anchor-only links
+    if (/^([a-z][a-z0-9+.-]*:|\/\/|#)/i.test(url)) {
+      // Absolute links to this site count as internal; any other host, mailto:, data: or anchor is skipped.
+      let parsed;
+      try {
+        parsed = new URL(url, siteOrigin);
+      } catch {
+        continue;
+      }
+      if (parsed.origin !== siteOrigin || url.startsWith('#')) continue;
+      url = parsed.pathname + parsed.search;
+    }
     const path = decodeURIComponent(url.split(/[?#]/)[0]);
     if (!path) continue;
     const target = path.startsWith('/') ? join(dist, path) : resolve(dirname(file), path);

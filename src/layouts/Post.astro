@@ -27,10 +27,12 @@ const series = post.data.series ? await getEntry(post.data.series) : undefined;
 const seriesPosts = series ? await getSeriesPosts(series.id) : [];
 
 // Hasta 3 posts del mismo tema, los más cercanos en el tiempo. No se sugieren
-// las traducciones (posts con `canonicalPost`) ni este mismo post.
+// las traducciones (posts con `canonicalPost`), este mismo post ni los que ya
+// salen en el cuadro de la serie.
 const related = (await getPublishedPosts())
   .filter((other) => other.data.topic.id === post.data.topic.id && other.id !== post.id)
   .filter((other) => !other.data.canonicalPost)
+  .filter((other) => !seriesPosts.some((inSeries) => inSeries.id === other.id))
   .sort((a, b) => Math.abs(a.data.date.valueOf() - date.valueOf()) - Math.abs(b.data.date.valueOf() - date.valueOf()))
   .slice(0, 3);
 ---

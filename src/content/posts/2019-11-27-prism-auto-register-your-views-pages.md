@@ -3,6 +3,7 @@ title: Prism. Auto-register your views/ pages (Xamarin Forms)
 description: A quick way to auto-register Views and ViewModels in Prism for Xamarin Forms instead of registering each page by hand.
 date: 2019-11-27
 topic: xamarin
+noindex: true
 published: true
 ---
 

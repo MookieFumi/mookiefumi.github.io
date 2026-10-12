@@ -14,12 +14,19 @@ const posts = defineCollection({
     // hay, los primeros párrafos del post.
     description: z.string().optional(),
     date: z.coerce.date(),
+    // Fecha de la última edición con cambios de contenido. Si falta, se usa `date`.
+    // Sale como `lastmod` en el sitemap y como `dateModified` en los datos estructurados.
+    updated: z.coerce.date().optional(),
     topic: reference('topics'),
     // Serie o grupo de posts que se leen juntos (`id` de src/data/series.yml).
     series: reference('series').optional(),
     // Id de otro post que es la versión principal de este (p. ej. el original en
     // español de una traducción): se usa como canonical.
     canonicalPost: z.string().optional(),
+    // Idioma del post; por defecto español. Va a `<html lang>`, `og:locale` y los datos estructurados.
+    // Con `true` el post no se indexa ni entra en el sitemap (sigue visible en el blog).
+    noindex: z.boolean().default(false),
+    lang: z.enum(['es', 'en']).default('es'),
     published: z.boolean().default(true),
   }),
 });

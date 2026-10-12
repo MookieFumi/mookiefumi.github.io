@@ -4,6 +4,7 @@ description: How to use Firebase Remote Config in Xamarin Forms to toggle featur
 date: 2019-12-17
 topic: xamarin
 canonicalPost: 2019-12-17-firebase-remote-config-en-xamarin-forms
+lang: en
 published: true
 ---
 

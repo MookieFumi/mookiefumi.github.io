@@ -3,6 +3,7 @@ title: Acceder a IIS Express desde un equipo remoto
 description: Cómo configurar el binding de IIS Express para probar tu aplicación desde otro equipo de la red durante el desarrollo.
 date: 2016-12-06
 topic: aspnet
+noindex: true
 published: true
 ---
 

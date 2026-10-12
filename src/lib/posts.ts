@@ -31,3 +31,10 @@ function mdxParagraphs(body: string): string {
     .map((block) => `<p>${block.replace(/\[([^\]]*)\]\([^)]*\)/g, '$1').replace(/[*_`]/g, '')}</p>`)
     .join('\n');
 }
+
+// Posts publicados de una serie, en orden de lectura (del más antiguo al más
+// reciente; con la misma fecha, por nombre de fichero).
+export async function getSeriesPosts(seriesId: string): Promise<Post[]> {
+  const posts = await getPublishedPosts();
+  return posts.filter((post) => post.data.series?.id === seriesId).reverse();
+}

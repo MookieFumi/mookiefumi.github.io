@@ -3,6 +3,7 @@ title: "Autenticación y autorización en microservicios: OAuth 2.1, OpenID Conn
 subtitle: Los conceptos que necesitas antes de proteger tus APIs en .NET
 date: 2026-08-17
 topic: dotnet
+series: oauth-microservicios
 published: true
 ---
 

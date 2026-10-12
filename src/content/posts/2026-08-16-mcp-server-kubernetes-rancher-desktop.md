@@ -3,6 +3,7 @@ title: "Laboratorio: MCP Server en Kubernetes local con Aspire y Rancher Desktop
 subtitle: De la solución de Aspire a un clúster local, paso a paso y con sus tropiezos
 date: 2026-08-16
 topic: k8s
+series: mcp-dotnet
 published: true
 ---
 

@@ -3,6 +3,7 @@ title: "Hacer cumplir las normas y estándares de .NET con GitHub Actions"
 subtitle: Un único workflow comprueba en cada pull request lo que definen Directory.Build.props, Central Package Management y el .editorconfig
 date: 2026-09-16
 topic: desarrollo
+series: gobernanza-dotnet
 published: true
 ---
 

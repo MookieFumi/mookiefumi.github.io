@@ -3,6 +3,7 @@ title: "Versionado automático en .NET con GitVersion según tu flujo de git"
 subtitle: Qué te da, qué te cuesta y qué preset usar con git flow, github flow o trunk based development
 date: 2026-09-21
 topic: desarrollo
+series: gobernanza-dotnet
 published: true
 ---
 

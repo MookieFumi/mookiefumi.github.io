@@ -1,0 +1,14 @@
+# Series de posts. El id se usa en el front matter (series: id) y en la URL /series/id.
+# Los posts de cada serie se listan por fecha; los que no están publicados no salen.
+- id: gobernanza-dotnet
+  name: Gobernanza de soluciones .NET
+  description: Cómo convertir las normas del equipo en algo que aplican el compilador y el CI, no una página de wiki. Propiedades de build centralizadas, paquetes NuGet, analizadores, GitHub Actions, commits y versionado.
+- id: oauth-microservicios
+  name: OAuth 2.1 en microservicios .NET
+  description: Autenticación y autorización entre microservicios con OAuth 2.1 y OpenID Connect, con la teoría primero y laboratorios que puedes ejecutar después.
+- id: mcp-dotnet
+  name: MCP Server con .NET
+  description: Cómo crear un servidor MCP con el SDK de .NET y cómo desplegarlo en Kubernetes en local.
+- id: openspec
+  name: Spec-driven development con OpenSpec
+  description: El flujo de trabajo de OpenSpec de principio a fin, desde proponer un change hasta implementarlo y archivarlo.

@@ -3,6 +3,7 @@ title: "Spec-driven development con OpenSpec, parte 1: proponer el change"
 subtitle: Instalación, anatomía del proyecto, la CLI y el plan para paginar una API de .NET
 date: 2026-09-01
 topic: ia
+series: openspec
 published: true
 ---
 

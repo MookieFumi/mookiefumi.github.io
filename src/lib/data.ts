@@ -8,3 +8,7 @@ export async function getTopics() {
 export async function getResources() {
   return (await getCollection('resources')).sort((a, b) => a.data.order - b.data.order);
 }
+
+export async function getSeries() {
+  return (await getCollection('series')).sort((a, b) => a.data.order - b.data.order);
+}

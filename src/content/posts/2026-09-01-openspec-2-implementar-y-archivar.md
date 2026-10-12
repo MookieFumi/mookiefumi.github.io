@@ -3,6 +3,7 @@ title: "Spec-driven development con OpenSpec, parte 2: implementar y archivar"
 subtitle: El perfil ampliado, la CLI completa y cómo llevar OpenSpec a un equipo
 date: 2026-09-01
 topic: ia
+series: openspec
 published: true
 ---
 

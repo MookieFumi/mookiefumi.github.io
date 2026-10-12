@@ -3,6 +3,7 @@ title: Creando un MCP Server con el SDK de .NET
 subtitle: Exponer una API a los LLMs con el SDK oficial de C#
 date: 2026-08-15
 topic: ia
+series: mcp-dotnet
 published: true
 ---
 

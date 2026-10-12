@@ -1,9 +1,9 @@
 ---
-import Base from '../layouts/Base.astro';
-import Prompt from '../components/Prompt.astro';
-import { formatDate } from '../lib/dates';
-import { getTopics } from '../lib/data';
-import { getPublishedPosts } from '../lib/posts';
+import Base from '../../layouts/Base.astro';
+import Prompt from '../../components/Prompt.astro';
+import { formatDate } from '../../lib/dates';
+import { getTopics } from '../../lib/data';
+import { getPublishedPosts } from '../../lib/posts';
 
 const title = 'Temas';
 const subtitle = 'Todos los artículos agrupados por tema';
@@ -27,7 +27,7 @@ const posts = await getPublishedPosts();
             <header>
               <span class="topic-badge" aria-hidden="true">./</span>
               <div>
-                <h2>{topic.data.name}</h2>
+                <h2><a href={`/topics/${topic.id}`}>{topic.data.name}</a></h2>
                 <span class="meta">{count === 0 ? 'Próximamente' : `${count} ${count === 1 ? 'artículo' : 'artículos'}`}</span>
               </div>
             </header>

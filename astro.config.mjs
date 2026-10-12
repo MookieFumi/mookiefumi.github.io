@@ -27,7 +27,7 @@ export default defineConfig({
         const date = lastmod.get(new URL(item.url).pathname.slice(1));
         return {
           ...item,
-          url: item.url.replace(/\/(page\d+|series)$/, '/$1/'),
+          url: item.url.replace(/\/(page\d+|series|topics)$/, '/$1/'),
           lastmod: date ? new Date(date).toISOString() : undefined,
         };
       },
@@ -48,7 +48,7 @@ export default defineConfig({
   },
   redirects: {
     // Las páginas de temas y recursos pasaron a URLs en inglés.
-    '/temas': '/topics',
+    '/temas': '/topics/',
     '/recursos': '/resources',
     // El slug de este post tenía mayúsculas; ahora todos van en minúsculas.
     '/2019-10-20-unit-testing-tools-using-your-MacOS-terminal':

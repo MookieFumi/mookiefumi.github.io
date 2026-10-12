@@ -14,6 +14,9 @@ const posts = defineCollection({
     // hay, los primeros párrafos del post.
     description: z.string().optional(),
     date: z.coerce.date(),
+    // Fecha de la última edición con cambios de contenido. Si falta, se usa `date`.
+    // Sale como `lastmod` en el sitemap y como `dateModified` en los datos estructurados.
+    updated: z.coerce.date().optional(),
     topic: reference('topics'),
     // Serie o grupo de posts que se leen juntos (`id` de src/data/series.yml).
     series: reference('series').optional(),

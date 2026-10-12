@@ -18,11 +18,12 @@ interface Props {
   canonical?: string;
   // Fecha de publicación y tema del post (solo artículos).
   published?: Date;
+  modified?: Date;
   section?: string;
   // Id del tema, para el breadcrumb (`/topics#id`).
   sectionId?: string;
 }
-const { title, description, article = false, canonical, published, section, sectionId } = Astro.props;
+const { title, description, article = false, canonical, published, modified, section, sectionId } = Astro.props;
 
 // Google corta los títulos hacia los 60 caracteres: la marca solo se añade si cabe.
 const homeTitle = 'Blog de arquitectura .NET, calidad, CI/CD e IA';
@@ -63,6 +64,7 @@ if (path === '/') {
       headline: title,
       description: metaDescription,
       datePublished: published?.toISOString().slice(0, 10),
+      dateModified: (modified ?? published)?.toISOString().slice(0, 10),
       author: { '@id': personId },
       image: ogImage,
       inLanguage: 'es',
@@ -125,6 +127,7 @@ const jsonLd = graph.length ? JSON.stringify({ '@context': 'https://schema.org',
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content={SITE.title}>
   {article && published && <meta property="article:published_time" content={published.toISOString()}>}
+  {article && modified && <meta property="article:modified_time" content={modified.toISOString()}>}
   {article && <meta property="article:author" content={SITE.author.name}>}
   {article && section && <meta property="article:section" content={section}>}
 

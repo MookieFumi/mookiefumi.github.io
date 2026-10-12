@@ -3,7 +3,7 @@ export const SITE = {
   url: 'https://mookiefumi.com',
   urlPretty: 'mookiefumi.com',
   title: '~/mookie',
-  description: '.NET, IA y calidad de software, explicados con laboratorios que puedes ejecutar',
+  description: 'Equipos .NET: convenciones, calidad, CI/CD e IA, explicados con laboratorios que puedes ejecutar',
   avatar: '/img/avatar-icon.jpg',
   author: {
     name: 'Miguel Angel Martin Hrdez',

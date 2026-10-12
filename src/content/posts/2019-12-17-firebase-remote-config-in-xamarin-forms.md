@@ -43,7 +43,7 @@ We can setup Firebase Remote Config through the Firebase portal <https://console
 
 > In this case, we setup a key called **ShowPlayerDetail** to show or not the player detail.
 
-<img src="/images/2019-12-15-17.10.14.png" width="300" /><img src="/images/2019-12-15-17.10.58.png" width="300" />
+<img src="/images/2019-12-15-17.10.14.webp" alt="Pantalla de la app con el detalle del jugador visible" width="300" height="649" loading="lazy" decoding="async" /><img src="/images/2019-12-15-17.10.58.webp" alt="Pantalla de la app con el detalle del jugador oculto" width="300" height="649" loading="lazy" decoding="async" />
 
 ### Add the default values to our Android & iOS projects
 

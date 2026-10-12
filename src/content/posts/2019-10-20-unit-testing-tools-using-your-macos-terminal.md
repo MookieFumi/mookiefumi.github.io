@@ -138,6 +138,6 @@ reportgenerator "-reports:src/coverage/*.xml" "-reporttypes:HTMLInline" "-target
 
 If you open the generated htm file (*src/coverage/report/index.htm'*) you can see a summary of the code coverage and you can click on every namespace or class to navigate to the detail.
 
-![Html report](/images/Screenshot2019-10-20-21.16.29.png)
+![Html report](../../assets/images/Screenshot2019-10-20-21.16.29.png)
 
 Nice!

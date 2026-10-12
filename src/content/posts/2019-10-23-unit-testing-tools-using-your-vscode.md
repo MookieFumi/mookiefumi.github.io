@@ -37,11 +37,11 @@ Once the extension is installed you'll see a new icon in the right toolbar calle
 
 > From here you can run the tests of every tree node.
 
-![.Net Core Test Explorer](/images/Screenshot2019-10-20_21.42.43.png)
+![.Net Core Test Explorer](../../assets/images/Screenshot2019-10-20_21.42.43.png)
 
 > Of you can run or debug test methods/ classes when the file is opened
 
-![Run/ Debug tests](/images/Screenshot2019-10-27_16.02.14.png)
+![Run/ Debug tests](../../assets/images/Screenshot2019-10-27_16.02.14.png)
 
 #### Coverage Gutters
 
@@ -51,7 +51,7 @@ The extension expects to find a compatible file with lcov format (*lcov.info, co
 
 > With these configured tools everytime you open a file in the solution you'll see the lines covered.
 
-![.Net Core Test Explorer](/images/Screenshot2019-10-20_21.44.40.png)
+![.Net Core Test Explorer](../../assets/images/Screenshot2019-10-20_21.44.40.png)
 
 If you execute the **ReportGenerator** tool to convert the generated code coverage report in lcov format to Html you can open it directly from the VSCode command palette: **Coverage Gutters - Preview Coverage Report** and you'll see the report integrated in VSCode.
 
@@ -59,7 +59,7 @@ If you execute the **ReportGenerator** tool to convert the generated code covera
 reportgenerator "-reports:src/coverage/*.xml" "-reporttypes:HTMLInline" "-targetdir:src/coverage/report"
 ```
 
-![.Preview Coverage Report](/images/Screenshot2019-10-20_21.55.56.png)
+![.Preview Coverage Report](../../assets/images/Screenshot2019-10-20_21.55.56.png)
 
 If you want to have available badges of the code coverage of your projects, you have to include a new report type. It´s easy with the help of ReportGenerator because it allow us to add multiple report types separated with semicolon.
 

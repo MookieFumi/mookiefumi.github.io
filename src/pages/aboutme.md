@@ -3,9 +3,11 @@ layout: ../layouts/About.astro
 title: Sobre mí
 ---
 
-Soy **Miguel Ángel Martín**, Software / Cloud Solution Architect y Technical Lead .NET. Llevo desde 2016 escribiendo aquí sobre lo que me encuentro programando. Empecé con apps móviles en Xamarin, pasé por .NET MAUI, ASP.NET, testing y microservicios, y hoy dedico casi todo el tiempo a tres frentes: la seguridad (OAuth 2.1, OpenID Connect, Keycloak y Entra ID), una IA que hace cosas de verdad con servidores MCP y el desarrollo guiado por especificaciones, para que los agentes no improvisen.
+Soy **Miguel Ángel Martín**, Software / Cloud Solution Architect y Technical Lead .NET. Este blog nació en 2016 como cuaderno de notas de Xamarin y ha ido cambiando con lo que me ha tocado: ASP.NET, MAUI, testing, microservicios y Azure.
 
-Mi forma de trabajar es sencilla. Antes de escribir código me pregunto si hace falta. Si hace falta, monto un laboratorio que puedas levantar en tu portátil, lo rompo, lo arreglo y te cuento por qué funciona. Me gustan las explicaciones que conectan mundos (OpenSpec contado como migraciones de EF Core, Keycloak traducido a Entra ID) y los posts que no se quedan en el hola mundo.
+Hoy lidero y mentorizo equipos, pero sobre todo me dedico a estandarizar cómo trabajan varios equipos de desarrollo: code reviews, convenciones, calidad y CI/CD. De ahí salen casi todos los posts. Me gusta explicar una cosa con otra que ya conoces, y casi siempre hay un laboratorio que puedes levantar en tu portátil. Si algo no me funcionó a la primera, también lo cuento.
+
+Ahora mismo me interesa mucho cómo cambian los equipos de desarrollo con la llegada de la IA: quién hace qué, cómo se revisa lo que escribe una máquina y qué estándares hacen falta para que el trabajo siga siendo de todos.
 
 Y sí, sé que tu proyecto sigue en .NET 6. El mío también. Por eso aquí verás cómo aprovechar lo nuevo sin esperar a la próxima migración.
 

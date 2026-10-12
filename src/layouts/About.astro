@@ -16,7 +16,7 @@ const { title } = Astro.props.frontmatter;
     <aside class="about-badge" aria-label="Credencial">
       <!-- Prueba: la credencial en 3D con el Lanyard de React Bits. La tarjeta es una
            imagen, así que el texto va aparte para lectores de pantalla. -->
-      <p class="sr-only">Miguel Ángel Martín, Software / Cloud Architect.</p>
+      <p class="sr-only">Miguel A. Martín Hrdez, Software / Cloud Architect.</p>
       <Lanyard
         client:visible
         className="about-lanyard"
@@ -36,7 +36,7 @@ const { title } = Astro.props.frontmatter;
           <span class="badge-hole" aria-hidden="true"></span>
           <div class="badge-head"><strong><span>~/</span>mookie</strong><span>ACCESS · ROOT</span></div>
           <img src="/img/brand/mookie-badge.jpg" alt={`Foto de ${SITE.author.name}`} width="240" height="240">
-          <p class="badge-name">Miguel Ángel Martín</p>
+          <p class="badge-name">Miguel A. Martín Hrdez</p>
           <div class="badge-foot"><span>Software / Cloud Architect</span><span>uid=1000</span></div>
         </div>
       </noscript>

@@ -6,7 +6,7 @@ export const SITE = {
   description: 'Arquitectura .NET y equipos que escalan: calidad, CI/CD e IA',
   avatar: '/img/avatar-icon.jpg',
   author: {
-    name: 'Miguel Angel Martin Hrdez',
+    name: 'Miguel A. Martín Hrdez',
     email: 'me@mookiefumi.com',
     github: 'MookieFumi',
     twitter: 'MookieFumi',

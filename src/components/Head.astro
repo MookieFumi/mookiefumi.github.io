@@ -1,5 +1,11 @@
 ---
 import { SITE } from '../site';
+// Fuentes autoalojadas: Astro empaqueta el CSS y los ficheros con hash, así que no
+// hay peticiones a terceros. Solo se precargan los subconjuntos latinos.
+import '@fontsource-variable/geist/wght.css';
+import '@fontsource-variable/geist-mono/wght.css';
+import geistLatin from '@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url';
+import geistMonoLatin from '@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2?url';
 
 interface Props {
   title?: string;
@@ -92,9 +98,8 @@ const jsonLd = graph.length ? JSON.stringify({ '@context': 'https://schema.org',
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <meta name="theme-color" content="#05070A">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..800&family=Geist+Mono:wght@400..700&display=swap">
+  <link rel="preload" href={geistLatin} as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href={geistMonoLatin} as="font" type="font/woff2" crossorigin>
 
   <link rel="stylesheet" href="/css/tokens.css">
   <link rel="stylesheet" href="/css/site.css">

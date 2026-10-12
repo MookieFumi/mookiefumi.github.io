@@ -51,9 +51,9 @@
   --topic-dotnet: #FF6B7A;
 
   /* Tipografía */
-  --font-display: "Geist", "Segoe UI", system-ui, sans-serif;
-  --font-body: "Geist", "Segoe UI", system-ui, sans-serif;
-  --font-mono: "Geist Mono", "Cascadia Code", Consolas, ui-monospace, monospace;
+  --font-display: "Geist Variable", "Geist", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Geist Variable", "Geist", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", "Geist Mono", "Cascadia Code", Consolas, ui-monospace, monospace;
 
   --radius-sm: 8px;
   --radius-md: 14px;

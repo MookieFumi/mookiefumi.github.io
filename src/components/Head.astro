@@ -1,5 +1,8 @@
 ---
 import { SITE } from '../site';
+// Estilos propios: Astro los empaqueta con hash en el nombre, así que pueden cachearse sin caducidad.
+import '../styles/tokens.css';
+import '../styles/site.css';
 // Fuentes autoalojadas: Astro empaqueta el CSS y los ficheros con hash, así que no
 // hay peticiones a terceros. Solo se precargan los subconjuntos latinos.
 import '@fontsource-variable/geist/wght.css';
@@ -101,8 +104,6 @@ const jsonLd = graph.length ? JSON.stringify({ '@context': 'https://schema.org',
   <link rel="preload" href={geistLatin} as="font" type="font/woff2" crossorigin>
   <link rel="preload" href={geistMonoLatin} as="font" type="font/woff2" crossorigin>
 
-  <link rel="stylesheet" href="/css/tokens.css">
-  <link rel="stylesheet" href="/css/site.css">
   <slot />
 
   <link rel="alternate" type="application/rss+xml" title={`${SITE.title} - ${SITE.description}`} href="/feed.xml">

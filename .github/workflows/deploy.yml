@@ -1,12 +1,10 @@
 name: Deploy to GitHub Pages
 
 on:
-  # Publica el blog en cada push a master.
+  # Publish the blog on every push to main. Pull requests are validated by ci.yml.
   push:
-    branches: [master]
-  # En las PR solo se construye, para detectar errores antes de fusionar.
-  pull_request:
-  # Permite lanzarlo a mano desde la pestaña Actions.
+    branches: [main]
+  # Allow running it manually from the Actions tab.
   workflow_dispatch:
 
 permissions:
@@ -19,17 +17,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-      - name: Install, build and upload the site
-        uses: withastro/action@v6
+  # The same checks and build that run on pull requests.
+  ci:
+    uses: ./.github/workflows/ci.yml
+    with:
+      upload-pages-artifact: true
 
   deploy:
-    if: github.event_name != 'pull_request'
-    needs: build
+    needs: ci
     runs-on: ubuntu-latest
     environment:
       name: github-pages

@@ -10,14 +10,65 @@ interface Props {
   // Fecha de publicación y tema del post (solo artículos).
   published?: Date;
   section?: string;
+  // Id del tema, para el breadcrumb (`/topics#id`).
+  sectionId?: string;
 }
-const { title, description, article = false, canonical, published, section } = Astro.props;
+const { title, description, article = false, canonical, published, section, sectionId } = Astro.props;
 
 const fullTitle = title ? `${title} · ${SITE.title}` : `${SITE.title} · ${SITE.description}`;
 const metaDescription = description ?? SITE.description;
 // Las URLs públicas no llevan `.html` (`/topics`, `/page2/`, `/`).
 const ogImage = `${SITE.url}/img/brand/mookie-og.png`;
 const path = Astro.url.pathname.replace(/\.html$/, '');
+
+// Datos estructurados (JSON-LD): el autor en todas las páginas, BlogPosting y
+// breadcrumbs en los posts, WebSite en la portada y ProfilePage en /aboutme.
+const personId = `${SITE.url}/#person`;
+const person = {
+  '@type': 'Person',
+  '@id': personId,
+  name: SITE.author.name,
+  url: `${SITE.url}/aboutme`,
+  image: `${SITE.url}${SITE.avatar}`,
+  jobTitle: 'Software / Cloud Solution Architect',
+  sameAs: [
+    `https://github.com/${SITE.author.github}`,
+    `https://twitter.com/${SITE.author.twitter}`,
+    `https://linkedin.com/${SITE.author.linkedin}`,
+  ],
+};
+const pageUrl = `${SITE.url}${canonical ?? path}`;
+const graph: object[] = [];
+if (path === '/') {
+  graph.push({ '@type': 'WebSite', '@id': `${SITE.url}/#website`, url: SITE.url, name: SITE.title, description: SITE.description, inLanguage: 'es', publisher: { '@id': personId } }, person);
+} else if (path === '/aboutme') {
+  graph.push({ '@type': 'ProfilePage', url: pageUrl, name: title, mainEntity: person });
+} else if (article) {
+  graph.push(
+    {
+      '@type': 'BlogPosting',
+      headline: title,
+      description: metaDescription,
+      datePublished: published?.toISOString().slice(0, 10),
+      author: { '@id': personId },
+      image: ogImage,
+      inLanguage: 'es',
+      mainEntityOfPage: pageUrl,
+      publisher: { '@id': personId },
+    },
+    person,
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: SITE.title, item: SITE.url },
+        ...(section && sectionId ? [{ '@type': 'ListItem', position: 2, name: section, item: `${SITE.url}/topics#${sectionId}` }] : []),
+        { '@type': 'ListItem', position: section && sectionId ? 3 : 2, name: title, item: pageUrl },
+      ],
+    },
+  );
+}
+// `<` escapado para que ningún texto pueda cerrar la etiqueta <script>.
+const jsonLd = graph.length ? JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c') : undefined;
 ---
 <head>
   <meta charset="utf-8">
@@ -72,4 +123,5 @@ const path = Astro.url.pathname.replace(/\.html$/, '');
   <meta name="twitter:title" content={title ?? SITE.title}>
   <meta name="twitter:description" content={metaDescription}>
   <meta name="twitter:image" content={ogImage}>
+  {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
 </head>

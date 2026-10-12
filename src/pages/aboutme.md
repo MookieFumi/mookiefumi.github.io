@@ -1,9 +1,10 @@
 ---
 layout: ../layouts/About.astro
 title: Sobre mí
+description: 'Miguel A. Martín Hrdez (mookie): Software / Cloud Solution Architect y Technical Lead .NET. Escribo sobre .NET, C#, SDD e IA desde 2016.'
 ---
 
-Soy **Miguel Ángel Martín**, Software / Cloud Solution Architect y Technical Lead .NET. Este blog nació en 2016 como cuaderno de notas de Xamarin y ha ido cambiando con lo que me ha tocado: ASP.NET, MAUI, testing, microservicios y Azure.
+Soy **Miguel A. Martín Hrdez** (mookie), Software / Cloud Solution Architect y Technical Lead .NET. Este blog nació en 2016 como cuaderno de notas de Xamarin y ha ido cambiando con lo que me ha tocado: ASP.NET, MAUI, testing, microservicios y Azure.
 
 Hoy lidero y mentorizo equipos, pero sobre todo me dedico a estandarizar cómo trabajan varios equipos de desarrollo: code reviews, convenciones, calidad y CI/CD. De ahí salen casi todos los posts. Me gusta explicar una cosa con otra que ya conoces, y casi siempre hay un laboratorio que puedes levantar en tu portátil. Si algo no me funcionó a la primera, también lo cuento.
 

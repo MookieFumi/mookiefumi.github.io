@@ -1,0 +1,33 @@
+---
+import Base from '../../layouts/Base.astro';
+import Prompt from '../../components/Prompt.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getTopics } from '../../lib/data';
+import { getPublishedPosts } from '../../lib/posts';
+
+export async function getStaticPaths() {
+  const posts = await getPublishedPosts();
+  return (await getTopics()).map((topic) => ({
+    params: { id: topic.id },
+    props: { topic, posts: posts.filter((post) => post.data.topic.id === topic.id) },
+  }));
+}
+const { topic, posts } = Astro.props;
+const count = posts.length;
+const subtitle = `${count} ${count === 1 ? 'artículo' : 'artículos'}, del más reciente al más antiguo`;
+---
+<Base title={topic.data.name} description={`Artículos de ${topic.data.name} en el blog de mookie: ${subtitle}.`}>
+  <div class={`container-narrow topic-${topic.id}`}>
+    <header class="page-hero">
+      <Prompt cmd={`ls ~/topics/${topic.id}`} />
+      <h1>{topic.data.name}</h1>
+      <p>{subtitle}.</p>
+    </header>
+
+    <ul class="post-grid series-posts">
+      {posts.map((post) => <PostCard post={post} />)}
+    </ul>
+
+    <p class="series-all"><a href="/topics/">← Todos los temas</a></p>
+  </div>
+</Base>

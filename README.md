@@ -1,6 +1,6 @@
 # ~/mookie
 
-Blog de Miguel Ángel Martín Hernández sobre .NET, IA, despliegues y equipos. Está hecho con [Astro](https://astro.build) y se publica en [mookiefumi.com](https://mookiefumi.com) con GitHub Pages.
+Blog de Miguel A. Martín Hrdez (mookie) sobre .NET, IA, despliegues y equipos. Está hecho con [Astro](https://astro.build) y se publica en [mookiefumi.com](https://mookiefumi.com) con GitHub Pages.
 
 ## Trabajar en local
 

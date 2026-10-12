@@ -3,6 +3,7 @@ title: Meetup Prism 101 - Introduction
 description: "Meetup Prism 101: dos vídeos (en español) y el repositorio con el código para empezar con Prism en Xamarin Forms."
 date: 2019-10-18
 topic: xamarin
+noindex: true
 published: true
 ---
 

@@ -4,6 +4,7 @@ description: How to organize a Xamarin Forms project with Prism using feature fo
 date: 2019-12-19
 topic: xamarin
 canonicalPost: 2019-12-19-feature-folder-con-prism-xamarin-forms
+lang: en
 published: true
 ---
 

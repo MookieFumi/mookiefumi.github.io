@@ -1,4 +1,4 @@
-// Comprueba que los enlaces internos (href y src) de `dist/` apuntan a ficheros que existen.
+// Checks that the internal links (href and src) in `dist/` point to files that exist.
 import { readdirSync, readFileSync, existsSync, statSync } from 'node:fs';
 import { join, dirname, resolve, extname } from 'node:path';
 
@@ -25,7 +25,7 @@ for (const file of walk(dist)) {
   for (const [, , raw] of html.matchAll(/\s(href|src)=["']([^"']+)["']/g)) {
     let url = raw.trim();
     if (url.startsWith(site)) url = url.slice(site.length) || '/';
-    if (/^([a-z][a-z0-9+.-]*:|\/\/|#)/i.test(url)) continue; // externos, mailto:, data:, anclas
+    if (/^([a-z][a-z0-9+.-]*:|\/\/|#)/i.test(url)) continue; // external, mailto:, data: and anchor-only links
     const path = decodeURIComponent(url.split(/[?#]/)[0]);
     if (!path) continue;
     const target = path.startsWith('/') ? join(dist, path) : resolve(dirname(file), path);

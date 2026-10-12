@@ -1,10 +1,10 @@
 name: Deploy to GitHub Pages
 
 on:
-  # Publica el blog en cada push a main. Las PR las valida ci.yml.
+  # Publish the blog on every push to main. Pull requests are validated by ci.yml.
   push:
     branches: [main]
-  # Permite lanzarlo a mano desde la pestaña Actions.
+  # Allow running it manually from the Actions tab.
   workflow_dispatch:
 
 permissions:

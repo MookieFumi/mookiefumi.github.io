@@ -1,7 +1,7 @@
 name: CI
 
 on:
-  # Valida cada PR contra main antes de fusionar.
+  # Validate every pull request against main before merging.
   pull_request:
     branches: [main]
 

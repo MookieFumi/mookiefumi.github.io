@@ -1,5 +1,6 @@
 ---
 title: .NET Workloads 101
+description: Qué son los workloads de .NET, qué beneficios aportan y cómo instalarlos y gestionarlos desde la línea de comandos.
 date: 2024-05-28
 topic: maui
 published: true

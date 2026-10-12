@@ -1,5 +1,6 @@
 ---
 title: Entendiendo Semantic Versioning
+description: Qué significan mayor, minor y patch en Semantic Versioning y cómo leer rangos de versiones como ^ y ~ al gestionar dependencias.
 date: 2016-11-28
 topic: desarrollo
 published: true

@@ -1,5 +1,6 @@
 ---
 title: .NET MAUI MVVM con Community Toolkit
+description: "Cómo simplificar MVVM en .NET MAUI con Community Toolkit: de la implementación manual a los source generators, paso a paso."
 date: 2024-06-11
 topic: maui
 published: true

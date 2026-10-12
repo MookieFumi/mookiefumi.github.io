@@ -10,6 +10,9 @@ const posts = defineCollection({
   schema: z.object({
     title: z.string(),
     subtitle: z.string().optional(),
+    // Texto para la meta description (SEO). Si falta se usa el subtítulo y, si tampoco
+    // hay, los primeros párrafos del post.
+    description: z.string().optional(),
     date: z.coerce.date(),
     topic: reference('topics'),
     published: z.boolean().default(true),

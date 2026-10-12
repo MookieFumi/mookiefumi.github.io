@@ -1,5 +1,6 @@
 ---
 title: Feature folders with Prism (Xamarin Forms)
+description: How to organize a Xamarin Forms project with Prism using feature folders instead of grouping files by type.
 date: 2019-12-19
 topic: xamarin
 published: true

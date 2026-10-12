@@ -1,5 +1,6 @@
 ---
 title: Firebase Remote Config en Xamarin Forms
+description: Cómo usar Firebase Remote Config en Xamarin Forms para activar o desactivar funcionalidades de tu app sin publicar una nueva versión.
 date: 2019-12-17
 topic: xamarin
 published: true

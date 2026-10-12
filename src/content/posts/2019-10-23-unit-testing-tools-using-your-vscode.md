@@ -1,5 +1,6 @@
 ---
 title: Unit testing tools using VSCode
+description: How to run and debug .NET unit tests and see code coverage in Visual Studio Code with the .NET Core Test Explorer extension.
 date: 2019-10-23
 topic: testing
 published: true

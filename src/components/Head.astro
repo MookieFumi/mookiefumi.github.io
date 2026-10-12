@@ -24,7 +24,11 @@ interface Props {
 }
 const { title, description, article = false, canonical, published, section, sectionId } = Astro.props;
 
-const fullTitle = title ? `${title} · ${SITE.title}` : `${SITE.title} · ${SITE.description}`;
+// Google corta los títulos hacia los 60 caracteres: la marca solo se añade si cabe.
+const homeTitle = 'Blog de arquitectura .NET, calidad, CI/CD e IA';
+const pageTitle = title ?? homeTitle;
+const withBrand = `${pageTitle} · ${SITE.title}`;
+const fullTitle = withBrand.length <= 60 ? withBrand : pageTitle;
 const metaDescription = description ?? SITE.description;
 // Las URLs públicas no llevan `.html` (`/topics`, `/page2/`, `/`).
 const ogImage = `${SITE.url}/img/brand/mookie-og.png`;
@@ -112,7 +116,7 @@ const jsonLd = graph.length ? JSON.stringify({ '@context': 'https://schema.org',
   <!-- Open Graph -->
   <meta property="og:site_name" content={SITE.title}>
   <meta property="og:locale" content="es_ES">
-  <meta property="og:title" content={title ?? SITE.title}>
+  <meta property="og:title" content={pageTitle}>
   <meta property="og:type" content={article ? 'article' : 'website'}>
   <meta property="og:url" content={`${SITE.url}${path}`}>
   <meta property="og:description" content={metaDescription}>
@@ -127,7 +131,7 @@ const jsonLd = graph.length ? JSON.stringify({ '@context': 'https://schema.org',
   <!-- X / Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:creator" content={`@${SITE.author.twitter}`}>
-  <meta name="twitter:title" content={title ?? SITE.title}>
+  <meta name="twitter:title" content={pageTitle}>
   <meta name="twitter:description" content={metaDescription}>
   <meta name="twitter:image" content={ogImage}>
   {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}

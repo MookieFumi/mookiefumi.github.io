@@ -1,5 +1,5 @@
 ---
-title: "GitVersion: que la versión la calcule el historial de git"
+title: "Versionado automático en .NET con GitVersion según tu flujo de git"
 subtitle: Qué te da, qué te cuesta y cómo configurarlo según uses git flow, github flow o trunk based development
 date: 2026-10-12
 topic: dotnet

@@ -1,5 +1,5 @@
 ---
-title: "Versionar con MapGroup o con Asp.Versioning.Http"
+title: "MapGroup o Asp.Versioning: versionar sin instalar nada de más"
 subtitle: Llega la v2, la v1 tiene que seguir viva y lo primero que pide el cuerpo es instalar un paquete
 description: "Versionado de Minimal APIs en .NET 10: grupos de rutas con MapGroup frente a Asp.Versioning.Http, con cabeceras de obsolescencia, OpenAPI por versión y cuándo compensa cada uno."
 date: 2026-09-28

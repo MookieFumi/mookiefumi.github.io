@@ -1,5 +1,5 @@
 ---
-title: "Minimal APIs con vertical slice"
+title: "Minimal APIs sin el Program.cs de 800 líneas"
 subtitle: Lo que ofrece Minimal APIs en .NET 10 y cómo organizar el código para que crezca sin desordenarse
 description: Minimal APIs en .NET 10 con MapGroup, TypedResults y Server-Sent Events, organizadas en vertical slices con un handler por caso de uso registrado por convención.
 date: 2026-09-23

@@ -20,14 +20,14 @@ Es lo primero que pregunta quien ve un test que arranca PostgreSQL en Docker, y 
 
 En entry-hub hay dos tipos de test, y la diferencia está en qué arranca cada uno.
 
-El primero es el test de la API. La API corre dentro del proceso del test, en memoria, gracias a `WebApplicationFactory`. Necesita un PostgreSQL de verdad al lado, y ese PostgreSQL tiene que salir de algún sitio. Hoy lo pone la CI o lo tienes instalado en tu máquina. Con [Testcontainers](https://dotnet.testcontainers.org/) lo arrancaría el propio test en Docker. El test es el mismo en los dos casos: solo cambia quién pone la base de datos.
+El primero es el test de la API. La API corre dentro del proceso del test, en memoria, gracias a `WebApplicationFactory`. Necesita un PostgreSQL de verdad al lado, y ese PostgreSQL tiene que salir de algún sitio. Antes lo ponía la CI, como contenedor de servicio del job, o lo tenías instalado en tu máquina. Ahora lo arranca el propio test en Docker con [Testcontainers](https://dotnet.testcontainers.org/). Los tests no cambiaron ni una línea: solo cambió quién pone la base de datos.
 
 El segundo es el test del sistema, el de este post. El test ya no arranca la API: arranca el AppHost, y el AppHost levanta todo lo que describe, igual que con `aspire run`. Eso es el contenedor de PostgreSQL, la API y el servicio de recordatorios, cada uno en su proceso. El test solo los ve desde fuera, por HTTP y por los logs. La [documentación de Aspire](https://learn.microsoft.com/dotnet/aspire/testing/overview) los llama tests de caja cerrada (*closed-box*).
 
 ```text
 1. Test de la API
    [ proceso del test: el test + la API en memoria ] ---> [ PostgreSQL ]
-                                                           (CI, tu máquina o Testcontainers)
+                                                           (lo arranca Testcontainers)
 
 2. Test del sistema
    [ el test ] ---> [ AppHost: API + PostgreSQL + recordatorios ]
@@ -43,7 +43,7 @@ El segundo es el test del sistema, el de este post. El test ya no arranca la API
 
 La propia documentación de Aspire lo dice: para mocks, para cambiar servicios o para probar un proyecto aislado, usa `WebApplicationFactory`. Con Aspire solo puedes influir desde fuera, con variables de entorno o configuración.
 
-Así que Testcontainers mejora el primer tipo, y Aspire te da el segundo. Los 101 tests de `EntryHub.Api.Tests` son del primero. ¿Por qué hace falta el segundo? Porque el recordatorio pasa entre dos servicios: la API guarda la reserva y otro proceso la encuentra. En un test de la API el servicio de recordatorios no existe, así que eso no se puede probar.
+Así que Testcontainers mejora el primer tipo, y Aspire te da el segundo. Los 101 tests de `EntryHub.Api.Tests` son del primero, y desde el [PR #35](https://github.com/MookieFumi/entry-hub/pull/35) arrancan su PostgreSQL con Testcontainers. Si defines `ENTRYHUB_TEST_CONNECTION`, usan el tuyo, para máquinas sin Docker. ¿Por qué hace falta el segundo? Porque el recordatorio pasa entre dos servicios: la API guarda la reserva y otro proceso la encuentra. En un test de la API el servicio de recordatorios no existe, así que eso no se puede probar.
 
 ## Qué tests había y cuál faltaba
 

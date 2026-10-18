@@ -1,5 +1,5 @@
 ---
-title: "Tests de sistema con Aspire (título provisional)"
+title: "¿Testcontainers? Tu AppHost ya sabe arrancar el sistema"
 subtitle: La API escribe la reserva y otro servicio la lee de la misma base de datos. Cada uno pasa sus tests y nadie comprueba si se entienden
 description: "Tests de sistema con Aspire.Hosting.Testing en .NET 10: arrancar el AppHost con PostgreSQL, la API y un worker desde xUnit, en qué se diferencia de Testcontainers, tokens JWT para otro proceso, timeouts y CI."
 date: 2026-10-04
@@ -16,13 +16,24 @@ En el [post anterior](/2026-10-03-aspire-sin-humo) vimos que el AppHost describe
 
 ## ¿Esto no es Testcontainers?
 
-Es lo primero que pregunta quien ve un test que arranca PostgreSQL en Docker. Los dos usan contenedores, pero prueban cosas distintas, y conviene tenerlo claro antes de ver código.
+Es lo primero que pregunta quien ve un test que arranca PostgreSQL en Docker, y a mí también me costó separarlo. Lo que lo aclara es esto: Testcontainers no es un tipo de test. Es una forma de conseguir la base de datos que necesita un test.
 
-[Testcontainers](https://dotnet.testcontainers.org/) es una librería para levantar contenedores desde el código del test: pides un PostgreSQL y te da su cadena de conexión. Se suele combinar con `WebApplicationFactory`, que levanta la aplicación dentro del propio proceso del test. El resultado es un servicio probado contra dependencias reales.
+En entry-hub hay dos tipos de test, y la diferencia está en qué arranca cada uno.
 
-`Aspire.Hosting.Testing` arranca el AppHost, y el AppHost arranca todo lo que describe: el contenedor de PostgreSQL, pero también la API y el worker como procesos aparte, con su configuración y su orden de arranque. La [documentación de Aspire](https://aspire.dev/testing/overview/) los llama tests de integración de caja cerrada (*closed-box*): el test no ve lo que hay dentro de cada proceso, solo lo que exponen hacia fuera.
+El primero es el test de la API. La API corre dentro del proceso del test, en memoria, gracias a `WebApplicationFactory`. Necesita un PostgreSQL de verdad al lado, y ese PostgreSQL tiene que salir de algún sitio. Hoy lo pone la CI o lo tienes instalado en tu máquina. Con [Testcontainers](https://dotnet.testcontainers.org/) lo arrancaría el propio test en Docker. El test es el mismo en los dos casos: solo cambia quién pone la base de datos.
 
-| | Testcontainers + `WebApplicationFactory` | `Aspire.Hosting.Testing` |
+El segundo es el test del sistema, el de este post. El test ya no arranca la API: arranca el AppHost, y el AppHost levanta todo lo que describe, igual que con `aspire run`. Eso es el contenedor de PostgreSQL, la API y el servicio de recordatorios, cada uno en su proceso. El test solo los ve desde fuera, por HTTP y por los logs. La [documentación de Aspire](https://learn.microsoft.com/dotnet/aspire/testing/overview) los llama tests de caja cerrada (*closed-box*).
+
+```text
+1. Test de la API
+   [ proceso del test: el test + la API en memoria ] ---> [ PostgreSQL ]
+                                                           (CI, tu máquina o Testcontainers)
+
+2. Test del sistema
+   [ el test ] ---> [ AppHost: API + PostgreSQL + recordatorios ]
+```
+
+| | Test de la API (`WebApplicationFactory`, con o sin Testcontainers) | Test del sistema (`Aspire.Hosting.Testing`) |
 |---|---|---|
 | Qué arranca | Un servicio, dentro del proceso del test, contra dependencias reales en contenedores | El AppHost entero: contenedores y servicios, cada uno en su proceso |
 | Quién monta el sistema | El test | El AppHost, el mismo que usas en local |
@@ -32,7 +43,7 @@ Es lo primero que pregunta quien ve un test que arranca PostgreSQL en Docker. Lo
 
 La propia documentación de Aspire lo dice: para mocks, para cambiar servicios o para probar un proyecto aislado, usa `WebApplicationFactory`. Con Aspire solo puedes influir desde fuera, con variables de entorno o configuración.
 
-Los 101 tests de `EntryHub.Api.Tests` son del primer tipo, aunque sin Testcontainers: el PostgreSQL no lo levanta el test, ya existe. En tu máquina es el que tengas instalado y en la CI es un contenedor de servicio del job. Los de este post son del segundo tipo. Yo los llamo tests de sistema: usan el sistema entero, tal como lo describe el AppHost, y lo prueban desde fuera, como lo vería un cliente.
+Así que Testcontainers mejora el primer tipo, y Aspire te da el segundo. Los 101 tests de `EntryHub.Api.Tests` son del primero. ¿Por qué hace falta el segundo? Porque el recordatorio pasa entre dos servicios: la API guarda la reserva y otro proceso la encuentra. En un test de la API el servicio de recordatorios no existe, así que eso no se puede probar.
 
 ## Qué tests había y cuál faltaba
 

@@ -1,5 +1,5 @@
 ---
-title: "OpenAPI y Scalar en Minimal APIs"
+title: "Bienvenido, Scalar: el contrato de tu API ya no se queda obsoleto"
 subtitle: Si un cambio en un endpoint no aparece en el diff del PR, alguien se va a enterar en producción
 description: "OpenAPI nativo en .NET 10 con Microsoft.AspNetCore.OpenApi y Scalar: generar el documento en el build, revisarlo en CI, versionarlo y publicarlo con cada release."
 date: 2026-09-25

@@ -12,3 +12,6 @@
 - id: openspec
   name: Spec-driven development con OpenSpec
   description: El flujo de trabajo de OpenSpec de principio a fin, desde proponer un change hasta implementarlo y archivarlo.
+- id: minimal-apis-dotnet
+  name: Minimal APIs en .NET
+  description: Una API real con Minimal APIs en .NET 10, de los vertical slices y la validación al contrato OpenAPI y su documentación, sobre el código de entry-hub.

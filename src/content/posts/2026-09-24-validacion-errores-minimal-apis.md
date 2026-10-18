@@ -1,5 +1,5 @@
 ---
-title: "Enséñale a tu API a decir que no"
+title: "Enséñale a tu API a decir que no (sin mentir)"
 subtitle: Validación integrada de .NET 10, reglas de negocio en el handler y errores con ProblemDetails, o cuándo responder 400, 422 o 409
 description: Cómo validar la entrada de una Minimal API en .NET 10 en dos niveles, con AddValidation para la forma del request y reglas de negocio en el handler, y cómo devolver 400, 422 y 409 con ProblemDetails.
 date: 2026-09-24

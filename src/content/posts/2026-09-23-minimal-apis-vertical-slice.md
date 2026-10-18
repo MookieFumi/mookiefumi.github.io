@@ -1,7 +1,7 @@
 ---
 title: "Minimal APIs sin el Program.cs de 800 líneas"
 subtitle: Lo que ofrece Minimal APIs en .NET 10 y cómo organizar el código para que crezca sin desordenarse
-description: Minimal APIs en .NET 10 con MapGroup, TypedResults y Server-Sent Events, organizadas en vertical slices con un handler por caso de uso registrado por convención.
+description: Minimal APIs en .NET 10 con MapGroup y TypedResults, organizadas en vertical slices con un handler por caso de uso registrado por convención.
 date: 2026-09-23
 topic: aspnet
 series: minimal-apis-dotnet
@@ -49,7 +49,7 @@ Minimal APIs llegó con .NET 6 y entonces le faltaba bastante para competir con 
 - Filtros de endpoint (`IEndpointFilter`), el equivalente de los filtros de acción.
 - Validación integrada con `AddValidation()` y DataAnnotations. Se cuenta en el siguiente post.
 - OpenAPI nativo con `Microsoft.AspNetCore.OpenApi`, que genera un documento 3.1. Va en el tercero.
-- Server-Sent Events con `TypedResults.ServerSentEvents`, nuevo en .NET 10.
+- Server-Sent Events con `TypedResults.ServerSentEvents`, nuevo en .NET 10. Le dedico una píldora aparte.
 
 Un endpoint es un delegado. Sus parámetros salen de la ruta, la query, el cuerpo o el contenedor de dependencias, y el framework decide de dónde según el tipo. Este es el de obtener una sala en entry-hub:
 
@@ -138,70 +138,6 @@ static async Task<Results<Created<RoomResponse>, ProblemHttpResult>> HandleAsync
 Si mañana alguien añade un `return TypedResults.NotFound();`, no compila hasta que lo añada también a `Results<...>`, así que la firma documenta el endpoint y no se queda desfasada.
 
 Además, el generador de OpenAPI lee esos tipos y documenta las respuestas sin `[ProducesResponseType]` ni `.Produces<T>()`: el `201` con su esquema `RoomResponse` sale solo. El `409` no aparece, porque `ProblemHttpResult` no dice qué código de estado lleva. Lo veremos en el post de OpenAPI.
-
-## Server-Sent Events: la ocupación de una sala en vivo
-
-Una pantalla en la puerta de cada sala tiene que saber si está libre o no y hasta cuándo. Se puede hacer con polling, o con SignalR si necesitas comunicación en los dos sentidos. Para un flujo que va solo del servidor al cliente, .NET 10 trae Server-Sent Events: una respuesta HTTP que no se cierra y por la que el servidor va mandando eventos de texto.
-
-El endpoint devuelve `TypedResults.ServerSentEvents` con un `IAsyncEnumerable`:
-
-```csharp
-group.MapGet("/{id:guid}/occupancy", HandleAsync).WithName("StreamRoomOccupancy");
-
-static async Task<Results<ServerSentEventsResult<RoomOccupancy>, NotFound>> HandleAsync(
-    Guid id,
-    StreamRoomOccupancyHandler handler,
-    CancellationToken cancellationToken)
-{
-    var stream = await handler.HandleAsync(id, cancellationToken);
-
-    return stream is null
-        ? TypedResults.NotFound()
-        : TypedResults.ServerSentEvents(stream, eventType: "occupancy");
-}
-```
-
-El handler comprueba primero que la sala existe, para poder devolver un `404` antes de empezar el stream. Después devuelve un iterador que calcula la ocupación cada pocos segundos con un `PeriodicTimer`:
-
-```csharp
-private async IAsyncEnumerable<RoomOccupancy> StreamAsync(
-    Guid roomId,
-    [EnumeratorCancellation] CancellationToken cancellationToken)
-{
-    using var timer = new PeriodicTimer(options.Value.Interval, clock);
-
-    do
-    {
-        var now = clock.GetUtcNow();
-
-        var busy = await db.Bookings.AsNoTracking()
-            .Where(booking => booking.RoomId == roomId && booking.Status == BookingStatus.Confirmed && booking.EndAt > now)
-            .Select(booking => new TimeRange(booking.StartAt, booking.EndAt))
-            .ToListAsync(cancellationToken);
-
-        yield return OccupancyCalculator.Calculate(roomId, busy, now);
-    }
-    while (await timer.WaitForNextTickAsync(cancellationToken));
-}
-```
-
-Cuando el cliente se desconecta, el `CancellationToken` se cancela, `WaitForNextTickAsync` lanza `OperationCanceledException` y el bucle termina. No hay que limpiar nada a mano. El `TimeProvider` inyectado permite que los tests usen un intervalo de milisegundos y un reloj fijo.
-
-Para verlo, `curl -N` desactiva el buffer y va pintando los eventos según llegan. El token sale de `dotnet user-jwts`, como cuenta el README del repo:
-
-```bash
-curl -N -H "Authorization: Bearer <token>" http://localhost:5178/api/v1/rooms/<id>/occupancy
-```
-
-```text
-event: occupancy
-data: {"roomId":"0199...","status":"Occupied","at":"2026-10-19T10:00:00+00:00","nextChange":"2026-10-19T10:30:00+00:00"}
-
-event: occupancy
-data: {"roomId":"0199...","status":"Occupied","at":"2026-10-19T10:00:05+00:00","nextChange":"2026-10-19T10:30:00+00:00"}
-```
-
-En el navegador basta un `EventSource`, que además reconecta solo si la conexión se corta.
 
 ## Minimal APIs frente a `ControllerBase`
 
@@ -470,7 +406,7 @@ Vertical slice no es gratis, y conviene saber dónde aprieta.
 
 ## Resumiendo
 
-- Minimal APIs en .NET 10 ya trae grupos de rutas, resultados tipados, validación, OpenAPI y Server-Sent Events. Para una API nueva no hace falta MVC.
+- Minimal APIs en .NET 10 ya trae grupos de rutas, resultados tipados, validación y OpenAPI. Para una API nueva no hace falta MVC.
 - Lo que la hace crecer bien es la organización: una carpeta por caso de uso, con un endpoint que solo traduce HTTP y un handler concreto que hace el trabajo.
 - Una convención registra los handlers sola y un test se asegura de que ninguno se queda fuera.
 

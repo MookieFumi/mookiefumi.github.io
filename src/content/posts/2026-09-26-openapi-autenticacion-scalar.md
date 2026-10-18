@@ -1,5 +1,5 @@
 ---
-title: "Autenticación en OpenAPI y Scalar"
+title: "El candado que tu documentación OpenAPI no enseñaba"
 subtitle: Si la documentación no dice que hace falta un token, el primer 401 lo descubre por ti
 description: "JWT Bearer en el documento OpenAPI de .NET 10: esquema de seguridad, candado solo en las operaciones protegidas, tokens de dotnet user-jwts en Scalar y documentación protegida."
 date: 2026-09-26

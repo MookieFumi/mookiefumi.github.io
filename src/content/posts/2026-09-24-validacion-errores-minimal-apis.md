@@ -18,7 +18,7 @@ La pregunta que separa los dos niveles es qué necesitas para comprobar la regla
 
 | Qué se comprueba | Necesita | Dónde | Respuesta |
 | --- | --- | --- | --- |
-| Campos obligatorios, longitudes, rangos, `EndAt` después de `StartAt` | Solo el request | En el borde, con `AddValidation()` | `400 Bad Request` |
+| Campos obligatorios, longitudes, rangos, `EndAt` después de `StartAt` | Solo el request | Antes de que se ejecute el endpoint, con `AddValidation()` | `400 Bad Request` |
 | Duración, horario de oficina, antelación, capacidad de la sala, límite de reservas | Configuración, la hora actual o la base de datos | En el handler | `422 Unprocessable Entity` |
 | Que nadie más tenga la sala a esa hora | La base de datos en el momento de guardar | Una restricción de PostgreSQL | `409 Conflict` |
 
@@ -363,11 +363,23 @@ public async Task Simultaneous_requests_for_one_slot_have_exactly_one_winner()
 
 ## ¿Y FluentValidation?
 
-Es la librería de validación más usada en .NET y aporta cosas que DataAnnotations no tiene: reglas condicionales legibles, validación de colecciones elemento a elemento o mensajes localizados sin tocar atributos. A cambio, es una dependencia de terceros y no se integra sola con Minimal APIs, así que hay que llamar al validador desde el handler o desde un filtro de endpoint propio. Para lo que necesita entry-hub, `AddValidation()` y `IValidatableObject` bastan, y las reglas de verdad, las que necesitan datos, irían en el handler igualmente.
+Es la librería de validación más usada en .NET, y si vienes de ella te preguntarás dónde ha ido cada cosa. En entry-hub no hay ningún `AbstractValidator`. Lo que habrías escrito con FluentValidation está repartido así:
+
+| Con FluentValidation | En entry-hub |
+| --- | --- |
+| `RuleFor(x => x.Title).NotEmpty().MaximumLength(120)` | `[property: Required, StringLength(120)]` en el record |
+| `RuleFor(x => x.Attendees).InclusiveBetween(1, 500)` | `[property: Range(1, 500)]` |
+| `RuleFor(x => x.EndAt).GreaterThan(x => x.StartAt)` | `IValidatableObject.Validate` en el propio record |
+| Reglas con la hora o la configuración (duración, horario de oficina) | `BookingPolicy`, con el reloj como argumento |
+| `MustAsync` contra la base de datos (sala activa, límite de reservas) | El handler, que consulta y acumula las violaciones |
+| Registrar el validador y llamarlo desde un filtro de endpoint | `AddValidation()`, que valida antes de ejecutar el endpoint |
+| El 400 con los errores por campo | El mismo 400, generado por la validación integrada |
+
+Lo que no hemos sustituido son las cosas en las que FluentValidation sigue siendo mejor: reglas condicionales largas (`When`), validar colecciones elemento a elemento o mensajes localizados sin tocar atributos. Si tu API las necesita, compensa. entry-hub no las necesita, y las reglas que necesitan datos irían en el handler de todas formas.
 
 ## Resumiendo
 
-- La forma del request se valida en el borde con `AddValidation()` y DataAnnotations, y responde 400 con los campos que fallan.
+- La forma del request se valida antes de que se ejecute el endpoint, con `AddValidation()` y DataAnnotations, y responde 400 con los campos que fallan.
 - Las reglas que necesitan datos o la hora van en el handler, que devuelve un resultado tipado con todas las violaciones, y el endpoint lo convierte en un 422.
 - Las reglas que dependen de la concurrencia las decide la base de datos. Una restricción de exclusión y un 409 hacen que dos peticiones simultáneas no puedan ganar las dos.
 

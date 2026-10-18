@@ -152,6 +152,8 @@ La pregunta de siempre es si esto sustituye a los controllers. En la mayoría de
 | Native AOT | Soportado | No soportado |
 | Convenciones | Las montas tú con grupos y métodos de extensión | Convenciones de enrutado y de modelo de aplicación |
 
+Native AOT compila la aplicación a código máquina al publicarla (con `<PublishAot>true</PublishAot>`), así que no necesita JIT ni el runtime instalado: arranca casi al instante y gasta menos memoria, a cambio de limitar mucho la reflexión. Compensa en serverless o en contenedores que escalan desde cero.
+
 Yo seguiría con controllers en tres casos:
 
 - La API ya está hecha con controllers y funciona. Migrar por migrar no aporta nada.

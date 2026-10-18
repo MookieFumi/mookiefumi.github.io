@@ -1,6 +1,6 @@
 ---
 title: "¿Testcontainers? Tu AppHost ya sabe arrancar el sistema"
-subtitle: La API escribe la reserva y otro servicio la lee de la misma base de datos. Cada uno pasa sus tests y nadie comprueba si se entienden
+subtitle: Cada servicio pasa sus tests; nadie comprueba si se entienden entre ellos
 description: "Tests de sistema con Aspire.Hosting.Testing en .NET 10: arrancar el AppHost con PostgreSQL, la API y un worker desde xUnit, en qué se diferencia de Testcontainers, tokens JWT para otro proceso, timeouts y CI."
 date: 2026-10-04
 topic: dotnet

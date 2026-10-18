@@ -1,6 +1,6 @@
 ---
 title: "Aspire sin humo: qué es y qué no"
-subtitle: entry-hub tenía un docker-compose.yml con PostgreSQL y una contraseña repetida en dos ficheros. Lo borramos, y lo que vino en su lugar sabe bastante más de la aplicación
+subtitle: Ni un Docker Compose con otro nombre ni algo que solo sirve en local
 description: "Qué es Aspire 13 y qué no: el AppHost como modelo de la aplicación en C#, ServiceDefaults con OpenTelemetry y health checks, el dashboard y Scalar.Aspire, sobre una API real en .NET 10."
 date: 2026-10-03
 topic: dotnet

@@ -1,6 +1,6 @@
 ---
 title: "Que tu documentación OpenAPI no parezca la de todo el mundo"
-subtitle: Quien integra tu API ve primero la documentación, y ahora mismo es igual que la de todas las demás
+subtitle: Cinco minutos de configuración separan una documentación genérica de una que parece tuya
 description: "Personalizar Scalar y el documento OpenAPI en .NET 10: contacto y licencia en OpenApiInfo, logo en la cabecera, favicon y colores corporativos con CSS."
 date: 2026-09-27
 topic: aspnet

@@ -1,5 +1,5 @@
 ---
-title: "Contract testing de una API con su documento OpenAPI"
+title: "Tu API dice cumplir su contrato: compruébalo con un test"
 subtitle: El contrato está al día con el código, pero eso no garantiza que la API responda lo que el contrato promete
 description: "Contract testing en .NET 10: validar las respuestas reales de una Minimal API contra los esquemas del documento OpenAPI con JsonSchema.Net, y declarar los errores con ProducesProblem."
 date: 2026-09-30

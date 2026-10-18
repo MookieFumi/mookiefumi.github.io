@@ -1,7 +1,7 @@
 ---
 title: "Enséñale a tu API a decir que no (sin mentir)"
-subtitle: Validación integrada de .NET 10, reglas de negocio en el handler y errores con ProblemDetails, o cuándo responder 400, 422 o 409
-description: Cómo validar la entrada de una Minimal API en .NET 10 en dos niveles, con AddValidation para la forma del request y reglas de negocio en el handler, y cómo devolver 400, 422 y 409 con ProblemDetails.
+subtitle: Un formulario mal rellenado, una regla de negocio rota y una reserva que llega tarde no merecen el mismo error
+description: "Validación en Minimal APIs de .NET 10: AddValidation para la forma del request, reglas de negocio en el handler y errores 400, 422 y 409 con ProblemDetails."
 date: 2026-09-24
 topic: aspnet
 series: minimal-apis-dotnet

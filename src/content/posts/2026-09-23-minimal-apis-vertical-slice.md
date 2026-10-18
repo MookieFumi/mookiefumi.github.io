@@ -1,6 +1,6 @@
 ---
 title: "Minimal APIs sin el Program.cs de 800 líneas"
-subtitle: Lo que ofrece Minimal APIs en .NET 10 y cómo organizar el código para que crezca sin desordenarse
+subtitle: Cómo crece una API real en .NET 10 sin que a nadie le dé miedo abrir el código
 description: Minimal APIs en .NET 10 con MapGroup y TypedResults, organizadas en vertical slices con un handler por caso de uso registrado por convención.
 date: 2026-09-23
 topic: aspnet

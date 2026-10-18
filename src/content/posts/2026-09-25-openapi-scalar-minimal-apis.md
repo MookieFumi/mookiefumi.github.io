@@ -21,7 +21,7 @@ Son tres piezas y conviene no mezclarlas:
 | Pieza | Qué hace | Dónde |
 | --- | --- | --- |
 | `Microsoft.AspNetCore.OpenApi` | Genera el documento a partir de los endpoints | En la aplicación, en `/openapi/v1.json` |
-| `Scalar.AspNetCore` | Enseña el documento en una página interactiva | En la aplicación, en `/scalar`, solo en Development |
+| `Scalar.AspNetCore` | Enseña el documento en una página interactiva | En la aplicación, en `/scalar/v1`, solo en Development |
 | `Microsoft.Extensions.ApiDescription.Server` | Arranca la aplicación al compilar y escribe el documento en un fichero | En el build, en `contracts/EntryHub.Api.json` |
 
 La primera es la única imprescindible. Las otras dos son opcionales y no dependen la una de la otra.
@@ -170,7 +170,7 @@ app.MapScalarApiReference(options => options
     .WithTitle("EntryHub API"));
 ```
 
-Por defecto queda en `/scalar` y lee el documento de `/openapi/v1.json`. Swashbuckle sigue existiendo y puedes usar Swagger UI con el documento nativo. Yo prefiero Scalar por esto:
+Por defecto la página queda en `/scalar/v1` (`/scalar` redirige ahí) y lee el documento de `/openapi/v1.json`. Swashbuckle sigue existiendo y puedes usar Swagger UI con el documento nativo. Yo prefiero Scalar por esto:
 
 | | Scalar | Swagger UI |
 | --- | --- | --- |

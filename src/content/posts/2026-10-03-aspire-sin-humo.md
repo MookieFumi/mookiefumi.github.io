@@ -196,7 +196,7 @@ Parecen dos formas de preguntar lo mismo, y no lo son. Cada uno contesta a una p
 
 La separación importa por lo que pasa cuando falla una dependencia. Si PostgreSQL se cae, `/health` falla y `/alive` no. Reiniciar la API no arreglaría la base de datos, así que lo correcto es dejar de mandarle tráfico y esperar. Si las dos probes apuntaran a `/health`, una caída de PostgreSQL acabaría en reinicios en cadena de todos los pods de la API.
 
-Hay un tercer tipo, `ProbeType.Startup`, que entry-hub no usa. Sirve para servicios que tardan en arrancar: hasta que pasa, Kubernetes no ejecuta las otras dos, y una liveness impaciente no mata un proceso que solo estaba arrancando.
+Hay un tercer tipo, `ProbeType.Startup`, que entry-hub no usa. Sirve para servicios que tardan en arrancar: hasta que pasa, Kubernetes no ejecuta las otras dos, y una liveness impaciente no mata un proceso que solo estaba arrancando. Las tres, y contra qué endpoint conviene apuntar cada una, están en [esta píldora sobre las probes](/2026-10-06-probes-kubernetes-readiness-liveness-startup).
 
 Y no hay que confundir ninguno de los dos con `GET /api/v1/health`, que es un endpoint de la API, versionado, con su JSON y su sitio en el [contrato OpenAPI](/2026-09-25-openapi-scalar-minimal-apis). Las probes son para la infraestructura, y ese endpoint para los clientes.
 

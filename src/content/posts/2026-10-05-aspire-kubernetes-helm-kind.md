@@ -371,7 +371,7 @@ La readiness también es la que mira el despliegue. Con `maxUnavailable: 0`, el 
 
 Los cinco valores se pueden cambiar desde el AppHost, porque `WithHttpProbe` acepta `initialDelaySeconds`, `periodSeconds`, `timeoutSeconds`, `failureThreshold` y `successThreshold`. Un `timeoutSeconds` de un segundo es justo para un `/health` que consulta la base de datos. Si la tuya tarda en contestar, súbelo antes de que un PostgreSQL lento te saque los pods del Service.
 
-El tercer tipo, `ProbeType.Startup`, no hace falta aquí. La espera larga, la de las migraciones, ya la hace el init container `migrate` antes de que arranque la API. Sin él, una API que tardara medio minuto en arrancar necesitaría una startup probe para que la liveness no la matara antes de tiempo.
+El tercer tipo, `ProbeType.Startup`, no hace falta aquí. La espera larga, la de las migraciones, ya la hace el init container `migrate` antes de que arranque la API. Sin él, una API que tardara medio minuto en arrancar necesitaría una startup probe para que la liveness no la matara antes de tiempo. Las tres probes y los errores típicos al apuntarlas tienen [su propia píldora](/2026-10-06-probes-kubernetes-readiness-liveness-startup).
 
 ServiceDefaults mapea los dos endpoints en todos los entornos, porque Kubernetes los necesita. Solo responden `Healthy` o `Unhealthy`, sin detalles, y el chart no publica ningún ingress. Si añades uno, que no los exponga.
 

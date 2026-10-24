@@ -340,9 +340,38 @@ Si algo falla, una trampa de bash vuelca el estado de los pods, su `describe` y 
 
 ## Las probes, otra vez
 
-En el clúster es donde se nota que las dos probes sean distintas. `/health` ejecuta todos los health checks, incluido el de PostgreSQL. `/alive` solo ejecuta los marcados como `live`, que en entry-hub es un check que siempre responde bien si el proceso contesta.
+En el [post anterior](/2026-10-03-aspire-sin-humo#health-y-alive-no-son-lo-mismo) vimos qué contesta cada endpoint: `/health` ejecuta todos los health checks, PostgreSQL incluido, y `/alive` solo los marcados como `live`. En el clúster es donde esa diferencia tiene consecuencias.
 
-Si PostgreSQL se cae, la readiness falla y el pod deja de recibir tráfico. La liveness sigue bien, así que Kubernetes no reinicia la API, que no arreglaría nada. Cuando PostgreSQL vuelve, el pod vuelve a recibir tráfico solo. Si las dos probes apuntaran a `/health`, una caída de la base de datos acabaría en una cadena de reinicios.
+Cada `WithHttpProbe` del AppHost acaba en el Deployment de la API como una probe de Kubernetes:
+
+```yaml
+readinessProbe:
+  failureThreshold: 3
+  successThreshold: 1
+  initialDelaySeconds: 5
+  periodSeconds: 5
+  timeoutSeconds: 1
+  httpGet:
+    scheme: "HTTP"
+    path: "/health"
+    port: {{ .Values.parameters.api.port_http | int }}
+```
+
+La liveness es igual, con `path: "/alive"`. Esos números no los he elegido yo: son los que pone Aspire cuando `WithHttpProbe` no recibe otros. Leídos en voz alta:
+
+- `initialDelaySeconds: 5`: la primera comprobación llega cinco segundos después de arrancar el contenedor.
+- `periodSeconds: 5`: después, una cada cinco segundos.
+- `timeoutSeconds: 1`: si el endpoint tarda más de un segundo, cuenta como fallo.
+- `failureThreshold: 3`: hacen falta tres fallos seguidos para actuar.
+- `successThreshold: 1`: basta un acierto para volver a estar bien.
+
+Con esos valores, si PostgreSQL se cae, la readiness falla tres veces seguidas, unos quince segundos, y el pod sale del Service: deja de recibir tráfico. La liveness sigue bien, así que Kubernetes no reinicia la API, que no arreglaría nada. Cuando PostgreSQL vuelve, basta una comprobación buena para que el pod reciba tráfico otra vez. Si las dos probes apuntaran a `/health`, la misma caída acabaría en una cadena de reinicios.
+
+La readiness también es la que mira el despliegue. Con `maxUnavailable: 0`, el pod viejo no se quita hasta que el nuevo pasa esta probe, y es la misma que espera `helm --wait`.
+
+Los cinco valores se pueden cambiar desde el AppHost, porque `WithHttpProbe` acepta `initialDelaySeconds`, `periodSeconds`, `timeoutSeconds`, `failureThreshold` y `successThreshold`. Un `timeoutSeconds` de un segundo es justo para un `/health` que consulta la base de datos. Si la tuya tarda en contestar, súbelo antes de que un PostgreSQL lento te saque los pods del Service.
+
+El tercer tipo, `ProbeType.Startup`, no hace falta aquí. La espera larga, la de las migraciones, ya la hace el init container `migrate` antes de que arranque la API. Sin él, una API que tardara medio minuto en arrancar necesitaría una startup probe para que la liveness no la matara antes de tiempo.
 
 ServiceDefaults mapea los dos endpoints en todos los entornos, porque Kubernetes los necesita. Solo responden `Healthy` o `Unhealthy`, sin detalles, y el chart no publica ningún ingress. Si añades uno, que no los exponga.
 

@@ -180,7 +180,27 @@ public static WebApplication MapDefaultEndpoints(this WebApplication app)
 }
 ```
 
-La razón es Kubernetes, que pregunta a esos dos endpoints para decidir si manda tráfico al pod o lo reinicia. Solo responden `Healthy` o `Unhealthy`, sin detalles, y no se exponen hacia fuera. Lo cuento con calma en el [post de Kubernetes](/2026-10-05-aspire-kubernetes-helm-kind).
+La razón es Kubernetes, que pregunta a esos dos endpoints para decidir si manda tráfico al pod o lo reinicia. Solo responden `Healthy` o `Unhealthy`, sin detalles, y no se exponen hacia fuera.
+
+### /health y /alive no son lo mismo
+
+Parecen dos formas de preguntar lo mismo, y no lo son. Cada uno contesta a una pregunta distinta, y quien pregunta hace cosas distintas con la respuesta:
+
+| | `/health` | `/alive` |
+|---|---|---|
+| Qué ejecuta | Todos los health checks registrados, incluido el de PostgreSQL | Solo los que llevan la etiqueta `live`: en entry-hub, `self`, que siempre responde bien |
+| A qué pregunta contesta | ¿Puede este servicio atender peticiones ahora mismo? | ¿Sigue vivo el proceso? |
+| Tipo de probe en el AppHost | `ProbeType.Readiness` | `ProbeType.Liveness` |
+| Qué hace Aspire en local | `WaitFor(api)` espera a que pase antes de arrancar los recordatorios | |
+| Qué hace Kubernetes si falla | Deja de mandarle tráfico al pod, sin tocarlo | Reinicia el contenedor |
+
+La separación importa por lo que pasa cuando falla una dependencia. Si PostgreSQL se cae, `/health` falla y `/alive` no. Reiniciar la API no arreglaría la base de datos, así que lo correcto es dejar de mandarle tráfico y esperar. Si las dos probes apuntaran a `/health`, una caída de PostgreSQL acabaría en reinicios en cadena de todos los pods de la API.
+
+Hay un tercer tipo, `ProbeType.Startup`, que entry-hub no usa. Sirve para servicios que tardan en arrancar: hasta que pasa, Kubernetes no ejecuta las otras dos, y una liveness impaciente no mata un proceso que solo estaba arrancando.
+
+Y no hay que confundir ninguno de los dos con `GET /api/v1/health`, que es un endpoint de la API, versionado, con su JSON y su sitio en el [contrato OpenAPI](/2026-09-25-openapi-scalar-minimal-apis). Las probes son para la infraestructura, y ese endpoint para los clientes.
+
+Cómo se traducen estas dos probes en el chart, con sus tiempos y su número de fallos, y qué pasa en el clúster cuando PostgreSQL se cae, lo cuento en [el post de Kubernetes](/2026-10-05-aspire-kubernetes-helm-kind#las-probes-otra-vez).
 
 El health check de PostgreSQL no sale de ServiceDefaults. Lo añade `EnrichNpgsqlDbContext` en el `Program.cs` de la API, junto con las trazas y métricas de Npgsql. En entry-hub va con los reintentos desactivados, porque el handler que crea reservas ya decide qué hacer con un deadlock entre dos reservas simultáneas, y un reintento silencioso lo escondería.
 

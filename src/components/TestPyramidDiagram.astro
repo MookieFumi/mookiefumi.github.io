@@ -1,45 +1,34 @@
 ---
-// La pirámide de tests con los tests de entry-hub en cada escalón y, a la derecha, qué
-// escalones arrancan su PostgreSQL con Testcontainers. Las bandas se calculan a partir
-// de la lista de abajo; el ancho de cada una no representa el número de tests.
+// La pirámide de tests con los tests de entry-hub en cada escalón. Las bandas se calculan
+// a partir de la lista de abajo; el ancho de cada una no representa el número de tests.
+// La cima es más alta que el resto para que su texto quepa cerca del pico.
 const levels = [
-  { name: 'End-to-end', detail: 'tests de sistema', count: 3, color: '#56d4dd' },
-  { name: 'Contrato', detail: 'respuestas frente al OpenAPI', count: 2, color: '#b392f0' },
-  { name: 'Integración amplia', detail: 'endpoints, WebApplicationFactory', count: 33, color: '#6cb6ff' },
-  { name: 'Integración estrecha', detail: 'casos de uso contra PostgreSQL', count: 28, color: '#6cb6ff' },
-  { name: 'Unitario', detail: 'reglas puras', count: 26, color: '#57d38c' },
+  { name: 'End-to-end', detail: 'tests de sistema', count: 3, color: '#56d4dd', height: 170 },
+  { name: 'Contrato', detail: 'respuestas frente al OpenAPI', count: 2, color: '#b392f0', height: 72 },
+  { name: 'Integración amplia', detail: 'endpoints, WebApplicationFactory', count: 33, color: '#6cb6ff', height: 72 },
+  { name: 'Integración estrecha', detail: 'casos de uso contra PostgreSQL', count: 28, color: '#6cb6ff', height: 72 },
+  { name: 'Unitario', detail: 'reglas puras', count: 26, color: '#57d38c', height: 72 },
 ];
 
-const top = 16;
-const bandHeight = 74;
-const center = 220;
-const topHalf = 72;
-const baseHalf = 210;
-const bottom = top + bandHeight * levels.length;
-const half = (y: number) => topHalf + ((baseHalf - topHalf) * (y - top)) / (bottom - top);
+const top = 12;
+const center = 320;
+const baseHalf = 310;
+const total = levels.reduce((sum, level) => sum + level.height, 0);
+const half = (y: number) => (baseHalf * (y - top)) / total;
 
-const bands = levels.map((level, i) => {
-  const y1 = top + i * bandHeight;
-  const y2 = y1 + bandHeight;
+let y1 = top;
+const bands = levels.map((level) => {
+  const y2 = y1 + level.height;
   const points = [
     [center - half(y1), y1],
     [center + half(y1), y1],
     [center + half(y2), y2],
     [center - half(y2), y2],
   ].map(([x, y]) => `${x.toFixed(1)},${y}`).join(' ');
-  return { ...level, points, y: y1 + bandHeight / 2 };
-});
-
-// Corchetes de la derecha: qué pone la base de datos en cada tramo de la pirámide.
-const bracketX = center + baseHalf + 24;
-const brackets = [
-  { from: 0, to: 0, label: ['PostgreSQL', 'lo arranca Aspire'], color: '#56d4dd' },
-  { from: 1, to: 3, label: ['PostgreSQL', 'con Testcontainers'], color: '#e3b341' },
-  { from: 4, to: 4, label: ['sin base', 'de datos'], color: '#8b949e' },
-].map((bracket) => {
-  const y1 = top + bracket.from * bandHeight + 6;
-  const y2 = top + (bracket.to + 1) * bandHeight - 6;
-  return { ...bracket, y1, y2, mid: (y1 + y2) / 2 };
+  // El texto va en la parte baja de cada banda, donde es más ancha.
+  const band = { ...level, points, nameY: y2 - 32, detailY: y2 - 12 };
+  y1 = y2;
+  return band;
 });
 ---
 <figure class="pyramid">
@@ -47,37 +36,16 @@ const brackets = [
     <span class="pyramid-dot" style="background:#ff5f56"></span><span class="pyramid-dot" style="background:#ffbd2e"></span><span class="pyramid-dot" style="background:#27c93f"></span>
     <span class="pyramid-path">~/entry-hub/src/tests · pirámide de tests</span>
   </div>
-  <svg class="wide" viewBox={`0 0 600 ${bottom + top}`} role="img" aria-labelledby="pyramid-title">
-    <title id="pyramid-title">Pirámide de tests de entry-hub: 26 unitarios en la base; 28 de integración estrecha, 33 de integración amplia y 2 de contrato en el medio, con PostgreSQL arrancado por Testcontainers; y 3 end-to-end en la cima, con PostgreSQL arrancado por Aspire.</title>
+  <svg viewBox={`0 0 ${center * 2} ${top * 2 + total}`} role="img" aria-labelledby="pyramid-title">
+    <title id="pyramid-title">Pirámide de tests de entry-hub: 26 unitarios en la base; 28 de integración estrecha, 33 de integración amplia y 2 de contrato en el medio; y 3 end-to-end en la cima.</title>
     {bands.map((band) => (
       <g>
-        <polygon points={band.points} fill={band.color} fill-opacity="0.14" stroke={band.color} stroke-width="1.2" />
-        <text x={center} y={band.y - 6} class="name">{band.name} · {band.count}</text>
-        <text x={center} y={band.y + 13} class="detail">{band.detail}</text>
-      </g>
-    ))}
-    {brackets.map((bracket) => (
-      <g>
-        <path d={`M${bracketX} ${bracket.y1} h8 V${bracket.y2} h-8`} fill="none" stroke={bracket.color} stroke-width="1.5" />
-        <text x={bracketX + 16} y={bracket.mid - 4} class="note" fill={bracket.color}>{bracket.label[0]}</text>
-        <text x={bracketX + 16} y={bracket.mid + 12} class="note" fill={bracket.color}>{bracket.label[1]}</text>
+        <polygon points={band.points} fill={band.color} fill-opacity="0.14" stroke={band.color} stroke-width="1.2" stroke-linejoin="round" />
+        <text x={center} y={band.nameY} class="name">{band.name} · {band.count}</text>
+        <text x={center} y={band.detailY} class="detail">{band.detail}</text>
       </g>
     ))}
   </svg>
-  <svg class="narrow" viewBox={`0 0 ${center * 2} ${bottom + top}`} aria-hidden="true">
-    {bands.map((band) => (
-      <g>
-        <polygon points={band.points} fill={band.color} fill-opacity="0.14" stroke={band.color} stroke-width="1.2" />
-        <text x={center} y={band.y - 6} class="name">{band.name} · {band.count}</text>
-        <text x={center} y={band.y + 13} class="detail">{band.detail}</text>
-      </g>
-    ))}
-  </svg>
-  <ul class="legend" aria-hidden="true">
-    {brackets.map((bracket) => (
-      <li style={`color:${bracket.color}`}>{levels.slice(bracket.from, bracket.to + 1).map((level) => level.name).join(', ')}: {bracket.label.join(' ')}</li>
-    ))}
-  </ul>
   <figcaption>El ancho de cada escalón es el de la pirámide clásica, no el número de tests.</figcaption>
 </figure>
 
@@ -107,34 +75,12 @@ const brackets = [
     color: #8b949e;
     font-size: 11px;
   }
-  .pyramid .narrow,
-  .pyramid .legend {
-    display: none;
-  }
-  @media (max-width: 640px) {
-    .pyramid .wide {
-      display: none;
-    }
-    .pyramid .narrow {
-      display: block;
-    }
-    .pyramid .narrow .name {
-      font-size: 16px;
-    }
-    .pyramid .narrow .detail {
-      font-size: 12.5px;
-    }
-    .pyramid .legend {
-      display: block;
-      margin: 0;
-      padding: 0 12px 12px 28px;
-      font-size: 11px;
-    }
-  }
   svg {
     display: block;
     width: 100%;
+    max-width: 640px;
     height: auto;
+    margin-inline: auto;
     padding: 12px;
     box-sizing: border-box;
   }
@@ -143,21 +89,13 @@ const brackets = [
     text-anchor: middle;
   }
   .name {
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 700;
     fill: #e6edf3;
   }
   .detail {
-    font-size: 11.5px;
+    font-size: 14px;
     fill: #8b949e;
-  }
-  .note {
-    font-size: 12px;
-    text-anchor: start;
-  }
-  .pyramid .legend li {
-    font-size: 11px;
-    line-height: 1.5;
   }
   .pyramid figcaption {
     padding: 0 12px 10px;

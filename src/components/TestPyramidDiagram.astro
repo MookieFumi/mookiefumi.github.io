@@ -1,13 +1,13 @@
 ---
-// La pirámide de tests con los tests de entry-hub en cada escalón. Las bandas se calculan
-// a partir de la lista de abajo; el ancho de cada una no representa el número de tests.
+// La pirámide de tests con los tipos de test de entry-hub en cada escalón. Las bandas se
+// calculan a partir de la lista de abajo.
 // La cima es más alta que el resto para que su texto quepa cerca del pico.
 const levels = [
-  { name: 'End-to-end', detail: 'tests de sistema', count: 3, color: '#56d4dd', height: 170 },
-  { name: 'Contrato', detail: 'respuestas frente al OpenAPI', count: 2, color: '#b392f0', height: 72 },
-  { name: 'Integración amplia', detail: 'endpoints, WebApplicationFactory', count: 33, color: '#6cb6ff', height: 72 },
-  { name: 'Integración estrecha', detail: 'casos de uso contra PostgreSQL', count: 28, color: '#6cb6ff', height: 72 },
-  { name: 'Unitario', detail: 'reglas puras', count: 26, color: '#57d38c', height: 72 },
+  { name: 'End-to-end', color: '#56d4dd', height: 150 },
+  { name: 'Contrato', color: '#b392f0', height: 72 },
+  { name: 'Integración amplia', color: '#6cb6ff', height: 72 },
+  { name: 'Integración estrecha', color: '#6cb6ff', height: 72 },
+  { name: 'Unitario', color: '#57d38c', height: 72 },
 ];
 
 const top = 12;
@@ -26,7 +26,7 @@ const bands = levels.map((level) => {
     [center - half(y2), y2],
   ].map(([x, y]) => `${x.toFixed(1)},${y}`).join(' ');
   // El texto va en la parte baja de cada banda, donde es más ancha.
-  const band = { ...level, points, nameY: y2 - 32, detailY: y2 - 12 };
+  const band = { ...level, points, nameY: y2 - 22 };
   y1 = y2;
   return band;
 });
@@ -37,16 +37,14 @@ const bands = levels.map((level) => {
     <span class="pyramid-path">~/entry-hub/src/tests · pirámide de tests</span>
   </div>
   <svg viewBox={`0 0 ${center * 2} ${top * 2 + total}`} role="img" aria-labelledby="pyramid-title">
-    <title id="pyramid-title">Pirámide de tests de entry-hub: 26 unitarios en la base; 28 de integración estrecha, 33 de integración amplia y 2 de contrato en el medio; y 3 end-to-end en la cima.</title>
+    <title id="pyramid-title">Pirámide de tests de entry-hub: unitarios en la base; integración estrecha, integración amplia y contrato en el medio; y end-to-end en la cima.</title>
     {bands.map((band) => (
       <g>
         <polygon points={band.points} fill={band.color} fill-opacity="0.14" stroke={band.color} stroke-width="1.2" stroke-linejoin="round" />
-        <text x={center} y={band.nameY} class="name">{band.name} · {band.count}</text>
-        <text x={center} y={band.detailY} class="detail">{band.detail}</text>
+        <text x={center} y={band.nameY} class="name">{band.name}</text>
       </g>
     ))}
   </svg>
-  <figcaption>El ancho de cada escalón es el de la pirámide clásica, no el número de tests.</figcaption>
 </figure>
 
 <style>
@@ -92,15 +90,5 @@ const bands = levels.map((level) => {
     font-size: 18px;
     font-weight: 700;
     fill: #e6edf3;
-  }
-  .detail {
-    font-size: 14px;
-    fill: #8b949e;
-  }
-  .pyramid figcaption {
-    padding: 0 12px 10px;
-    color: #8b949e;
-    font-size: 11px;
-    text-align: center;
   }
 </style>

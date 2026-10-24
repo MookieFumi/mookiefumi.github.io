@@ -7,6 +7,8 @@ topic: dotnet
 published: false
 ---
 
+import TestPyramidDiagram from '../../components/TestPyramidDiagram.astro';
+
 Los tests de la API de [entry-hub](https://github.com/MookieFumi/entry-hub) necesitan un PostgreSQL de verdad. Hasta hace poco, ese PostgreSQL no lo ponían los tests. En la CI lo ponía el job, y en tu máquina lo tenías que tener instalado tú, con el usuario, la contraseña y la base de datos que el código esperaba. Si no lo tenías, los tests fallaban al conectar, y el error no decía qué te faltaba.
 
 El mismo test pasaba o fallaba según quién lo ejecutara. Este post va de cómo dejó de ser así con [Testcontainers](https://dotnet.testcontainers.org/), y de dónde encajan esos tests en la pirámide de tests.
@@ -102,6 +104,8 @@ Hay tests que no pueden funcionar así, porque cuentan: listar las salas de una 
 La pirámide de tests la popularizó Mike Cohn en *Succeeding with Agile* (2009), con tres escalones: muchos tests unitarios en la base, menos tests de servicio en el medio y pocos tests de interfaz arriba. Ham Vocke la puso al día en [*The Practical Test Pyramid*](https://martinfowler.com/articles/practical-test-pyramid.html), en el blog de Martin Fowler, y le dio nombre a lo que hay en el medio: tests de integración y tests de contrato. El propio Fowler separa en [*IntegrationTest*](https://martinfowler.com/bliki/IntegrationTest.html) la integración estrecha, que prueba tu código contra una dependencia real, de la amplia, que levanta el servicio entero.
 
 Con esas referencias, los tests de entry-hub quedan así:
+
+<TestPyramidDiagram />
 
 | Escalón | Tipo de test | En entry-hub | Tests | ¿Usa Testcontainers? |
 |---|---|---|---:|---|

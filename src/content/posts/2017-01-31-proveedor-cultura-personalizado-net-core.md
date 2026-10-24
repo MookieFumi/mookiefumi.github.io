@@ -7,12 +7,12 @@ published: false
 
 Dentro del ensamblado Microsoft.AspNetCore.Localization existe una clase base llamada **RequestCultureProvider** que implementa a su vez la interface **IRequestCultureProvider**, lo que quiere decir que podemos crear nuestros propios proveedores de cultura.
 
-Haciendo un poco de memoria existen tres proveedores por defecto que son **QueryStringRequestCultureProvider**, **CookieRequestCultureProvider**, **AcceptLanguageHeaderRequestCultureProvider** y otro que aunque no está inlcuido entre los de por defecto está implementado que es **RouteDataRequestCultureProvider**.
+Haciendo un poco de memoria, existen tres proveedores por defecto, **QueryStringRequestCultureProvider**, **CookieRequestCultureProvider**, **AcceptLanguageHeaderRequestCultureProvider** y otro que, aunque no está entre los de por defecto, sí está implementado: **RouteDataRequestCultureProvider**.
 
-A mi el ejemplo que se me ocurre para ver como crear un proveedor de cultura personalizado:
+El ejemplo que se me ocurre para ver cómo crear un proveedor de cultura personalizado:
 
-* Los usuarios de mi aplicación pueden ver la aplicación en 2 culturas (es/ en).
-* Todos los usuarios pertenecen a una empresa y es la empresa la que dicta la configuración regional, es decir, el formatoes que el usuario puede elegir la cultura de la interfaz de usuario (UICulture) y la empresa a la que pertenece tiene asignada una cultura.
+* Los usuarios de mi aplicación pueden ver la aplicación en dos culturas (es y en).
+* Todos los usuarios pertenecen a una empresa y es la empresa la que dicta la configuración regional, es decir, el formato: el usuario puede elegir la cultura de la interfaz de usuario (UICulture) y la empresa a la que pertenece tiene asignada una cultura.
 
 ```csharp
 public class MyRequestCultureProvider : CookieRequestCultureProvider

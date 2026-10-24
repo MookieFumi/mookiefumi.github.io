@@ -43,7 +43,7 @@ El segundo es el test del sistema, el de este post. El test ya no arranca la API
 
 La propia documentación de Aspire lo dice: para mocks, para cambiar servicios o para probar un proyecto aislado, usa `WebApplicationFactory`. Con Aspire solo puedes influir desde fuera, con variables de entorno o configuración.
 
-Así que Testcontainers mejora el primer tipo, y Aspire te da el segundo. Los 101 tests de `EntryHub.Api.Tests` son del primero, y desde el [PR #35](https://github.com/MookieFumi/entry-hub/pull/35) arrancan su PostgreSQL con Testcontainers. Si defines `ENTRYHUB_TEST_CONNECTION`, usan el tuyo, para máquinas sin Docker. ¿Por qué hace falta el segundo? Porque el recordatorio pasa entre dos servicios: la API guarda la reserva y otro proceso la encuentra. En un test de la API el servicio de recordatorios no existe, así que eso no se puede probar.
+Así que Testcontainers mejora el primer tipo, y Aspire te da el segundo. Los 101 tests de `EntryHub.Api.Tests` se quedan en el lado del primero, y desde el [PR #35](https://github.com/MookieFumi/entry-hub/pull/35) arrancan su PostgreSQL con Testcontainers. Si defines `ENTRYHUB_TEST_CONNECTION`, usan el tuyo, para máquinas sin Docker. ¿Por qué hace falta el segundo? Porque el recordatorio pasa entre dos servicios: la API guarda la reserva y otro proceso la encuentra. En un test de la API el servicio de recordatorios no existe, así que eso no se puede probar.
 
 ## Qué tests había y cuál faltaba
 
@@ -291,6 +291,9 @@ aspire:
         cache: true
         cache-dependency-path: "**/packages.lock.json"
 
+    - name: Docker
+      run: scripts/check-docker.sh
+
     - name: Test the whole system
       run: |
         dotnet restore --locked-mode
@@ -298,6 +301,8 @@ aspire:
           --logger "console;verbosity=detailed" --blame-hang-timeout 8m
       working-directory: src
 ```
+
+El paso `Docker` comprueba antes de nada que hay un Docker que funciona. Si no lo hay, el job falla en ese paso con un mensaje que lo dice, y no a mitad de un test con un error de conexión.
 
 Hay dos límites, porque protegen cosas distintas. `--blame-hang-timeout 8m` corta `dotnet test` si una prueba lleva ocho minutos sin terminar y deja un informe de qué estaba haciendo. `timeout-minutes: 15` es la red de seguridad del job entero: sin él, GitHub deja correr un job colgado hasta seis horas. Y `verbosity=detailed` hace que el log del job muestre cada test y la salida de los recursos, que es lo que permitió encontrar el problema del certificado.
 

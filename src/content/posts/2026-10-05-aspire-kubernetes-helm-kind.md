@@ -336,11 +336,11 @@ The application works in the cluster.
 
 `helm --wait` tardó 29 segundos y, esta vez, la API no se reinició ni una vez. El recordatorio salió tres segundos después de insertar la reserva. Eso fue suerte: el servicio revisa las reservas cada 30 segundos, así que puede tardar hasta medio minuto. El script espera hasta dos.
 
-Si algo falla, una trampa de bash vuelca el estado de los pods, su `describe` y sus logs. De ahí salen los errores que he copiado en los apartados anteriores.
+Si algo falla, un `trap` de bash vuelca el estado de los pods, su `describe` y sus logs. De ahí salen los errores que he copiado en los apartados anteriores.
 
 ## Las probes, otra vez
 
-En el [post anterior](/2026-10-03-aspire-sin-humo#health-y-alive-no-son-lo-mismo) vimos qué contesta cada endpoint: `/health` ejecuta todos los health checks, PostgreSQL incluido, y `/alive` solo los marcados como `live`. En el clúster es donde esa diferencia tiene consecuencias.
+En el [primer post de Aspire](/2026-10-03-aspire-sin-humo#health-y-alive-no-son-lo-mismo) vimos qué contesta cada endpoint: `/health` ejecuta todos los health checks, PostgreSQL incluido, y `/alive` solo los marcados como `live`. En el clúster es donde esa diferencia tiene consecuencias.
 
 Cada `WithHttpProbe` del AppHost acaba en el Deployment de la API como una probe de Kubernetes:
 

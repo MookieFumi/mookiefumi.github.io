@@ -191,7 +191,7 @@ Parecen dos formas de preguntar lo mismo, y no lo son. Cada uno contesta a una p
 | Qué ejecuta | Todos los health checks registrados, incluido el de PostgreSQL | Solo los que llevan la etiqueta `live`: en entry-hub, `self`, que siempre responde bien |
 | A qué pregunta contesta | ¿Puede este servicio atender peticiones ahora mismo? | ¿Sigue vivo el proceso? |
 | Tipo de probe en el AppHost | `ProbeType.Readiness` | `ProbeType.Liveness` |
-| Qué hace Aspire en local | `WaitFor(api)` espera a que pase antes de arrancar los recordatorios | |
+| Qué hace Aspire en local | `WaitFor(api)` espera a que pase antes de arrancar los recordatorios | Nada |
 | Qué hace Kubernetes si falla | Deja de mandarle tráfico al pod, sin tocarlo | Reinicia el contenedor |
 
 La separación importa por lo que pasa cuando falla una dependencia. Si PostgreSQL se cae, `/health` falla y `/alive` no. Reiniciar la API no arreglaría la base de datos, así que lo correcto es dejar de mandarle tráfico y esperar. Si las dos probes apuntaran a `/health`, una caída de PostgreSQL acabaría en reinicios en cadena de todos los pods de la API.

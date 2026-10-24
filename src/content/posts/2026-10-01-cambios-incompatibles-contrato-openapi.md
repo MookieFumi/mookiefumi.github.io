@@ -137,7 +137,7 @@ Por eso el workflow también se lanza cuando se edita el PR (`types: [opened, ed
 
 ## Quitar un endpoint
 
-oasdiff tiene una regla más que encaja con la versión obsoleta de la `v1`. Si quitas un endpoint de golpe, falla con `api-path-removed-without-deprecation`. Si antes lo has marcado como `deprecated` en un PR, el changelog lo apunta (`endpoint deprecated`), y en un PR posterior quitarlo ya no cuenta como error.
+oasdiff tiene una regla más que encaja con la versión obsoleta de la `v1`. Si quitas un endpoint de golpe, falla con `api-path-removed-without-deprecation`, o con `api-removed-without-deprecation` si la ruta conserva otros métodos. Si antes lo has marcado como `deprecated` en un PR, el changelog lo apunta (`endpoint deprecated`), y en un PR posterior quitarlo ya no cuenta como error.
 
 ## Lo que queda fuera
 

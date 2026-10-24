@@ -84,7 +84,7 @@ api-deprecated-versions: 1.0
 [{"name":"A-101","capacity":8}]
 ```
 
-Un cliente que siga en la `v1` puede detectar la cabecera y avisar, sin que nadie lea un changelog. Y con `ApiVersionReader` la versión puede venir de otro sitio: una cabecera, la query string o el tipo de contenido. En el ejemplo usamos `UrlSegmentApiVersionReader` para que las dos versiones de la API tengan las mismas URL.
+Un cliente que siga en la `v1` puede detectar la cabecera y avisar, sin que nadie lea un changelog. Y con `ApiVersionReader` la versión puede venir de otro sitio: una cabecera, la query string o el tipo de contenido. En el ejemplo usamos `UrlSegmentApiVersionReader` para que los dos ejemplos tengan las mismas URL.
 
 ## Las dos, lado a lado
 
@@ -106,7 +106,7 @@ Los grupos de rutas bastan mientras la versión solo vive en la URL, tu equipo c
 
 `Asp.Versioning.Http` compensa cuando hay clientes que no controlas y tienen que enterarse de la obsolescencia en la propia respuesta, cuando necesitas leer la versión de una cabecera o cuando conviven muchas versiones a la vez y quieres que la librería lleve la cuenta.
 
-entry-hub se queda con grupos de rutas. Tiene una sola versión, los clientes son de la empresa y, si algún día llega la `v2`, el documento OpenAPI la marcará como obsoleta, igual que en el ejemplo. Si cambian esas condiciones, migrar es mover los endpoints a un grupo con versión y añadir el conjunto de versiones. Los handlers no se enteran.
+entry-hub se queda con grupos de rutas. Tiene una sola versión, los clientes son de la empresa y, si algún día llega la `v2`, el documento OpenAPI marcará la `v1` como obsoleta, igual que en el ejemplo. Si cambian esas condiciones, migrar es mover los endpoints a un grupo con versión y añadir el conjunto de versiones. Los handlers no se enteran.
 
 ## Resumiendo
 

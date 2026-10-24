@@ -15,3 +15,6 @@
 - id: minimal-apis-dotnet
   name: Minimal APIs en .NET
   description: Una API real con Minimal APIs en .NET 10, de los vertical slices y la validación al contrato OpenAPI y su documentación, sobre el código de entry-hub.
+- id: aspire
+  name: Aspire
+  description: Qué es Aspire y qué no, tests que levantan el sistema entero y el camino del AppHost a un chart de Helm instalado en Kubernetes, sobre el código de entry-hub.

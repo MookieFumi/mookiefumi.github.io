@@ -88,7 +88,7 @@ Cuando la pantalla se apaga o el usuario cierra la pestaña, ASP.NET Core cancel
 
 ## Verlo con curl
 
-`curl -N` desactiva el buffer y va pintando los eventos según llegan. Con un token de `dotnet user-jwts`, como en el [post de autenticación](/2026-09-26-openapi-autenticacion-scalar), y una sala con una reserva el lunes a las nueve:
+`curl -N` desactiva el buffer y va pintando los eventos según llegan. Con un token de `dotnet user-jwts`, como en el [post de autenticación](/2026-09-26-openapi-autenticacion-scalar), y una sala con una reserva el lunes a las nueve, hora UTC:
 
 ```bash
 curl -N -i -H "Authorization: Bearer <token>" http://localhost:5178/api/v1/rooms/<id>/occupancy

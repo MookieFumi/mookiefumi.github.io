@@ -12,9 +12,9 @@ Tres peticiones para reservar una sala en [entry-hub](https://github.com/MookieF
 
 Las tres son "errores de validación", y sería fácil responder un 400 a todas. Pero no las detecta el mismo código y el cliente no tiene que hacer lo mismo con cada una: la primera es un formulario mal rellenado, la segunda una regla del negocio y la tercera una carrera que el usuario ha perdido. En el [post anterior](/2026-09-23-minimal-apis-vertical-slice) organizamos la API en una carpeta por caso de uso. En este vemos dónde se valida cada cosa y cómo se lo contamos al cliente.
 
-## Dos niveles de validación
+## Dónde se comprueba cada regla
 
-La pregunta que separa los dos niveles es qué necesitas para comprobar la regla.
+Lo que decide el sitio es qué necesitas para comprobar la regla.
 
 | Qué se comprueba | Necesita | Dónde | Respuesta |
 | --- | --- | --- | --- |
@@ -22,7 +22,7 @@ La pregunta que separa los dos niveles es qué necesitas para comprobar la regla
 | Duración, horario de oficina, antelación, capacidad de la sala, límite de reservas | Configuración, la hora actual o la base de datos | En el handler | `422 Unprocessable Entity` |
 | Que nadie más tenga la sala a esa hora | La base de datos en el momento de guardar | Una restricción de PostgreSQL | `409 Conflict` |
 
-Si la regla se comprueba mirando solo el JSON, va en el primer nivel. Si necesita saber qué hora es, cómo es la sala o qué hay en la base de datos, va en el handler.
+Si la regla se comprueba mirando solo el JSON, va antes del endpoint. Si necesita saber qué hora es, cómo es la sala o qué hay en la base de datos, va en el handler. Y si depende de lo que otra petición esté guardando en ese mismo momento, solo la base de datos puede decidirla.
 
 ## `AddValidation()`: la validación integrada de .NET 10
 
@@ -312,11 +312,11 @@ Y la reserva que llega tarde:
 
 La extensión `violations` lleva un `code` estable por cada regla (`OutsideOfficeHours`, `ExceedsCapacity`, `TooManyActiveBookings`...). El cliente decide qué hacer según el código, no según el texto del mensaje, así que puedo cambiar la redacción o traducirla sin romper ningún frontend.
 
-Si comparas con el 400 de antes, verás que le faltan `type` y `status`, y que llega como `application/json` y no como `application/problem+json`. Es porque entry-hub no registra `AddProblemDetails()`, y sin ese servicio la validación integrada escribe el JSON a pelo. Lo he probado: con esa línea en `Program.cs`, el mismo 400 llega como `application/problem+json` con `type`, `status` y `traceId`. Lo arreglamos en la píldora sobre el manejo global de errores, al final de esta serie.
+Si comparas con el 400 de antes, verás que le faltan `type` y `status`, y que llega como `application/json` y no como `application/problem+json`. Es porque, en este punto de la serie, entry-hub todavía no registra `AddProblemDetails()`, y sin ese servicio la validación integrada escribe el JSON a pelo. Lo he probado: con esa línea en `Program.cs`, el mismo 400 llega como `application/problem+json` con `type`, `status` y `traceId`. Lo arreglamos en la píldora sobre el manejo global de errores, al final de esta serie.
 
-## Probar cada nivel
+## Probar cada regla donde vive
 
-Cada nivel tiene sus tests, en la capa que le toca.
+Cada sitio tiene sus tests, en la capa que le toca.
 
 Las reglas de `BookingPolicy` son lógica pura, con el reloj como argumento:
 

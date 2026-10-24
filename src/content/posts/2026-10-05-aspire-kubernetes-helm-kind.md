@@ -383,6 +383,21 @@ El chart instala y la aplicación funciona, pero no es un despliegue de producci
 - Un ingress. El chart no publica la API fuera del clúster. En el [laboratorio del MCP Server](/2026-08-16-mcp-server-kubernetes-rancher-desktop) hay un ejemplo con Rancher Desktop.
 - Copias de seguridad de PostgreSQL. El PersistentVolumeClaim aguanta reinicios, no desastres.
 - Un PostgreSQL gestionado. Para producción, un contenedor de PostgreSQL en el clúster es la opción que menos recomendaría. El AppHost puede apuntar a una base de datos externa con una cadena de conexión.
+- Más de una réplica. Lo explico abajo, porque es lo que más se nota.
+
+### Con una réplica, cuándo te quedas sin API
+
+`maxUnavailable: 0` cubre las actualizaciones: el pod viejo sigue atendiendo hasta que el nuevo está listo. Si el nuevo no llega a estarlo, o no cabe en el clúster, la actualización se queda parada, pero la API sigue respondiendo con la versión anterior. Fuera de las actualizaciones, en cambio, el chart tiene un solo pod de la API, y la API se queda sin servicio cada vez que ese pod no está listo. El Service se queda sin a quién mandar las peticiones, y el cliente recibe un error de conexión. Pasa en estos casos:
+
+| Qué pasa | Cuánto dura sin servicio |
+|---|---|
+| PostgreSQL deja de contestar | Desde que la readiness falla tres veces, unos quince segundos, hasta que PostgreSQL vuelve |
+| La API se cae o falla la liveness | Lo que tarda en reiniciarse y pasar la readiness: como poco los cinco segundos de `initialDelaySeconds` |
+| Alguien vacía el nodo (`kubectl drain`, una actualización del clúster) | Kubernetes borra el pod y crea otro en otro nodo. Hasta que esté listo: descargar la imagen, el init container `migrate`, el arranque y la readiness |
+| El nodo se cae | Kubernetes espera cinco minutos por defecto antes de dar el nodo por perdido y mover el pod, y luego lo mismo que en la fila anterior |
+
+El primer caso no lo arregla tener más réplicas: si la base de datos es una sola, todas fallan la readiness a la vez (en la [píldora de las probes](/2026-10-06-probes-kubernetes-readiness-liveness-startup) está el porqué y la alternativa). Los otros tres sí. Con dos réplicas, un `PodDisruptionBudget` con `minAvailable: 1`, para que vaciar un nodo no se lleve las dos a la vez, y las réplicas repartidas en nodos distintos, la caída de un pod o de un nodo deja de cortar el servicio. Hay una condición más: la aplicación no puede guardar nada en memoria que otro pod necesite, porque cada conexión puede ir a un pod distinto. entry-hub la cumple: el token se valida en cada petición y la pantalla de la sala lee PostgreSQL en cada pasada.
+
 
 ## Cierre de la serie
 

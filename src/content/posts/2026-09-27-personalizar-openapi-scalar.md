@@ -5,7 +5,7 @@ description: "Personalizar Scalar y el documento OpenAPI en .NET 10: contacto y 
 date: 2026-09-27
 topic: aspnet
 series: minimal-apis-dotnet
-published: false
+published: true
 ---
 
 La página de Scalar de [entry-hub](https://github.com/MookieFumi/entry-hub) funcionaba, pero era idéntica a la de cualquier otra API: el mismo tema, ningún logo y ni una pista de a quién escribir si algo falla. En una API interna da un poco igual, pero si la van a integrar otros equipos, la documentación es lo primero que ven.

@@ -5,7 +5,7 @@ description: Minimal APIs en .NET 10 con MapGroup y TypedResults, organizadas en
 date: 2026-09-23
 topic: aspnet
 series: minimal-apis-dotnet
-published: false
+published: true
 ---
 
 La primera vez que vi Minimal APIs fue en una demo con todo dentro de `Program.cs`: el `DbContext`, tres endpoints, la validación a mano y un `app.Run()` al final. Para una demo vale. En un proyecto real ese fichero llega a las ochocientas líneas y nadie quiere abrirlo. Durante un tiempo pensé que el problema era Minimal APIs. Me equivocaba: el problema era meterlo todo en un fichero.

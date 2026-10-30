@@ -5,7 +5,7 @@ description: "Validación en Minimal APIs de .NET 10: AddValidation para la form
 date: 2026-09-24
 topic: aspnet
 series: minimal-apis-dotnet
-published: false
+published: true
 ---
 
 Tres peticiones para reservar una sala en [entry-hub](https://github.com/MookieFumi/entry-hub), y las tres fallan. La primera llega sin título y con cero asistentes. La segunda pide la sala un sábado para nueve personas, y la sala es de cuatro. La tercera es correcta, pero otra persona acaba de reservar esa misma franja.

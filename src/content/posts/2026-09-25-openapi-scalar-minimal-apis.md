@@ -5,7 +5,7 @@ description: "OpenAPI nativo en .NET 10 con Microsoft.AspNetCore.OpenApi y Scala
 date: 2026-09-25
 topic: aspnet
 series: minimal-apis-dotnet
-published: false
+published: true
 ---
 
 Creas una API nueva con la plantilla de .NET, la arrancas y vas a `/swagger`. Un 404. Desde .NET 9 la plantilla ya no trae Swashbuckle ni Swagger UI. En su lugar trae `Microsoft.AspNetCore.OpenApi`, un paquete del propio ASP.NET Core que genera el documento OpenAPI, y no trae ninguna página para verlo.

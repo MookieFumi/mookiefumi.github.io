@@ -5,7 +5,7 @@ description: "JWT Bearer en el documento OpenAPI de .NET 10: esquema de segurida
 date: 2026-09-26
 topic: aspnet
 series: minimal-apis-dotnet
-published: false
+published: true
 ---
 
 Abres Scalar en local, eliges `POST /api/v1/rooms`, rellenas el body y le das a enviar. La respuesta es un `401 Unauthorized`, sin body y con una cabecera `WWW-Authenticate: Bearer`. Nada en la página te había dicho que esa operación necesitaba un token, ni dónde ponerlo.

@@ -5,7 +5,7 @@ description: "Versionado de Minimal APIs en .NET 10: grupos de rutas con MapGrou
 date: 2026-09-28
 topic: aspnet
 series: minimal-apis-dotnet
-published: false
+published: true
 ---
 
 Un día la API necesita un cambio que rompe a los clientes: un campo nuevo obligatorio, una respuesta con otra forma. Sale la `v2`, y la `v1` tiene que seguir funcionando mientras los clientes migran. Lo primero que pide el cuerpo es buscar una librería de versionado. En .NET la conocida es [Asp.Versioning](https://github.com/dotnet/aspnet-api-versioning), y para Minimal APIs su paquete es `Asp.Versioning.Http`.

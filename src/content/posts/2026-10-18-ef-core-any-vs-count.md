@@ -1,5 +1,5 @@
 ---
-title: "Count() > 0: cuentas lo que solo querías saber si existe"
+title: "Any o Count: en tres de cuatro casos da igual, en el cuarto no"
 subtitle: Una pregunta de sí o no no necesita contar, pero la diferencia real depende de los datos y del plan
 description: "Diferencia entre Count() > 0 y Any() en Entity Framework Core, el SQL que genera cada uno, cuándo importa de verdad con medidas sobre un millón de filas y por qué hay que mirar el plan de ejecución."
 date: 2026-10-18

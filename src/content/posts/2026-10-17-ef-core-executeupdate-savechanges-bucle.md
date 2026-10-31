@@ -1,5 +1,5 @@
 ---
-title: "2.000 SaveChanges para cambiar un estado"
+title: "ExecuteUpdate: un UPDATE en vez de 2.000 viajes"
 subtitle: Cargar, modificar y guardar fila a fila frente a un UPDATE que la base de datos resuelve de una vez
 description: "Por qué llamar a SaveChanges dentro de un bucle es lento en Entity Framework Core, qué ganas con un solo SaveChanges o con ExecuteUpdate, y los límites de ExecuteUpdate y ExecuteDelete."
 date: 2026-10-17

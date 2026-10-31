@@ -1,5 +1,5 @@
 ---
-title: "ToList().Where(): traes la tabla entera para quedarte con tres filas"
+title: "¿Dónde se ejecuta tu filtro? En la base de datos o en tu RAM"
 subtitle: El filtro que llega tarde, porque ya se ejecutó la consulta
 description: "Por qué filtrar con Where después de ToList en Entity Framework Core carga toda la tabla en memoria, qué cambió en EF Core 3.0 con la evaluación en cliente y cómo detectar y corregir este error."
 date: 2026-10-15

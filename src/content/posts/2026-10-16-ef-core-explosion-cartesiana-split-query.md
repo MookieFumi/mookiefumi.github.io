@@ -1,6 +1,6 @@
 ---
-title: "10 líneas x 10 pagos = 100 filas. Y eso con un solo pedido"
-subtitle: Dos Include en la misma consulta multiplican las filas, y AsSplitQuery lo arregla con un coste que conviene conocer
+title: "Dos Include, 5.000 filas: cuando EF multiplica en vez de sumar"
+subtitle: Cargar dos colecciones a la vez cruza todas sus filas, y AsSplitQuery lo evita con un coste que conviene conocer
 description: "Qué es la explosión cartesiana en Entity Framework Core con varios Include de colecciones, cuándo ocurre y no, cómo AsSplitQuery la evita y los inconvenientes de las consultas divididas."
 date: 2026-10-16
 topic: dotnet

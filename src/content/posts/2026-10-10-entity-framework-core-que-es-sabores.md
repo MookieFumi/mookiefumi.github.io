@@ -136,16 +136,29 @@ Mucho código real mezcla las dos cosas, y no pasa nada. EF Core incluso permite
 
 ## Mirar el SQL
 
-El hábito más útil con EF Core es leer el SQL que genera. Hay dos formas rápidas de hacerlo:
+El hábito más útil con EF Core es leer el SQL que genera. Hay dos formas de hacerlo.
 
-```csharp
-// Print the SQL of a single query.
-Console.WriteLine(query.ToQueryString());
+La primera es el logging de la propia aplicación. EF Core se integra con `Microsoft.Extensions.Logging`, el mismo sistema que usa el resto de ASP.NET Core. Si registras el contexto con `AddDbContext`, usa por defecto la configuración de logging de la aplicación, sea la consola, Serilog o lo que tengas. Solo hay que subir el nivel de la categoría que registra los comandos, en `appsettings.Development.json`:
 
-// Log every command EF sends (development only).
-optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Microsoft.EntityFrameworkCore.Database.Command": "Information"
+    }
+  }
+}
 ```
 
-Con `ToQueryString()` ves la consulta sin ejecutarla. Con `LogTo` ves todo lo que se envía a la base de datos, incluido el número de comandos por petición. Si ese número te sorprende, ya tienes el problema delante.
+A partir de ahí cada comando que EF envía a la base de datos aparece en el log con su SQL, sus parámetros y lo que ha tardado. Si quieres ver también los valores de los parámetros, añade `EnableSensitiveDataLogging()` al registrar el contexto, solo en desarrollo, porque esos valores pueden ser datos personales. Y como es una categoría más del log, en producción lo apagas con el mismo mecanismo.
+
+La segunda es `ToQueryString()`, para una consulta concreta y sin ejecutarla. Es lo que usas mientras la escribes, o en un test:
+
+```csharp
+var query = db.Orders.Where(o => o.Status == "Pending");
+var sql = query.ToQueryString();
+```
+
+Con el log ves todo lo que se envía a la base de datos, incluido el número de comandos por petición. Si ese número te sorprende, ya tienes el problema delante. Para contarlo en un test, en vez de leerlo, la demo de la serie usa un interceptor (`DbCommandInterceptor`) que cuenta los comandos.
 
 El código de las demos de toda la serie está en [ef-core-pills](https://github.com/MookieFumi/ef-core-pills): una base SQLite con 20.000 pedidos y un millón de envíos para poder ver cada problema con números reales. La siguiente píldora empieza por el más frecuente: el N+1.

@@ -79,13 +79,7 @@ Por eso el N+1 se descubre tarde: en desarrollo, con pocos datos y la base de da
 
 ## Cómo detectarlo
 
-Con el log de EF Core:
-
-```csharp
-optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
-```
-
-Busca ráfagas de consultas casi idénticas que solo cambian en un parámetro (`WHERE "o"."OrderId" = @p`). Otra opción es contar comandos con un interceptor, como hace la demo de la serie, y comprobarlo en un test: si el endpoint de listado ejecuta más de N comandos, el test falla.
+Con el log de EF Core, subiendo a `Information` la categoría `Microsoft.EntityFrameworkCore.Database.Command` en el `appsettings.Development.json` (lo vimos en el primer post de la serie). Busca ráfagas de consultas casi idénticas que solo cambian en un parámetro (`WHERE "o"."OrderId" = @p`). Otra opción es contar comandos con un interceptor, como hace la demo de la serie, y comprobarlo en un test: si el endpoint de listado ejecuta más de N comandos, el test falla.
 
 Cuando el listado crece, puedes volver a tener un problema con el propio `Include`. Si cargas dos colecciones a la vez, el `JOIN` se multiplica, y eso lo vemos en la píldora sobre la explosión cartesiana.
 

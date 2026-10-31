@@ -51,7 +51,7 @@ ORDER BY "o"."Id"
 LIMIT @p
 ```
 
-Tres columnas en vez de siete. En la demo de la serie ([ef-core-pills](https://github.com/MookieFumi/ef-core-pills)), con 2.000 pedidos de ~20 KB de PDF cada uno, la versión con la entidad entera tardó unos 20 ms y la proyección unos 6 ms. Es una sola ejecución, no una medida fina, y SQLite lee de un fichero local. Con una base de datos remota la diferencia en red es mayor, porque lo que viaja es la columna de 20 KB multiplicada por 2.000, unos 40 MB frente a unos pocos KB.
+Tres columnas en vez de siete. En la demo de la serie ([ef-core-pills](https://github.com/MookieFumi/ef-core-pills/tree/main/src/EfCorePills/Pills/Projection)), con 2.000 pedidos de ~20 KB de PDF cada uno, la versión con la entidad entera tardó unos 20 ms y la proyección unos 6 ms. Es una sola ejecución, no una medida fina, y SQLite lee de un fichero local. Con una base de datos remota la diferencia en red es mayor, porque lo que viaja es la columna de 20 KB multiplicada por 2.000, unos 40 MB frente a unos pocos KB.
 
 La documentación de Microsoft lo recoge en su guía de consultas eficientes: usa `Select` para proyectar solo las propiedades que necesitas, sobre todo en consultas de solo lectura.
 

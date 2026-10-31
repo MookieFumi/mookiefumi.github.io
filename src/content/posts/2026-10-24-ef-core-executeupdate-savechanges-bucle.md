@@ -22,7 +22,7 @@ Funciona. Con dos mil pedidos tarda cinco segundos. Con doscientos mil, ya es un
 
 ## Tres formas de hacer lo mismo
 
-En la demo de la serie ([ef-core-pills](https://github.com/MookieFumi/ef-core-pills)) marco como caducados 2.000 pedidos pendientes de las tres maneras (SQLite, una ejecución de cada una):
+En la demo de la serie ([ef-core-pills](https://github.com/MookieFumi/ef-core-pills/tree/main/src/EfCorePills/Pills/BulkUpdate)) marco como caducados 2.000 pedidos pendientes de las tres maneras (SQLite, una ejecución de cada una):
 
 | Forma | Comandos | Tiempo |
 |---|---|---|

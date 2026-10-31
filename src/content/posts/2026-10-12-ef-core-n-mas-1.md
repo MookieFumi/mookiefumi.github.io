@@ -35,7 +35,7 @@ foreach (var order in orders)
 }
 ```
 
-En la demo de la serie ([ef-core-pills](https://github.com/MookieFumi/ef-core-pills)) uso esta segunda forma para no depender de proxies de lazy loading, y el efecto es el mismo. Con 300 pedidos:
+En la demo de la serie ([ef-core-pills](https://github.com/MookieFumi/ef-core-pills/tree/main/src/EfCorePills/Pills/NPlusOne)) uso esta segunda forma para no depender de proxies de lazy loading, y el efecto es el mismo. Con 300 pedidos:
 
 | Estrategia | Comandos | Filas leídas |
 |---|---|---|

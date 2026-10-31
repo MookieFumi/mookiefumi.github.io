@@ -20,7 +20,7 @@ La consulta que se envía a la base de datos es `SELECT ... FROM Orders`, sin `W
 
 ## Qué cuesta
 
-En la demo de la serie ([ef-core-pills](https://github.com/MookieFumi/ef-core-pills)) hay 20.000 pedidos, cada uno con un PDF de 20 KB, y el cliente 7 tiene 15 pedidos pendientes:
+En la demo de la serie ([ef-core-pills](https://github.com/MookieFumi/ef-core-pills/tree/main/src/EfCorePills/Pills/InMemoryFilter)) hay 20.000 pedidos, cada uno con un PDF de 20 KB, y el cliente 7 tiene 15 pedidos pendientes:
 
 | Versión | Filas leídas | Tiempo |
 |---|---|---|

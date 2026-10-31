@@ -159,6 +159,6 @@ var query = db.Orders.Where(o => o.Status == "Pending");
 var sql = query.ToQueryString();
 ```
 
-Con el log ves todo lo que se envía a la base de datos, incluido el número de comandos por petición. Si ese número te sorprende, ya tienes el problema delante. Para contarlo en un test, en vez de leerlo, la demo de la serie usa un interceptor (`DbCommandInterceptor`) que cuenta los comandos.
+Con el log ves todo lo que se envía a la base de datos, incluido el número de comandos por petición. Si ese número te sorprende, ya tienes el problema delante. Para contarlo en un test, en vez de leerlo, la demo de la serie usa un [interceptor](https://github.com/MookieFumi/ef-core-pills/blob/main/src/EfCorePills/Diagnostics/CommandCounter.cs) (`DbCommandInterceptor`) que cuenta los comandos.
 
 El código de las demos de toda la serie está en [ef-core-pills](https://github.com/MookieFumi/ef-core-pills): una base SQLite con 20.000 pedidos y un millón de envíos para poder ver cada problema con números reales. La siguiente píldora empieza por el más frecuente: el N+1.

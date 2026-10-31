@@ -27,7 +27,7 @@ Para traer las líneas y los pagos de golpe, EF genera una sola sentencia con do
 
 A este efecto se le llama explosión cartesiana. La documentación de Microsoft lo explica con 10 posts y 10 colaboradores por blog: 100 filas para un solo blog. Cada colección hermana que añadas multiplica el total.
 
-Lo medí en la demo de la serie ([ef-core-pills](https://github.com/MookieFumi/ef-core-pills)), con 50 pedidos de 10 líneas y 10 pagos cada uno:
+Lo medí en la demo de la serie ([ef-core-pills](https://github.com/MookieFumi/ef-core-pills/tree/main/src/EfCorePills/Pills/CartesianExplosion)), con 50 pedidos de 10 líneas y 10 pagos cada uno:
 
 | Modo | Comandos | Filas | Tiempo (mediana de 5) |
 |---|---|---|---|

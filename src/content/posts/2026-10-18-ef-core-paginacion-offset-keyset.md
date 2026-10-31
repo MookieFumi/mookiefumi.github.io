@@ -49,7 +49,7 @@ En SQL es `OFFSET` y `LIMIT`. Tiene dos problemas, y la documentación de EF Cor
 1. La base de datos tiene que recorrer las filas que se salta. Cuanto más avanzas, más trabajo.
 2. Si hay cambios mientras el usuario navega, se pierden o se repiten filas. Si se borra una fila de la página 2 cuando el usuario va a la 3, todo se desplaza y una fila se queda sin mostrar.
 
-Lo medí sobre un millón de envíos en SQLite, con un índice por `(ShippedAt, Id)` y páginas de 25 filas. Mediana de 15 ejecuciones ([ef-core-pills](https://github.com/MookieFumi/ef-core-pills)):
+Lo medí sobre un millón de envíos en SQLite, con un índice por `(ShippedAt, Id)` y páginas de 25 filas. Mediana de 15 ejecuciones ([ef-core-pills](https://github.com/MookieFumi/ef-core-pills/tree/main/src/EfCorePills/Pills/Pagination)):
 
 | Página | Offset |
 |---|---|

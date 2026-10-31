@@ -47,7 +47,7 @@ Con `COUNT(*)`, la base de datos tiene que recorrer todas las filas que cumplen 
 
 ## Lo que midió la demo
 
-Probé cuatro casos en la demo de la serie ([ef-core-pills](https://github.com/MookieFumi/ef-core-pills)), con SQLite y la mediana de varias ejecuciones:
+Probé cuatro casos en la demo de la serie ([ef-core-pills](https://github.com/MookieFumi/ef-core-pills/tree/main/src/EfCorePills/Pills/AnyVsCount)), con SQLite y la mediana de varias ejecuciones:
 
 | Caso | `Count() > 0` | `AnyAsync()` |
 |---|---|---|

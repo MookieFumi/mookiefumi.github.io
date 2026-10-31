@@ -21,7 +21,7 @@ Ese trabajo extra se llama change tracking y tiene dos partes. EF guarda un dicc
 
 ## Qué cuesta, con números
 
-La demo de la serie ([ef-core-pills](https://github.com/MookieFumi/ef-core-pills)) lee 50.000 envíos, una tabla estrecha, sin columnas grandes, para que el tracking no quede tapado por otra cosa:
+La demo de la serie ([ef-core-pills](https://github.com/MookieFumi/ef-core-pills/tree/main/src/EfCorePills/Pills/Tracking)) lee 50.000 envíos, una tabla estrecha, sin columnas grandes, para que el tracking no quede tapado por otra cosa:
 
 | Modo | Entidades rastreadas | Memoria asignada | Tiempo (mediana) |
 |---|---|---|---|

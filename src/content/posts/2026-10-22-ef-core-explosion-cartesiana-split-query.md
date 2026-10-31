@@ -2,7 +2,7 @@
 title: "Dos Include, 5.000 filas: cuando EF multiplica en vez de sumar"
 subtitle: Cargar dos colecciones a la vez cruza todas sus filas, y AsSplitQuery lo evita con un coste que conviene conocer
 description: "Qué es la explosión cartesiana en Entity Framework Core con varios Include de colecciones, cuándo ocurre y no, cómo AsSplitQuery la evita y los inconvenientes de las consultas divididas."
-date: 2026-10-16
+date: 2026-10-22
 topic: dotnet
 series: ef-core
 published: false

@@ -2,7 +2,7 @@
 title: "Select antes de ToList: pide solo lo que vas a enseñar"
 subtitle: Cuando el listado trae hasta el PDF de cada pedido, y la base de datos lo manda por la red
 description: "Por qué traer la entidad entera con ToList penaliza las consultas de lectura en Entity Framework Core, y cómo Select con un DTO reduce columnas, datos transferidos y tiempo, con SQL generado real."
-date: 2026-10-13
+date: 2026-10-16
 topic: dotnet
 series: ef-core
 published: false

@@ -2,7 +2,7 @@
 title: "Funciona en tu máquina con 200 filas"
 subtitle: Listados sin límite, Skip/Take que se ralentiza página a página y la alternativa que no se entera de cuánto has avanzado
 description: "Cómo paginar bien con Entity Framework Core: por qué un listado sin Take se rompe con datos reales, el coste de Skip y Take (offset) y cómo funciona la paginación por keyset, con medidas sobre un millón de filas."
-date: 2026-10-14
+date: 2026-10-18
 topic: dotnet
 series: ef-core
 published: false

@@ -2,7 +2,7 @@
 title: "Lo que cuesta que EF recuerde lo que leíste"
 subtitle: Una consulta de solo lectura no necesita seguimiento de cambios, y quitarlo tiene un efecto que conviene conocer
 description: "Qué hace el change tracking de Entity Framework Core, cuánto cuesta en consultas de solo lectura y cuándo usar AsNoTracking o AsNoTrackingWithIdentityResolution, con números de una demo sobre 50.000 filas."
-date: 2026-10-12
+date: 2026-10-14
 topic: dotnet
 series: ef-core
 published: false

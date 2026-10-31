@@ -2,7 +2,7 @@
 title: "N+1: la multiplicación que solo se ve con datos reales"
 subtitle: El bucle que le pregunta a la base de datos lo mismo una vez por cada fila
 description: "Qué es el problema N+1 en Entity Framework Core, cómo lo provocan el lazy loading y las consultas dentro de un bucle, cómo detectarlo con el log de EF y cómo arreglarlo con Include o una proyección."
-date: 2026-10-11
+date: 2026-10-12
 topic: dotnet
 series: ef-core
 published: false

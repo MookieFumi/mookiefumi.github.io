@@ -1,7 +1,7 @@
 ---
 title: "Tu ORM escribe SQL por ti. ¿Lo has leído alguna vez?"
-subtitle: Qué es Entity Framework Core, qué sabores tiene y qué te cobra a cambio de lo que te da
-description: "Qué es Entity Framework Core: LINQ a SQL, tracking de cambios y migraciones; diferencias con EF6, proveedores de bases de datos y cuándo conviene más Dapper o SQL a mano."
+subtitle: Qué es Entity Framework Core, cómo empezar con él (code first o database first) y qué te cobra a cambio de lo que te da
+description: "Qué es Entity Framework Core: LINQ a SQL, tracking de cambios y migraciones; code first y database first, proveedores de bases de datos y cuándo conviene más Dapper o SQL a mano."
 date: 2026-10-10
 topic: dotnet
 series: ef-core
@@ -41,15 +41,59 @@ De ahí salen las ventajas que más se usan:
 - Concurrencia optimista, transacciones, interceptores y logging integrados.
 - Un solo modelo para varias bases de datos. Cambias de proveedor y casi todo el código de consultas sigue valiendo.
 
-## Los sabores
+## Los sabores: code first y database first
 
-### EF Core y EF6
+EF Core se puede usar de dos maneras, según de dónde salga la verdad sobre el esquema: de tu código o de la base de datos.
 
-Hay dos productos con nombre parecido. EF6 nació para .NET Framework y la documentación de Microsoft lo describe como estable y soportado, pero sin desarrollo activo. EF Core es la versión moderna y es donde llegan las novedades. La guía oficial es usar EF Core en toda aplicación nueva, salvo que necesites algo que solo existe en .NET Framework. Si tienes una aplicación EF6 estable, la recomendación es mantenerla; migrar a EF Core tiene sentido cuando el acceso a datos evoluciona o necesitas funciones que solo tiene EF Core. No es un cambio de paquete: la propia documentación avisa de que hay que tocar código.
+### Code first
 
-Cosas que EF6 tiene y EF Core no tendrá: el diseñador visual y el formato EDMX. En el otro lado, EF Core aporta, entre otras, `ExecuteUpdate` y `ExecuteDelete` (EF Core 7), proveedores nuevos y soporte de JSON en columnas.
+Escribes las clases de C# y el contexto, y EF genera el esquema a partir de ellas mediante migraciones:
 
-### Proveedores
+```bash
+dotnet ef migrations add AddOrders
+dotnet ef database update
+```
+
+Cada migración es un fichero de código que describe un cambio de esquema. Va al control de versiones con el resto del proyecto, se revisa en una pull request y se aplica igual en desarrollo, en CI y en producción. Si quieres ver el SQL antes de aplicarlo, `dotnet ef migrations script` lo genera.
+
+Es la opción natural cuando el proyecto es nuevo o cuando tu aplicación es la dueña de la base de datos. El coste: el esquema pasa a depender del modelo, y renombrar una propiedad puede acabar como un borrado y una creación de columna si no revisas la migración.
+
+### Database first
+
+Aquí la base de datos ya existe y la manda ella. EF lee las tablas y genera las clases y el contexto con `scaffold`:
+
+```bash
+dotnet ef dbcontext scaffold "Data Source=pills.db" Microsoft.EntityFrameworkCore.Sqlite -o Models
+```
+
+Lo probé con la base de datos de la demo de la serie. Genera una clase por tabla (`Order`, `OrderLine`, `Payment`...), las propiedades de navegación entre ellas, los índices en el contexto y todo marcado como `partial`:
+
+```csharp
+public partial class Order
+{
+    public int Id { get; set; }
+    public string Status { get; set; } = null!;
+    public virtual Customer Customer { get; set; } = null!;
+    public virtual ICollection<OrderLine> OrderLines { get; set; } = new List<OrderLine>();
+}
+```
+
+Es lo que encaja cuando heredas una base de datos con años encima, cuando la gestiona otro equipo o cuando varias aplicaciones comparten el esquema y los cambios se hacen con scripts SQL.
+
+La pega: el código generado se regenera. Si lo editas a mano y vuelves a ejecutar `scaffold`, pierdes los cambios. Por eso las clases salen `partial` y el contexto trae un método `OnModelCreatingPartial`: tus añadidos van en otro fichero y sobreviven a cada regeneración.
+
+### Cuál elegir
+
+| Situación | Encaja mejor |
+|---|---|
+| Proyecto nuevo, la aplicación es dueña de los datos | Code first |
+| Base de datos existente, gestionada por otros | Database first |
+| Esquema compartido entre varias aplicaciones | Database first |
+| Quieres el esquema versionado junto al código | Code first |
+
+No es una decisión de por vida. Un camino habitual es hacer un `scaffold` inicial de una base de datos que ya existe y, a partir de ahí, seguir con migraciones como en code first.
+
+## Proveedores
 
 EF Core llega a cada base de datos a través de un proveedor, un paquete NuGet. Los principales:
 
@@ -66,10 +110,6 @@ EF Core llega a cada base de datos a través de un proveedor, un paquete NuGet. 
 Hay más, muchos de ellos de pago. Dos advertencias de la documentación oficial. La primera: no todos los proveedores los mantiene el equipo de EF Core, así que hay que evaluar calidad, licencia y soporte de cada uno. La segunda: un proveedor de una versión mayor no funciona con la siguiente. Si subes a EF Core 10, el proveedor tiene que tener su versión para EF Core 10, y los de terceros pueden tardar en tenerla.
 
 Aparte está el proveedor `InMemory`, que sirve para pruebas y tiene limitaciones importantes: no es una base de datos relacional y no se comporta como una. Para tests que se parezcan a producción es mejor usar la base de datos real (por ejemplo, con Testcontainers) o SQLite.
-
-### Dos formas de empezar
-
-Con code-first escribes las clases y EF genera el esquema mediante migraciones. Con database-first partes de una base de datos que ya existe y `dotnet ef dbcontext scaffold` genera las clases y el contexto. Ambas son válidas; la segunda es la habitual cuando heredas una base de datos con años encima.
 
 ## Lo que cuesta
 

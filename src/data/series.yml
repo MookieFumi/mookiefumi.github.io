@@ -21,3 +21,6 @@
 - id: ef-core
   name: EF Core en píldoras
   description: Qué es Entity Framework Core y ocho errores que castigan a la base de datos, cada uno con su SQL real, su corrección y los casos en que no conviene aplicarla.
+- id: concepts
+  name: Conceptos de ingeniería del software en píldoras
+  description: Ideas transversales de programación y arquitectura, de la herencia y los agregados a las sagas, cada una con un ejemplo ejecutable de reservas de salas de reuniones y los casos en que no conviene aplicarla.

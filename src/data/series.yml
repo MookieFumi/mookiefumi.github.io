@@ -18,3 +18,6 @@
 - id: aspire
   name: Aspire
   description: Qué es Aspire y qué no, tests que levantan el sistema entero y el camino del AppHost a un chart de Helm instalado en Kubernetes, sobre el código de entry-hub.
+- id: ef-core
+  name: EF Core en píldoras
+  description: Qué es Entity Framework Core y ocho errores que castigan a la base de datos, cada uno con su SQL real, su corrección y los casos en que no conviene aplicarla.

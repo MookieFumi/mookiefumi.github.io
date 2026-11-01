@@ -4,7 +4,6 @@ subtitle: Tu rolling update no espera a tus background services
 description: "Qué pasa con los trabajos en memoria de una API .NET cuando un rolling update de Kubernetes para el pod viejo: SIGTERM, preStop, el stoppingToken de BackgroundService, ShutdownTimeout y terminationGracePeriodSeconds, medido en un clúster kind."
 date: 2026-10-07
 topic: k8s
-series: aspire
 published: false
 ---
 

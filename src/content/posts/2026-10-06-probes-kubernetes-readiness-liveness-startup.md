@@ -4,7 +4,6 @@ subtitle: Una probe mal apuntada convierte una caída de la base de datos en rei
 description: "Las tres probes de Kubernetes (startup, readiness y liveness): qué hace el clúster cuando falla cada una, contra qué endpoint apuntarlas, los errores típicos y sus parámetros, con el ejemplo de una API .NET con Aspire."
 date: 2026-10-06
 topic: k8s
-series: aspire
 published: false
 ---
 

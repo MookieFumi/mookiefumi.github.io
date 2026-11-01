@@ -4,6 +4,7 @@ subtitle: La API que funcionaba con una instancia empieza a contestar cosas dist
 description: "Qué es un load balancer y qué se rompe al pasar una API de .NET de una a dos instancias: caché en memoria inconsistente y rate limiter por instancia, medidos con YARP y Redis."
 date: 2026-11-04
 topic: aspnet
+series: minimal-apis-dotnet
 published: false
 ---
 

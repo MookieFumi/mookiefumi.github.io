@@ -4,6 +4,7 @@ subtitle: El PostgreSQL de los tests lo ponía la CI, o lo tenías tú instalado
 description: "Testcontainers en .NET 10 para los tests de integración de una API: PostgreSQL en un contenedor por ejecución, migraciones una vez, tests en paralelo sobre una base de datos y qué hacer sin Docker."
 date: 2026-10-08
 topic: dotnet
+series: aspire
 published: false
 ---
 

@@ -4,6 +4,7 @@ subtitle: Una ruta cambia de sistema con solo cambiar un fichero, y nadie tiene 
 description: "Qué es un reverse proxy y un API gateway, y cómo usar YARP en .NET 10 para migrar una API antigua a una nueva ruta a ruta, sin cambiar la URL que usan los clientes."
 date: 2026-11-02
 topic: aspnet
+series: minimal-apis-dotnet
 published: false
 ---
 

@@ -1,5 +1,5 @@
 ---
-title: "La pantalla de la sala no necesita SignalR"
+title: "Tiempo real en una Minimal API con Server-Sent Events"
 subtitle: La información solo va del servidor a la pantalla, y para eso basta una respuesta HTTP que no se cierra
 description: "Server-Sent Events en .NET 10 con TypedResults.ServerSentEvents: un IAsyncEnumerable, PeriodicTimer, cancelación al desconectar, curl, EventSource, OpenAPI y tests con SseParser."
 date: 2026-09-29

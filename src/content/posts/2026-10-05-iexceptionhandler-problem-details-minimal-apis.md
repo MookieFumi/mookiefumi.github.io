@@ -1,5 +1,5 @@
 ---
-title: "Se acabaron los 500 vacíos"
+title: "Un manejo global de errores con ProblemDetails"
 subtitle: Si la base de datos no contesta, el cliente debería saber que puede reintentar en cinco segundos
 description: "Manejo global de errores en Minimal APIs con .NET 10: AddProblemDetails, UseExceptionHandler e IExceptionHandler para devolver 503 con Retry-After sin exponer la traza, con tests."
 date: 2026-10-05

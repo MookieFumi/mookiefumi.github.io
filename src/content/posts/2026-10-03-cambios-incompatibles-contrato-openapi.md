@@ -1,5 +1,5 @@
 ---
-title: "El PR que rompía a los clientes y nadie lo vio"
+title: "El cambio que rompía a los clientes y nadie se dio cuenta"
 subtitle: Renombrar un campo parece inofensivo hasta que la app de alguien deja de pintar la planta de la sala
 description: "Detectar cambios incompatibles del contrato OpenAPI en la CI con oasdiff y GitHub Actions: qué rompe a los clientes, el resumen de cambios en cada PR y la marca ! de Conventional Commits."
 date: 2026-10-03

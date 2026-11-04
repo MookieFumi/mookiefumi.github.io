@@ -23,6 +23,20 @@ Esto lo hace muy adecuado para código existente (*brownfield*): no hay que docu
 
 Si vienes del mundo .NET, la analogía con EF Core ayuda: la spec es el *model snapshot*, cada change es una migración que describe solo la diferencia, y archivar es aplicarla.
 
+## Tres niveles de spec-driven development
+
+"Spec-driven development" (SDD) no significa lo mismo en todas las herramientas. La diferencia está en cuánto poder le das a la spec sobre el código:
+
+| Nivel | Qué papel tiene la spec | Qué es lo valioso |
+| --- | --- | --- |
+| spec-first | Arranca el desarrollo y después puede morir | El código generado |
+| spec-anchored | Acompaña al código y se mantiene sincronizada con él | Spec y código, a la par |
+| spec-as-source | Es todo: no se edita el código generado, se cambia la spec y se regenera | La spec |
+
+Con un ejemplo: pides "paginar `GET /api/v1/transactions`". En spec-first escribes la spec, el agente genera el código y a las dos semanas la spec ya no refleja nada. En spec-anchored, el siguiente cambio (por ejemplo, bajar el máximo de página de 200 a 100) también modifica la spec. En spec-as-source tocarías solo la spec y el código se regeneraría.
+
+OpenSpec está pensado para el nivel intermedio: la spec viva en `openspec/specs/` se actualiza al archivar cada change, y por eso va con el código en el mismo repositorio. Es una lectura de su diseño, no una etiqueta oficial, y que se mantenga sincronizada depende de que el equipo archive los changes (lo comento en las conclusiones del [segundo post](/2026-09-01-openspec-2-implementar-y-archivar)). Para clasificar otras herramientas, como Spec Kit, mira qué hacen con la spec después de generar el código antes de ponerles nivel.
+
 <figure class="diagram">
   <img class="diagram-light" width="510" height="690" src="/img/diagrams/07-openspec-ciclo-light.svg" alt="Ciclo de un change en OpenSpec: explore, propose, apply y archive en secuencia, con update y sync como pasos opcionales; al archivar, los deltas pasan a openspec/specs.">
   <img class="diagram-dark" width="510" height="690" src="/img/diagrams/07-openspec-ciclo-dark.svg" alt="Ciclo de un change en OpenSpec: explore, propose, apply y archive en secuencia, con update y sync como pasos opcionales; al archivar, los deltas pasan a openspec/specs.">

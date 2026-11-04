@@ -35,7 +35,7 @@ Si vienes del mundo .NET, la analogía con EF Core ayuda: la spec es el *model s
 
 Con un ejemplo: pides "paginar `GET /api/v1/transactions`". En spec-first escribes la spec, el agente genera el código y a las dos semanas la spec ya no refleja nada. En spec-anchored, el siguiente cambio (por ejemplo, bajar el máximo de página de 200 a 100) también modifica la spec. En spec-as-source tocarías solo la spec y el código se regeneraría.
 
-OpenSpec está pensado para el nivel intermedio: la spec viva en `openspec/specs/` se actualiza al archivar cada change, y por eso va con el código en el mismo repositorio. Es una lectura de su diseño, no una etiqueta oficial, y que se mantenga sincronizada depende de que el equipo archive los changes (lo comento en las conclusiones del [segundo post](/2026-09-01-openspec-2-implementar-y-archivar)). Para clasificar otras herramientas, como Spec Kit, mira qué hacen con la spec después de generar el código antes de ponerles nivel.
+OpenSpec encaja con el nivel intermedio: la spec viva de `openspec/specs/` se actualiza al archivar cada change y va en el mismo repositorio que el código. Es mi lectura de su diseño; la herramienta no se clasifica así. Que spec y código sigan sincronizados depende de que el equipo archive los changes, como cuento en las conclusiones del [segundo post](/2026-09-01-openspec-2-implementar-y-archivar).
 
 <figure class="diagram">
   <img class="diagram-light" width="510" height="690" src="/img/diagrams/07-openspec-ciclo-light.svg" alt="Ciclo de un change en OpenSpec: explore, propose, apply y archive en secuencia, con update y sync como pasos opcionales; al archivar, los deltas pasan a openspec/specs.">

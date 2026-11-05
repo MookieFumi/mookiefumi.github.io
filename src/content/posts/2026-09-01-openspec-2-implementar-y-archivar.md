@@ -495,7 +495,7 @@ Lo que me quedo:
 Los límites:
 
 - Nada obliga. `validate` solo comprueba estructura y `verify` no bloquea el archive, así que que el flujo se cumpla depende de la disciplina del equipo y de lo que automatices.
-- La spec puede desviarse. Si alguien cambia el código sin tocar el delta, deja de reflejar la realidad.
+- La spec puede desviarse. Si alguien cambia el código sin tocar el delta, deja de reflejar la realidad. Es lo que separa un flujo *spec-anchored* de uno *spec-first* (los tres niveles están explicados en el [primer post](/2026-09-01-openspec-1-del-init-al-change)).
 - No todo merece un change. Para un bug trivial el ciclo completo sobra, y los cambios de infraestructura o documentación pueden archivarse con `--skip-specs`.
 
 Si lo vas a llevar a un equipo, un buen punto de partida es este:

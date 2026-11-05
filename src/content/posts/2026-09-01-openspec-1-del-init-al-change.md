@@ -23,6 +23,20 @@ Esto lo hace muy adecuado para código existente (*brownfield*): no hay que docu
 
 Si vienes del mundo .NET, la analogía con EF Core ayuda: la spec es el *model snapshot*, cada change es una migración que describe solo la diferencia, y archivar es aplicarla.
 
+## Tres niveles de spec-driven development
+
+"Spec-driven development" (SDD) no significa lo mismo en todas las herramientas. La diferencia está en cuánto poder le das a la spec sobre el código:
+
+| Nivel | Qué papel tiene la spec | Qué es lo valioso |
+| --- | --- | --- |
+| spec-first | Arranca el desarrollo y después puede morir | El código generado |
+| spec-anchored | Acompaña al código y se mantiene sincronizada con él | Spec y código, a la par |
+| spec-as-source | Es todo: no se edita el código generado, se cambia la spec y se regenera | La spec |
+
+Con un ejemplo: pides "paginar `GET /api/v1/transactions`". En spec-first escribes la spec, el agente genera el código y a las dos semanas la spec ya no refleja nada. En spec-anchored, el siguiente cambio (por ejemplo, bajar el máximo de página de 200 a 100) también modifica la spec. En spec-as-source tocarías solo la spec y el código se regeneraría.
+
+OpenSpec encaja con el nivel intermedio: la spec viva de `openspec/specs/` se actualiza al archivar cada change y va en el mismo repositorio que el código. Es mi lectura de su diseño; la herramienta no se clasifica así. Que spec y código sigan sincronizados depende de que el equipo archive los changes, como cuento en las conclusiones del [segundo post](/2026-09-01-openspec-2-implementar-y-archivar).
+
 <figure class="diagram">
   <img class="diagram-light" width="510" height="690" src="/img/diagrams/07-openspec-ciclo-light.svg" alt="Ciclo de un change en OpenSpec: explore, propose, apply y archive en secuencia, con update y sync como pasos opcionales; al archivar, los deltas pasan a openspec/specs.">
   <img class="diagram-dark" width="510" height="690" src="/img/diagrams/07-openspec-ciclo-dark.svg" alt="Ciclo de un change en OpenSpec: explore, propose, apply y archive en secuencia, con update y sync como pasos opcionales; al archivar, los deltas pasan a openspec/specs.">

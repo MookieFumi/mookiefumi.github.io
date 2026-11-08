@@ -1,6 +1,6 @@
 ---
 title: "Templates de soluciones en .NET. Deja de copiar el último repo."
-subtitle: Un comando que genera la solución con las normas de tu empresa ya puestas, y un CI que comprueba que la plantilla sigue compilando
+subtitle: Un comando que genera la solución con las normas de equipo ya puestas, y pipelines que comprueban que la plantilla sigue compilando
 description: "Cómo crear una plantilla de dotnet new para una Minimal API en .NET 10: template.json, parámetros opcionales, empaquetado en NuGet, pruebas en GitHub Actions y publicación en GitHub Packages."
 date: 2026-11-09
 topic: desarrollo
@@ -26,7 +26,7 @@ Como referencia usé [entry-hub](https://github.com/MookieFumi/entry-hub), el re
 
 La plantilla es un ejemplo mínimo a propósito. El único *slice* es `GET /api/v1/greetings/{name}`: un endpoint, un handler y una respuesta, sin base de datos. Compila y pasa sus tests desde el primer minuto, y cada equipo lo sustituye por su primera funcionalidad real.
 
-Dos cosas de entry-hub las dejé fuera a propósito. Los `packages.lock.json` van comitados allí, y una plantilla no puede traerlos, porque dependen de los paquetes que resuelva cada proyecto. Y los hooks de Husky necesitan un manifiesto de herramientas y un repo git ya inicializado. Cada equipo decide si los añade.
+La plantilla sí trae los hooks de Husky de entry-hub: el que exige Conventional Commits en cada mensaje. Se instalan al restaurar un proyecto dentro de un repo git y no se activan en CI ni en Release.
 
 ## Los ficheros, uno por uno
 

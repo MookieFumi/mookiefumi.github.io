@@ -5,7 +5,7 @@ description: "Qué es Entity Framework Core: LINQ a SQL, tracking de cambios y m
 date: 2026-10-19
 topic: dotnet
 series: ef-core
-published: false
+published: true
 ---
 
 Entity Framework Core es el ORM de Microsoft para .NET. Un ORM (object-relational mapper) convierte las filas de una base de datos en objetos de tu código y, al revés, los cambios en esos objetos en sentencias SQL. Con EF Core escribes consultas en LINQ, y la librería las traduce a SQL, las ejecuta y te devuelve instancias de tus clases.

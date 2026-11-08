@@ -5,7 +5,7 @@ description: "Tests de sistema con Aspire.Hosting.Testing en .NET 10: arrancar e
 date: 2026-10-09
 topic: dotnet
 series: aspire
-published: false
+published: true
 ---
 
 En [entry-hub](https://github.com/MookieFumi/entry-hub) hay un servicio que no tiene ni un endpoint. Se llama `EntryHub.Reminders`, es un worker (un proceso de .NET que corre en segundo plano sin servir peticiones) y cada 30 segundos busca en PostgreSQL las reservas que empiezan en los próximos 15 minutos. Por cada una, marca la reserva como recordada y escribe en el log un aviso para quien la organizó.

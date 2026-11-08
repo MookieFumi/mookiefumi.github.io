@@ -5,7 +5,7 @@ description: "Por qué filtrar con Where después de ToList en Entity Framework 
 date: 2026-10-29
 topic: dotnet
 series: ef-core
-published: false
+published: true
 ---
 
 Hay un error de EF Core que no da error. Compila, devuelve el resultado correcto y funciona perfectamente en desarrollo:

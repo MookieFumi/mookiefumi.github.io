@@ -5,7 +5,7 @@ description: "Qué hace el change tracking de Entity Framework Core, cuánto cue
 date: 2026-10-23
 topic: dotnet
 series: ef-core
-published: false
+published: true
 ---
 
 Un endpoint `GET /shipments` lee envíos y los devuelve como JSON. No modifica nada, no llama a `SaveChanges`. Aun así, por defecto EF Core trata cada fila que carga como una entidad que podría modificarse:

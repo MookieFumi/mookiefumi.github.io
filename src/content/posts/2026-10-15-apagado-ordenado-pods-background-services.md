@@ -5,7 +5,7 @@ description: "Qué pasa con los trabajos en memoria de una API .NET cuando un ro
 date: 2026-10-15
 topic: k8s
 series: aspire
-published: false
+published: true
 ---
 
 Una API con un solo pod, un rolling update con `maxUnavailable: 0` y, detrás de cada petición, un par de trabajos que se quedan en memoria para que los procesen dos background services. Despliegas una versión nueva. El pod nuevo arranca, pasa la readiness, el viejo se apaga, y nadie ve ningún error. ¿Qué ha pasado con los trabajos que el viejo tenía en cola?

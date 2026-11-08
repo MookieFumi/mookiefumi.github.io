@@ -5,7 +5,7 @@ description: "Qué es un load balancer y qué se rompe al pasar una API de .NET 
 date: 2026-11-08
 topic: aspnet
 series: minimal-apis-dotnet
-published: false
+published: true
 ---
 
 Una API que funciona bien con una instancia puede romperse sin dar ningún error al levantar una segunda. Nada falla en el arranque ni en los logs, y los tests pasan. Lo que cambia es que cada petición puede caer en una instancia distinta, y todo lo que tu API guardaba en su propia memoria deja de ser compartido.

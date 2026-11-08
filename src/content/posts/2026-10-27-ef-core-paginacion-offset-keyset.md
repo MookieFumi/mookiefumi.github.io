@@ -5,7 +5,7 @@ description: "Cómo paginar bien con Entity Framework Core: por qué un listado 
 date: 2026-10-27
 topic: dotnet
 series: ef-core
-published: false
+published: true
 ---
 
 El listado de expediciones de un almacén se probó con 200 filas y funcionaba. Un año después hay dos millones y la página tarda en abrir, el servidor consume memoria y alguien descubre que el código era esto:

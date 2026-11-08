@@ -5,7 +5,7 @@ description: "Qué es Aspire 13 y qué no: el AppHost como modelo de la aplicaci
 date: 2026-10-07
 topic: dotnet
 series: aspire
-published: false
+published: true
 ---
 
 Hasta hace poco, arrancar [entry-hub](https://github.com/MookieFumi/entry-hub) en local eran tres pasos:

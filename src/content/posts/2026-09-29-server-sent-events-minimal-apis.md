@@ -5,7 +5,7 @@ description: "Server-Sent Events en .NET 10 con TypedResults.ServerSentEvents: u
 date: 2026-09-29
 topic: aspnet
 series: minimal-apis-dotnet
-published: false
+published: true
 ---
 
 En la puerta de cada sala de [entry-hub](https://github.com/MookieFumi/entry-hub) hay una pantalla que dice si la sala está libre y hasta cuándo. Tiene que enterarse de los cambios sin que nadie recargue nada. Se puede hacer con polling, preguntando cada pocos segundos, o con SignalR. Pero la información solo va en un sentido, del servidor a la pantalla, y para eso hay algo más sencillo: Server-Sent Events.

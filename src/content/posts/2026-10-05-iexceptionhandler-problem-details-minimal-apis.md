@@ -5,7 +5,7 @@ description: "Manejo global de errores en Minimal APIs con .NET 10: AddProblemDe
 date: 2026-10-05
 topic: aspnet
 series: minimal-apis-dotnet
-published: false
+published: true
 ---
 
 En el [post de validación](/2026-09-24-validacion-errores-minimal-apis) vimos los errores que decide el código: el `400` de un cuerpo mal formado y el `422` de una regla de negocio. Quedaban los que no decide nadie. Si PostgreSQL deja de contestar o un handler tiene un bug, la excepción sube hasta arriba y [entry-hub](https://github.com/MookieFumi/entry-hub) respondía un `500` con el cuerpo vacío. El cliente no sabía si reintentar, y quien leyera los logs tampoco tenía cómo cruzar ese fallo con la petición.

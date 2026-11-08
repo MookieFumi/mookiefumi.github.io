@@ -5,7 +5,7 @@ description: "Las tres probes de Kubernetes (startup, readiness y liveness): qu�
 date: 2026-10-13
 topic: k8s
 series: aspire
-published: false
+published: true
 ---
 
 En los posts de Aspire salieron las probes de pasada: `/health` para una, `/alive` para otra, y una tercera que [entry-hub](https://github.com/MookieFumi/entry-hub) no usa. Aquí van las tres juntas, con lo que importa: qué hace Kubernetes cuando una falla y, por tanto, qué debe comprobar cada una.

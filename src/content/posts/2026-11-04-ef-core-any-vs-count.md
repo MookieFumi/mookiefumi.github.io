@@ -5,7 +5,7 @@ description: "Diferencia entre Count() > 0 y Any() en Entity Framework Core, el 
 date: 2026-11-04
 topic: dotnet
 series: ef-core
-published: false
+published: true
 ---
 
 «¿Hay algún pedido pendiente?» Hay una forma de escribirlo que se lee bien y funciona:

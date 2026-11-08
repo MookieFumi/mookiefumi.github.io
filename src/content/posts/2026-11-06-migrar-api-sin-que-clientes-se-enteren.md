@@ -5,7 +5,7 @@ description: "Qué es un reverse proxy y un API gateway, y cómo usar YARP en .N
 date: 2026-11-06
 topic: aspnet
 series: minimal-apis-dotnet
-published: false
+published: true
 ---
 
 Tienes un sistema antiguo que lleva años funcionando. Sus URLs son `/orders` y `/customers/1`, y devuelve campos como `ORDER_ID` y `CUST_NAME`. Has escrito la API nueva en Minimal APIs, con URLs `/api/v1/orders` y campos en camelCase. El problema no es escribirla. El problema es que hay una app móvil y dos integraciones de terceros que llaman al sistema antiguo, y no puedes pedirles que cambien de URL el mismo día.

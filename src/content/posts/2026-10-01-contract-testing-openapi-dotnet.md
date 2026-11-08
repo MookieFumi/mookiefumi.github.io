@@ -5,7 +5,7 @@ description: "Contract testing en .NET 10: validar las respuestas reales de una 
 date: 2026-10-01
 topic: aspnet
 series: minimal-apis-dotnet
-published: false
+published: true
 ---
 
 En el [post de OpenAPI](/2026-09-25-openapi-scalar-minimal-apis) dejamos el contrato de [entry-hub](https://github.com/MookieFumi/entry-hub) en el repositorio, generado en cada build y vigilado por la CI: si cambia un endpoint y el contrato no, el PR falla. Eso asegura que el fichero refleja el código. Lo que no asegura es que la API, en marcha, responda lo que el fichero dice.

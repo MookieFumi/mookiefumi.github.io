@@ -5,7 +5,7 @@ description: "Qué es el problema N+1 en Entity Framework Core, cómo lo provoca
 date: 2026-10-21
 topic: dotnet
 series: ef-core
-published: false
+published: true
 ---
 
 Una pantalla de pedidos tarda tres segundos en cargar. En local, con diez pedidos de prueba, iba bien. En producción hay 500 por página y cada uno trae sus líneas. El código no tiene nada raro:

@@ -5,7 +5,7 @@ description: "Detectar cambios incompatibles del contrato OpenAPI en la CI con o
 date: 2026-10-03
 topic: aspnet
 series: minimal-apis-dotnet
-published: false
+published: true
 ---
 
 En [entry-hub](https://github.com/MookieFumi/entry-hub) el contrato OpenAPI vive en el repositorio. La CI comprueba que está al día con el código, como vimos en el [post de OpenAPI](/2026-09-25-openapi-scalar-minimal-apis), y un test comprueba que las respuestas reales lo cumplen, como vimos en el [post de contract testing](/2026-10-01-contract-testing-openapi-dotnet). Falta una pregunta: cuando un PR cambia el contrato, ¿rompe a los clientes que ya lo usan?

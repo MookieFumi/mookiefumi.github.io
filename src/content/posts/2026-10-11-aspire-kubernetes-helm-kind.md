@@ -5,7 +5,7 @@ description: "Del AppHost de Aspire a un chart de Helm instalado de verdad: aspi
 date: 2026-10-11
 topic: dotnet
 series: aspire
-published: false
+published: true
 ---
 
 El chart de Helm de [entry-hub](https://github.com/MookieFumi/entry-hub) llevaba tiempo en el repositorio. Lo genera Aspire a partir del AppHost, lo habíamos revisado, y la CI comprobaba en cada PR que estaba al día. Parecía completo: Deployments, un StatefulSet para PostgreSQL, Services, ConfigMaps y Secrets. Nadie lo había instalado.

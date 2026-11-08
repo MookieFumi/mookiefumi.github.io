@@ -5,7 +5,7 @@ description: "Por qué traer la entidad entera con ToList penaliza las consultas
 date: 2026-10-25
 topic: dotnet
 series: ef-core
-published: false
+published: true
 ---
 
 El panel de administración lista pedidos: número, estado e importe. La tabla `Orders` tiene más columnas de las que aparecen en pantalla, entre ellas unas notas largas y la factura en PDF guardada como `varbinary`. El código que alimenta el listado es este:

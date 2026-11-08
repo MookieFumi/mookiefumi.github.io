@@ -5,7 +5,7 @@ description: "Qué es la explosión cartesiana en Entity Framework Core con vari
 date: 2026-10-31
 topic: dotnet
 series: ef-core
-published: false
+published: true
 ---
 
 Un pedido tiene líneas y pagos. Cargar las dos cosas parece lo más natural:

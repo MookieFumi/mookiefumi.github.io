@@ -5,7 +5,7 @@ description: "Testcontainers en .NET 10 para los tests de integración de una AP
 date: 2026-10-17
 topic: dotnet
 series: aspire
-published: false
+published: true
 ---
 
 Los tests de la API de [entry-hub](https://github.com/MookieFumi/entry-hub) necesitan un PostgreSQL de verdad. Hasta hace poco, ese PostgreSQL no lo ponían los tests. En la CI lo ponía el job, y en tu máquina lo tenías que tener instalado tú, con el usuario, la contraseña y la base de datos que el código esperaba. Si no lo tenías, los tests fallaban al conectar, y el error no decía qué te faltaba.

@@ -5,7 +5,7 @@ description: "Por qué llamar a SaveChanges dentro de un bucle es lento en Entit
 date: 2026-11-02
 topic: dotnet
 series: ef-core
-published: false
+published: true
 ---
 
 Un proceso nocturno marca como caducados los pedidos pendientes que nadie pagó. Así lo escribió alguien con prisa:

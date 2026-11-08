@@ -1,6 +1,6 @@
 ---
 title: "Templates de soluciones en .NET. Deja de copiar el último repo."
-subtitle: Un comando que genera la solución con las normas de tu empresa ya puestas, y un CI que comprueba que la plantilla sigue compilando
+subtitle: Un comando que genera la solución con las normas de equipo ya puestas, y pipelines que comprueban que la plantilla sigue compilando
 description: "Cómo crear una plantilla de dotnet new para una Minimal API en .NET 10: template.json, parámetros opcionales, empaquetado en NuGet, pruebas en GitHub Actions y publicación en GitHub Packages."
 date: 2026-11-09
 topic: desarrollo
@@ -8,7 +8,7 @@ series: gobernanza-dotnet
 published: true
 ---
 
-Hay un repo en tu empresa que «está bien hecho». Cuando alguien necesita un proyecto nuevo, lo clona, borra lo que no hace falta y renombra lo que se acuerda de renombrar. Seis meses después, el proyecto nuevo todavía tiene el nombre del anterior en el `README` y una versión de un paquete que el original ya había actualizado.
+En cualquier equipo hay un repo que «está bien hecho». Cuando alguien necesita un proyecto nuevo, lo clona, borra lo que no hace falta y renombra lo que se acuerda de renombrar. Seis meses después, el proyecto nuevo todavía tiene el nombre del anterior en el `README` y una versión de un paquete que el original ya había actualizado.
 
 Copiar el último repo hereda sus rarezas junto con sus virtudes. Y las normas de las que hablé en esta serie ([`Directory.Build.props`](/2026-09-12-directory-build-props-contrato-calidad), [versiones centralizadas](/2026-09-13-central-package-management-nuget), [calidad del lenguaje](/2026-09-14-estandares-lenguaje-calidad-dotnet), [CI](/2026-09-16-hacer-cumplir-normas-dotnet-github-actions)) no sirven de mucho si cada proyecto nuevo tiene que acordarse de copiarlas.
 
@@ -26,7 +26,7 @@ Como referencia usé [entry-hub](https://github.com/MookieFumi/entry-hub), el re
 
 La plantilla es un ejemplo mínimo a propósito. El único *slice* es `GET /api/v1/greetings/{name}`: un endpoint, un handler y una respuesta, sin base de datos. Compila y pasa sus tests desde el primer minuto, y cada equipo lo sustituye por su primera funcionalidad real.
 
-Dos cosas de entry-hub las dejé fuera a propósito. Los `packages.lock.json` van comitados allí, y una plantilla no puede traerlos, porque dependen de los paquetes que resuelva cada proyecto. Y los hooks de Husky necesitan un manifiesto de herramientas y un repo git ya inicializado. Cada equipo decide si los añade.
+La plantilla sí trae los hooks de Husky de entry-hub: el que exige Conventional Commits en cada mensaje. Se instalan al restaurar un proyecto dentro de un repo git y no se activan en CI ni en Release.
 
 ## Los ficheros, uno por uno
 

@@ -8,7 +8,7 @@ series: gobernanza-dotnet
 published: true
 ---
 
-Hay un repo en tu empresa que «está bien hecho». Cuando alguien necesita un proyecto nuevo, lo clona, borra lo que no hace falta y renombra lo que se acuerda de renombrar. Seis meses después, el proyecto nuevo todavía tiene el nombre del anterior en el `README` y una versión de un paquete que el original ya había actualizado.
+En cualquier equipo hay un repo que «está bien hecho». Cuando alguien necesita un proyecto nuevo, lo clona, borra lo que no hace falta y renombra lo que se acuerda de renombrar. Seis meses después, el proyecto nuevo todavía tiene el nombre del anterior en el `README` y una versión de un paquete que el original ya había actualizado.
 
 Copiar el último repo hereda sus rarezas junto con sus virtudes. Y las normas de las que hablé en esta serie ([`Directory.Build.props`](/2026-09-12-directory-build-props-contrato-calidad), [versiones centralizadas](/2026-09-13-central-package-management-nuget), [calidad del lenguaje](/2026-09-14-estandares-lenguaje-calidad-dotnet), [CI](/2026-09-16-hacer-cumplir-normas-dotnet-github-actions)) no sirven de mucho si cada proyecto nuevo tiene que acordarse de copiarlas.
 

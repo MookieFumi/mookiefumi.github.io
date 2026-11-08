@@ -5,7 +5,7 @@ description: "Cómo crear una plantilla de dotnet new para una Minimal API en .N
 date: 2026-11-09
 topic: desarrollo
 series: gobernanza-dotnet
-published: false
+published: true
 ---
 
 Hay un repo en tu empresa que «está bien hecho». Cuando alguien necesita un proyecto nuevo, lo clona, borra lo que no hace falta y renombra lo que se acuerda de renombrar. Seis meses después, el proyecto nuevo todavía tiene el nombre del anterior en el `README` y una versión de un paquete que el original ya había actualizado.

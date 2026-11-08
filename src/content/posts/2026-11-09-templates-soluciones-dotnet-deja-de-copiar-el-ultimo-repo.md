@@ -154,7 +154,7 @@ Empaqueta, instala el paquete (no la carpeta, para probar también el empaquetad
 2. El worker no pasaba el análisis. `logger.LogInformation(...)` dispara `CA1848` y `CA1873`, y con advertencias como errores rompe. Lo pasé a `[LoggerMessage]`.
 3. El AppHost no restauraba. Arrastraba `MessagePack 2.5.302`, que tiene una vulnerabilidad conocida (`GHSA-qhrr-8q5h-9q3h`) y el `NU1902` se convierte en error. De ahí el pin que mencioné antes.
 
-Los ejecuté en local con `GITHUB_ACTIONS=true`, las cuatro combinaciones, y compilan y pasan sus dos tests. El workflow en sí lo tengo escrito pero todavía no lo he visto correr en GitHub.
+Primero los ejecuté en local con `GITHUB_ACTIONS=true`, las cuatro combinaciones, y compilan y pasan sus dos tests. Después el workflow corrió en GitHub con la misma matriz y salió en verde.
 
 ## Publicar en GitHub Packages
 

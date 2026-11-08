@@ -1,5 +1,5 @@
 ---
-title: "Templates de proyectos en .NET. Deja de copiar el último repo."
+title: "Templates de soluciones en .NET. Deja de copiar el último repo."
 subtitle: Un comando que genera la solución con las normas de tu empresa ya puestas, y un CI que comprueba que la plantilla sigue compilando
 description: "Cómo crear una plantilla de dotnet new para una Minimal API en .NET 10: template.json, parámetros opcionales, empaquetado en NuGet, pruebas en GitHub Actions y publicación en GitHub Packages."
 date: 2026-11-09

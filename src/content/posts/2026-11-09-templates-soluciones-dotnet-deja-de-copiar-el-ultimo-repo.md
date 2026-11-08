@@ -168,7 +168,7 @@ El workflow `release.yml` se dispara con un tag `v*`, empaqueta con esa versión
     --api-key "${{ secrets.GITHUB_TOKEN }}"
 ```
 
-Un tag `v1.2.0` publica la `1.2.0`. Este workflow tampoco lo he ejecutado todavía. El `GITHUB_TOKEN` basta para publicar paquetes asociados al repo del workflow, según [la documentación de GitHub](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-nuget-registry).
+Un tag `v1.2.0` publica la `1.2.0`. Lo probé con el tag `v1.0.0`, el job terminó en verde y el paquete apareció en GitHub Packages. El `GITHUB_TOKEN` basta para publicar paquetes asociados al repo del workflow, según [la documentación de GitHub](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-nuget-registry).
 
 ¿Cuesta dinero? Para paquetes públicos no. Para privados hay una cuota mensual según el plan: 500 MB de almacenamiento y 1 GB de transferencia en Free, 2 GB y 10 GB en Team, y 50 GB y 100 GB en Enterprise Cloud, según [la página de facturación](https://docs.github.com/en/billing/concepts/product-billing/github-packages) (consulta las cifras vigentes, que cambian). Un paquete de plantilla pesa unos kilobytes, así que la cuota no suele ser el problema.
 

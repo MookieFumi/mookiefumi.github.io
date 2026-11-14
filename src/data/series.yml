@@ -24,3 +24,6 @@
 - id: concepts
   name: Conceptos de ingeniería del software en píldoras
   description: Ideas transversales de programación y arquitectura, de la herencia y los agregados a las sagas, cada una con un ejemplo ejecutable de reservas de salas de reuniones y los casos en que no conviene aplicarla.
+- id: owasp-api
+  name: OWASP API Security Top 10 en .NET
+  description: Los riesgos del OWASP API Security Top 10 uno a uno, cómo aparecen en una API de ASP.NET Core con EF Core y cómo se corrigen y se prueban, sobre el código de entry-hub.

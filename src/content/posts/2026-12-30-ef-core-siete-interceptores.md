@@ -34,6 +34,11 @@ Con inyección de dependencias es lo mismo dentro de `AddDbContext`. Un detalle 
 | `IQueryExpressionInterceptor` | LINQ antes de traducirse | Reescribir consultas |
 | `IIdentityResolutionInterceptor` | Dos instancias con la misma clave | Fusionar en vez de lanzar excepción |
 
+<figure class="diagram">
+  <img class="diagram-light" width="1200" height="736" src="/img/diagrams/09-ef-core-interceptors-light.svg" alt="Infografía con el momento en que entra cada interceptor de EF Core. Al leer: IQueryExpressionInterceptor antes de traducir el LINQ, una vez por forma de consulta; IDbConnectionInterceptor al abrir la conexión; IDbCommandInterceptor antes y después de ejecutar el SQL; IMaterializationInterceptor al convertir cada fila en entidad. Al escribir: IIdentityResolutionInterceptor al rastrear una clave ya rastreada; ISaveChangesInterceptor antes y después de SaveChanges; IDbConnectionInterceptor al abrir la conexión; IDbTransactionInterceptor en inicio, commit y rollback explícito, con dos o más sentencias; IDbCommandInterceptor por cada INSERT, UPDATE o DELETE.">
+  <img class="diagram-dark" width="1200" height="736" src="/img/diagrams/09-ef-core-interceptors-dark.svg" alt="Infografía con el momento en que entra cada interceptor de EF Core. Al leer: IQueryExpressionInterceptor antes de traducir el LINQ, una vez por forma de consulta; IDbConnectionInterceptor al abrir la conexión; IDbCommandInterceptor antes y después de ejecutar el SQL; IMaterializationInterceptor al convertir cada fila en entidad. Al escribir: IIdentityResolutionInterceptor al rastrear una clave ya rastreada; ISaveChangesInterceptor antes y después de SaveChanges; IDbConnectionInterceptor al abrir la conexión; IDbTransactionInterceptor en inicio, commit y rollback explícito, con dos o más sentencias; IDbCommandInterceptor por cada INSERT, UPDATE o DELETE.">
+</figure>
+
 ## 1. ISaveChangesInterceptor: auditoría y borrado lógico
 
 Es el que ya conoces, con un añadido útil: puede convertir un `Remove` en un borrado lógico cambiando el estado de la entrada antes de que EF genere el SQL.
@@ -157,6 +162,8 @@ public Expression QueryCompilationStarting(Expression queryExpression, QueryExpr
     // ...already limited? return as is. Otherwise wrap it in Queryable.Take(maxRows).
 }
 ```
+
+Un detalle que comprobé aparte: EF Core llama a este interceptor al compilar la consulta, no al ejecutarla. La misma consulta ejecutada tres veces, con contextos distintos, lo invocó una sola vez, porque la versión compilada queda en caché. Si metes en el árbol como constante un valor que cambia entre peticiones, como el usuario actual, se queda el de la primera.
 
 Con 20 productos en la tabla:
 

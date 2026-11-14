@@ -16,6 +16,11 @@ builder.Services.AddDbContext<ShopContext>(options =>
 
 Funciona, así que nunca miras las otras dos opciones. Existen `AddDbContextPool` y `AddDbContextFactory`, y cada una cubre un caso que `AddDbContext` no cubre bien. Si eliges la equivocada, el fallo suele aparecer lejos del registro: una excepción de concurrencia en un endpoint, o un contexto que lleva semanas vivo dentro de un servicio en segundo plano.
 
+<figure class="diagram">
+  <img class="diagram-light" width="1200" height="650" src="/img/diagrams/08-dbcontext-registration-light.svg" alt="Infografía con las tres formas de registrar un DbContext. AddDbContext: una instancia nueva por petición, para APIs web; no es seguro para hilos. AddDbContextPool: una instancia por petición reutilizada de un pool, para mucho tráfico y consultas cortas; no guardes estado propio en el contexto. AddDbContextFactory: tú creas y liberas cada contexto, para BackgroundService, Blazor Server o trabajo en paralelo. Medianas de 5.000 peticiones seguidas en la demo: 496, 196 y 458 milisegundos.">
+  <img class="diagram-dark" width="1200" height="650" src="/img/diagrams/08-dbcontext-registration-dark.svg" alt="Infografía con las tres formas de registrar un DbContext. AddDbContext: una instancia nueva por petición, para APIs web; no es seguro para hilos. AddDbContextPool: una instancia por petición reutilizada de un pool, para mucho tráfico y consultas cortas; no guardes estado propio en el contexto. AddDbContextFactory: tú creas y liberas cada contexto, para BackgroundService, Blazor Server o trabajo en paralelo. Medianas de 5.000 peticiones seguidas en la demo: 496, 196 y 458 milisegundos.">
+</figure>
+
 ## AddDbContext: una instancia por petición
 
 Es la opción por defecto y la que necesitas casi siempre. Registra el contexto con ciclo de vida *scoped*: cada petición HTTP tiene su propio scope y, dentro de él, todos los servicios que piden el contexto reciben la misma instancia.

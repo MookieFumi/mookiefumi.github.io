@@ -92,7 +92,7 @@ def diagram(kind, x0, zy, p, accent, index):
     if kind == "scoped":
         for i, row in enumerate(ROWS):
             parts.append(box(left, zy + row, f"Petición {i + 1}", p, p["border"]))
-            parts.append(box(right, zy + row, f"contexto {'ABC'[i]}", p, accent))
+            parts.append(box(right, zy + row, f"instancia {'ABC'[i]}", p, accent))
             parts.append(arrow(left + BOX_W + 6, mid[i], right - 8, mid[i], p, index))
     elif kind == "pool":
         pool_x, pool_y, pool_w, pool_h = right - 12, zy + 4, BOX_W + 24, 166
@@ -101,7 +101,7 @@ def diagram(kind, x0, zy, p, accent, index):
             f'stroke="{accent}" stroke-width="1.5" stroke-dasharray="5 4"/>'
         )
         parts.append(text(pool_x + pool_w / 2, pool_y + 22, "pool", 12, accent, MONO, 600, "middle"))
-        parts.append(box(right, zy + ROWS[1], "contexto A", p, accent))
+        parts.append(box(right, zy + ROWS[1], "instancia A", p, accent))
         parts.append(text(pool_x + pool_w / 2, pool_y + pool_h - 14, "reset al devolver", 12, p["muted"], SANS, 400, "middle"))
         for i, row in enumerate(ROWS):
             parts.append(box(left, zy + row, f"Petición {i + 1}", p, p["border"]))
@@ -109,7 +109,7 @@ def diagram(kind, x0, zy, p, accent, index):
     else:
         parts.append(box(left, zy + ROWS[1], "factoría", p, p["border"]))
         for i, row in enumerate(ROWS):
-            parts.append(box(right, zy + row, f"contexto {'ABC'[i]}", p, accent))
+            parts.append(box(right, zy + row, f"instancia {'ABC'[i]}", p, accent))
             parts.append(arrow(left + BOX_W + 6, mid[1] + (i - 1) * 8, right - 8, mid[i], p, index))
 
     return "".join(parts)
@@ -151,7 +151,6 @@ def build(theme):
         text(MARGIN, 68, "EF Core: qué instancia recibe tu código y quién la libera", 15, p["muted"]),
     ]
     parts += [card(i, data, p) for i, data in enumerate(CARDS)]
-    parts.append(text(MARGIN, H - 26, "Medianas de la demo (SQLite en local, .NET 10). Compara órdenes de magnitud.", 13, p["muted"]))
     parts.append(text(W - MARGIN, H - 26, "mookiefumi.com", 13, p["muted"], MONO, 500, "end"))
     parts.append("</svg>")
     return "".join(parts)

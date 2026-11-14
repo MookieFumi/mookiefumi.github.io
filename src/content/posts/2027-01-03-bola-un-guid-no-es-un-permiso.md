@@ -135,4 +135,4 @@ El test no sabe si la decisión es correcta. Alguien podría marcar como compart
 - Responde `404` si los ids se pueden enumerar o la existencia del recurso es sensible, y `403` cuando no.
 - Lo que evita que BOLA vuelva es un test que ataca cada endpoint con un id usando otro usuario, más otro que falla cuando aparece un endpoint con id sin clasificar.
 
-El código de los dos tests está en [entry-hub](https://github.com/MookieFumi/entry-hub). El siguiente riesgo de la lista de OWASP es API2, la autenticación rota.
+El código de los dos tests está en [entry-hub](https://github.com/MookieFumi/entry-hub). El siguiente riesgo de la lista de OWASP es [API2, la autenticación rota](/2027-01-05-broken-authentication-token-caducado).

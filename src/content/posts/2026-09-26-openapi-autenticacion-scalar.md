@@ -10,7 +10,7 @@ published: true
 
 Abres Scalar en local, eliges `POST /api/v1/rooms`, rellenas el body y le das a enviar. La respuesta es un `401 Unauthorized`, sin body y con una cabecera `WWW-Authenticate: Bearer`. Nada en la página te había dicho que esa operación necesitaba un token, ni dónde ponerlo.
 
-En el [post anterior](/2026-09-25-openapi-scalar-minimal-apis) montamos el documento OpenAPI de [entry-hub](https://github.com/MookieFumi/entry-hub) y lo enseñamos con Scalar. Lo dejamos sin la parte de seguridad, que es la que cuento aquí. Una API protegida le pide dos cosas a su documentación: que diga qué operaciones piden token y deje probarlas con uno, y que el propio documento no quede abierto a cualquiera sin que nadie lo haya decidido.
+En el [post anterior](/2026-09-25-openapi-scalar-minimal-apis) montamos el documento OpenAPI de [entry-hub](https://github.com/mookie-studio/entry-hub) y lo enseñamos con Scalar. Lo dejamos sin la parte de seguridad, que es la que cuento aquí. Una API protegida le pide dos cosas a su documentación: que diga qué operaciones piden token y deje probarlas con uno, y que el propio documento no quede abierto a cualquiera sin que nadie lo haya decidido.
 
 ## Lo justo de la autenticación de entry-hub
 
@@ -223,4 +223,4 @@ Comprueba que una operación protegida lleva candado y una pública no. Si algui
 - El candado va por operación, leyendo `IAuthorizeData` e `IAllowAnonymous` de los metadatos, para que lo público se vea público. Scalar lo aprovecha para probar con un token de `dotnet user-jwts`.
 - Fuera de Development, Scalar no existe y el documento pide el rol `Facilities`. Abrirlo es una decisión que se ve en el código, igual que la página pública de la release.
 
-El código está en [entry-hub](https://github.com/MookieFumi/entry-hub). En la siguiente píldora personalizamos el documento y Scalar con logo, contacto y colores.
+El código está en [entry-hub](https://github.com/mookie-studio/entry-hub). En la siguiente píldora personalizamos el documento y Scalar con logo, contacto y colores.

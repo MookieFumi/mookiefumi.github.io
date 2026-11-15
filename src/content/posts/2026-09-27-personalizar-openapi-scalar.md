@@ -8,7 +8,7 @@ series: minimal-apis-dotnet
 published: true
 ---
 
-La página de Scalar de [entry-hub](https://github.com/MookieFumi/entry-hub) funcionaba, pero era idéntica a la de cualquier otra API: el mismo tema, ningún logo y ni una pista de a quién escribir si algo falla. En una API interna da un poco igual, pero si la van a integrar otros equipos, la documentación es lo primero que ven.
+La página de Scalar de [entry-hub](https://github.com/mookie-studio/entry-hub) funcionaba, pero era idéntica a la de cualquier otra API: el mismo tema, ningún logo y ni una pista de a quién escribir si algo falla. En una API interna da un poco igual, pero si la van a integrar otros equipos, la documentación es lo primero que ven.
 
 En esta píldora le damos a entry-hub su propia cara sin tocar ningún endpoint. Son unas pocas líneas en el documento OpenAPI y en Scalar, y algo de CSS. De paso, entry-hub estrena logo: un calendario con una puerta, que es lo que hace la aplicación, reservar salas.
 
@@ -42,11 +42,11 @@ Esta parte va en el contrato, así que la recibe cualquiera que lo use, también
 ```json
 "contact": {
   "name": "EntryHub maintainers",
-  "url": "https://github.com/MookieFumi/entry-hub/issues"
+  "url": "https://github.com/mookie-studio/entry-hub/issues"
 },
 "license": {
   "name": "MIT",
-  "url": "https://github.com/MookieFumi/entry-hub/blob/main/LICENSE"
+  "url": "https://github.com/mookie-studio/entry-hub/blob/main/LICENSE"
 }
 ```
 
@@ -128,4 +128,4 @@ El workflow de release copia `docs/logo.svg` junto a la página, igual que ya ha
 - El contacto y la licencia van en `OpenApiInfo` y viajan en el contrato. El logo, el favicon y los colores van en Scalar, porque Scalar no lee `x-logo`.
 - `ScalarTheme.None` más unas variables CSS para el modo claro y el oscuro bastan para tener los colores de la empresa, y la página estática de la release repite lo mismo.
 
-El código está en [entry-hub](https://github.com/MookieFumi/entry-hub). En la siguiente píldora vemos por qué entry-hub versiona la API con grupos de rutas y no con `Asp.Versioning.Http`.
+El código está en [entry-hub](https://github.com/mookie-studio/entry-hub). En la siguiente píldora vemos por qué entry-hub versiona la API con grupos de rutas y no con `Asp.Versioning.Http`.

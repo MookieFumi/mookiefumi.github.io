@@ -14,7 +14,7 @@ En el clúster de prueba, con la configuración de casi cualquier proyecto, se p
 
 ## El escenario
 
-Para medirlo he montado un ejemplo aparte en [entry-hub](https://github.com/MookieFumi/entry-hub/tree/main/src/samples/graceful-shutdown), sin tocar la API de la serie. Es una Minimal API con un endpoint, `POST /jobs`, que deja dos trabajos en memoria y responde `202` sin esperar a que se ejecuten:
+Para medirlo he montado un ejemplo aparte en [entry-hub](https://github.com/mookie-studio/entry-hub/tree/main/src/samples/graceful-shutdown), sin tocar la API de la serie. Es una Minimal API con un endpoint, `POST /jobs`, que deja dos trabajos en memoria y responde `202` sin esperar a que se ejecuten:
 
 ```csharp
 app.MapPost("/jobs", (
@@ -167,4 +167,4 @@ Y hay una tercera salida, que no es excluyente: sacar los background services de
 - Medido en kind: 154 trabajos perdidos sin nada, 92 con solo el `preStop` y ninguno con las tres piezas.
 - Nada de esto cubre una caída. Si un trabajo no se puede perder, la cola va fuera de la memoria.
 
-El código, los manifiestos y el script están en [entry-hub](https://github.com/MookieFumi/entry-hub/tree/main/src/samples/graceful-shutdown).
+El código, los manifiestos y el script están en [entry-hub](https://github.com/mookie-studio/entry-hub/tree/main/src/samples/graceful-shutdown).

@@ -8,7 +8,7 @@ series: concepts
 published: false
 ---
 
-En [entry-hub](https://github.com/MookieFumi/entry-hub), la palabra *booking* aparece en dos sitios: en la API que gestiona las reservas de salas y en un servicio aparte que avisa al organizador cuando una reunión está a punto de empezar. Es la misma reserva, pero cada uno ve otra cosa.
+En [entry-hub](https://github.com/mookie-studio/entry-hub), la palabra *booking* aparece en dos sitios: en la API que gestiona las reservas de salas y en un servicio aparte que avisa al organizador cuando una reunión está a punto de empezar. Es la misma reserva, pero cada uno ve otra cosa.
 
 Para la API, una reserva tiene una sala con capacidad, un rango de tiempo, un estado que puede pasar a cancelada y unas reglas: duración mínima, antelación, cancelación con aviso. Para el servicio de recordatorios, lo que existe es un `DueReminder`:
 

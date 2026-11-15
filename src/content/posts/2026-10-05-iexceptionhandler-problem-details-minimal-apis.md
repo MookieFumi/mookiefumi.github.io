@@ -8,7 +8,7 @@ series: minimal-apis-dotnet
 published: true
 ---
 
-En el [post de validación](/2026-09-24-validacion-errores-minimal-apis) vimos los errores que decide el código: el `400` de un cuerpo mal formado y el `422` de una regla de negocio. Quedaban los que no decide nadie. Si PostgreSQL deja de contestar o un handler tiene un bug, la excepción sube hasta arriba y [entry-hub](https://github.com/MookieFumi/entry-hub) respondía un `500` con el cuerpo vacío. El cliente no sabía si reintentar, y quien leyera los logs tampoco tenía cómo cruzar ese fallo con la petición.
+En el [post de validación](/2026-09-24-validacion-errores-minimal-apis) vimos los errores que decide el código: el `400` de un cuerpo mal formado y el `422` de una regla de negocio. Quedaban los que no decide nadie. Si PostgreSQL deja de contestar o un handler tiene un bug, la excepción sube hasta arriba y [entry-hub](https://github.com/mookie-studio/entry-hub) respondía un `500` con el cuerpo vacío. El cliente no sabía si reintentar, y quien leyera los logs tampoco tenía cómo cruzar ese fallo con la petición.
 
 Y había un cabo suelto del [post de contract testing](/2026-10-01-contract-testing-openapi-dotnet): el `400` de la validación integrada salía como `application/json`, sin `type` ni `status`, así que no lo podíamos declarar en el contrato como un `ProblemDetails`.
 
@@ -199,4 +199,4 @@ El `500` y el `503` no los declaramos en cada operación, porque cualquier endpo
 - `AddProblemDetails()` y `UseExceptionHandler()` bastan para que todos los errores, también la validación, salgan como `application/problem+json` con un `traceId` y sin la traza.
 - Un `IExceptionHandler` convierte los fallos que tienen arreglo en algo útil para el cliente, como un `503` con `Retry-After`. Desde .NET 10, lo que maneja no se registra solo, y la excepción de Npgsql puede venir envuelta.
 
-El código está en [entry-hub](https://github.com/MookieFumi/entry-hub). Con esto cerramos la parte de Minimal APIs; en el siguiente post llega Aspire.
+El código está en [entry-hub](https://github.com/mookie-studio/entry-hub). Con esto cerramos la parte de Minimal APIs; en el siguiente post llega Aspire.

@@ -8,7 +8,7 @@ series: aspire
 published: true
 ---
 
-En [entry-hub](https://github.com/MookieFumi/entry-hub) hay un servicio que no tiene ni un endpoint. Se llama `EntryHub.Reminders`, es un worker (un proceso de .NET que corre en segundo plano sin servir peticiones) y cada 30 segundos busca en PostgreSQL las reservas que empiezan en los próximos 15 minutos. Por cada una, marca la reserva como recordada y escribe en el log un aviso para quien la organizó.
+En [entry-hub](https://github.com/mookie-studio/entry-hub) hay un servicio que no tiene ni un endpoint. Se llama `EntryHub.Reminders`, es un worker (un proceso de .NET que corre en segundo plano sin servir peticiones) y cada 30 segundos busca en PostgreSQL las reservas que empiezan en los próximos 15 minutos. Por cada una, marca la reserva como recordada y escribe en el log un aviso para quien la organizó.
 
 Esas reservas las escribe la API, en la base de datos que crea la API, con el esquema que aplican las migraciones de la API. El worker no tiene migraciones propias: lee `bookings` y `rooms` y escribe una sola columna, `ReminderSentAt`. Si mañana alguien renombra esa columna en la API, los tests de la API pasan, los del worker también, y los recordatorios dejan de llegar.
 
@@ -43,7 +43,7 @@ El segundo es el test del sistema, el de este post. El test ya no arranca la API
 
 La propia documentación de Aspire lo dice: para mocks, para cambiar servicios o para probar un proyecto aislado, usa `WebApplicationFactory`. Con Aspire solo puedes influir desde fuera, con variables de entorno o configuración.
 
-Así que Testcontainers mejora el primer tipo, y Aspire te da el segundo. Los 101 tests de `EntryHub.Api.Tests` se quedan en el lado del primero, y desde el [PR #35](https://github.com/MookieFumi/entry-hub/pull/35) arrancan su PostgreSQL con Testcontainers. Si defines `ENTRYHUB_TEST_CONNECTION`, usan el tuyo, para máquinas sin Docker. ¿Por qué hace falta el segundo? Porque el recordatorio pasa entre dos servicios: la API guarda la reserva y otro proceso la encuentra. En un test de la API el servicio de recordatorios no existe, así que eso no se puede probar.
+Así que Testcontainers mejora el primer tipo, y Aspire te da el segundo. Los 101 tests de `EntryHub.Api.Tests` se quedan en el lado del primero, y desde el [PR #35](https://github.com/mookie-studio/entry-hub/pull/35) arrancan su PostgreSQL con Testcontainers. Si defines `ENTRYHUB_TEST_CONNECTION`, usan el tuyo, para máquinas sin Docker. ¿Por qué hace falta el segundo? Porque el recordatorio pasa entre dos servicios: la API guarda la reserva y otro proceso la encuentra. En un test de la API el servicio de recordatorios no existe, así que eso no se puede probar.
 
 ## Qué tests había y cuál faltaba
 
@@ -321,4 +321,4 @@ Aquí va solo lo que necesita el sistema entero para tener sentido: que arranca,
 - Para probar dos servicios juntos, comprueba el efecto en la base de datos y pon un límite de tiempo a la espera.
 - Pon timeouts a todo y vuelca los logs cuando el sistema no arranque, para que un fallo se pueda diagnosticar desde el log del job.
 
-El código está en [entry-hub](https://github.com/MookieFumi/entry-hub). En el [siguiente post](/2026-10-11-aspire-kubernetes-helm-kind), el último de la serie, el AppHost deja de arrancar procesos en tu máquina y se convierte en un chart de Helm que instalamos en Kubernetes.
+El código está en [entry-hub](https://github.com/mookie-studio/entry-hub). En el [siguiente post](/2026-10-11-aspire-kubernetes-helm-kind), el último de la serie, el AppHost deja de arrancar procesos en tu máquina y se convierte en un chart de Helm que instalamos en Kubernetes.

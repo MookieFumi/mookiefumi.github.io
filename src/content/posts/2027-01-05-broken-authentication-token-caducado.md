@@ -25,7 +25,7 @@ La lista de síntomas es larga. Una parte va de contraseñas y del login: creden
 
 En el apartado de prevención, OWASP pide entender qué hace cada mecanismo de autenticación y lo resume en una frase: "OAuth is not authentication, and neither are API keys".
 
-En este post me quedo con lo que le toca a la API. Con la forma de autenticar que usa [entry-hub](https://github.com/MookieFumi/entry-hub), la API de reservas de esta serie, eso es validar bien los JWT.
+En este post me quedo con lo que le toca a la API. Con la forma de autenticar que usa [entry-hub](https://github.com/mookie-studio/entry-hub), la API de reservas de esta serie, eso es validar bien los JWT.
 
 ## Qué valida JwtBearer por defecto
 
@@ -169,4 +169,4 @@ Si alguien hace ese "arreglo" algún día, el PR no pasa.
 - Las API keys identifican aplicaciones, no usuarios.
 - Un test que manda tokens inválidos y exige `401` evita que alguien rompa la validación sin darse cuenta.
 
-Los tests están en [entry-hub](https://github.com/MookieFumi/entry-hub).
+Los tests están en [entry-hub](https://github.com/mookie-studio/entry-hub).

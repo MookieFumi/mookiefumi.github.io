@@ -10,7 +10,7 @@ published: true
 
 Un día la API necesita un cambio que rompe a los clientes: un campo nuevo obligatorio, una respuesta con otra forma. Sale la `v2`, y la `v1` tiene que seguir funcionando mientras los clientes migran. Lo primero que pide el cuerpo es buscar una librería de versionado. En .NET la conocida es [Asp.Versioning](https://github.com/dotnet/aspnet-api-versioning), y para Minimal APIs su paquete es `Asp.Versioning.Http`.
 
-En [entry-hub](https://github.com/MookieFumi/entry-hub) no la usamos. Todo cuelga de `/api/v1` desde el primer día, con un grupo de rutas y nada más. Para que la comparación sea justa, el repositorio tiene un ejemplo en `src/samples/versioning` con la misma API de dos versiones hecha de las dos formas: `GET /rooms`, que en la `v2` añade la planta.
+En [entry-hub](https://github.com/mookie-studio/entry-hub) no la usamos. Todo cuelga de `/api/v1` desde el primer día, con un grupo de rutas y nada más. Para que la comparación sea justa, el repositorio tiene un ejemplo en `src/samples/versioning` con la misma API de dos versiones hecha de las dos formas: `GET /rooms`, que en la `v2` añade la planta.
 
 ## Con grupos de rutas
 
@@ -113,4 +113,4 @@ entry-hub se queda con grupos de rutas. Tiene una sola versión, los clientes so
 - Para versionar por URL no hace falta ninguna librería: un `MapGroup` por versión y, si quieres, un documento OpenAPI por versión.
 - `Asp.Versioning.Http` añade lo que los grupos no tienen: obsolescencia anunciada en cada respuesta y la versión desde cabeceras o query string.
 
-El código de las dos versiones está en [entry-hub](https://github.com/MookieFumi/entry-hub/tree/main/src/samples/versioning). En la siguiente píldora vemos cómo entry-hub envía la ocupación de una sala en tiempo real con Server-Sent Events.
+El código de las dos versiones está en [entry-hub](https://github.com/mookie-studio/entry-hub/tree/main/src/samples/versioning). En la siguiente píldora vemos cómo entry-hub envía la ocupación de una sala en tiempo real con Server-Sent Events.

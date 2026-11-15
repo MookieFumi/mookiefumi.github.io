@@ -10,7 +10,7 @@ published: true
 
 La primera vez que vi Minimal APIs fue en una demo con todo dentro de `Program.cs`: el `DbContext`, tres endpoints, la validación a mano y un `app.Run()` al final. Para una demo vale. En un proyecto real ese fichero llega a las ochocientas líneas y nadie quiere abrirlo. Durante un tiempo pensé que el problema era Minimal APIs. Me equivocaba: el problema era meterlo todo en un fichero.
 
-En esta serie vamos a construir [entry-hub](https://github.com/MookieFumi/entry-hub), una API para reservar salas de reuniones en una oficina. Tiene salas, reservas, autenticación con JWT y PostgreSQL detrás. En este primer post vemos qué ofrece hoy Minimal APIs y, al final, cómo organizar el código para que el `Program.cs` se quede en unas pocas líneas:
+En esta serie vamos a construir [entry-hub](https://github.com/mookie-studio/entry-hub), una API para reservar salas de reuniones en una oficina. Tiene salas, reservas, autenticación con JWT y PostgreSQL detrás. En este primer post vemos qué ofrece hoy Minimal APIs y, al final, cómo organizar el código para que el `Program.cs` se quede en unas pocas líneas:
 
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
@@ -412,4 +412,4 @@ Vertical slice no es gratis, y conviene saber dónde aprieta.
 - Lo que la hace crecer bien es la organización: una carpeta por caso de uso, con un endpoint que solo traduce HTTP y un handler concreto que hace el trabajo.
 - Una convención registra los handlers sola y un test se asegura de que ninguno se queda fuera.
 
-El código de este post está en [entry-hub](https://github.com/MookieFumi/entry-hub). En el siguiente vemos qué entra en la API: la validación integrada con `AddValidation`, las reglas de negocio en el handler y cómo devolver los errores con `ProblemDetails`.
+El código de este post está en [entry-hub](https://github.com/mookie-studio/entry-hub). En el siguiente vemos qué entra en la API: la validación integrada con `AddValidation`, las reglas de negocio en el handler y cómo devolver los errores con `ProblemDetails`.

@@ -8,7 +8,7 @@ series: aspire
 published: true
 ---
 
-El chart de Helm de [entry-hub](https://github.com/MookieFumi/entry-hub) llevaba tiempo en el repositorio. Lo genera Aspire a partir del AppHost, lo habíamos revisado, y la CI comprobaba en cada PR que estaba al día. Parecía completo: Deployments, un StatefulSet para PostgreSQL, Services, ConfigMaps y Secrets. Nadie lo había instalado.
+El chart de Helm de [entry-hub](https://github.com/mookie-studio/entry-hub) llevaba tiempo en el repositorio. Lo genera Aspire a partir del AppHost, lo habíamos revisado, y la CI comprobaba en cada PR que estaba al día. Parecía completo: Deployments, un StatefulSet para PostgreSQL, Services, ConfigMaps y Secrets. Nadie lo había instalado.
 
 El día que lo instalamos en un clúster de verdad, `helm install` falló en menos de un segundo. Y si hubiera pasado, la API habría arrancado contra una base de datos que no existía. Este post va de eso: qué viaja de Aspire a Kubernetes, qué se queda por el camino y cómo comprobarlo en cada PR para no volver a enterarnos tarde.
 
@@ -426,4 +426,4 @@ Y Aspire, en tres:
 - Que la CI compruebe que el chart está al día no demuestra que funcione. Un clúster kind en cada PR sí, y los runners de GitHub ya traen todo lo necesario.
 - `PublishAsKubernetesService` permite corregir lo que genera el publicador sin tocar el chart a mano: el esquema de las probes, un init container para las migraciones y `maxUnavailable: 0` para que `helm --wait` y las actualizaciones no te dejen sin API.
 
-El código está en [entry-hub](https://github.com/MookieFumi/entry-hub).
+El código está en [entry-hub](https://github.com/mookie-studio/entry-hub).

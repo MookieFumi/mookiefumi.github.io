@@ -22,7 +22,7 @@ Los balanceadores se dividen por la capa en la que trabajan. Uno de capa 4 repar
 
 ## La demo
 
-En [entry-hub](https://github.com/MookieFumi/entry-hub/tree/main/src/samples/two-instances) hay dos proyectos. `ProductsApi` tiene dos endpoints: `GET /products/{id}` lee un producto a través de una caché, y `PUT /products/{id}/price/{price}` le cambia el precio. Las dos instancias comparten un fichero JSON como base de datos. `Balancer` es YARP delante de las dos instancias, con round robin. El precio de cada producto empieza en 10.
+En [entry-hub](https://github.com/mookie-studio/entry-hub/tree/main/src/samples/two-instances) hay dos proyectos. `ProductsApi` tiene dos endpoints: `GET /products/{id}` lee un producto a través de una caché, y `PUT /products/{id}/price/{price}` le cambia el precio. Las dos instancias comparten un fichero JSON como base de datos. `Balancer` es YARP delante de las dos instancias, con round robin. El precio de cada producto empieza en 10.
 
 Un script ejecuta cada experimento. Todos los números de este post salen de ahí, en local y sin Docker.
 
@@ -138,4 +138,4 @@ Si tu API corre en una sola instancia y aguanta el tráfico, un balanceador no t
 - El rate limiter de .NET cuenta por instancia. Con dos instancias pasaron las 30 peticiones de un límite de 20. En el balanceador pasaron 20.
 - Los números salen de un script que se puede ejecutar en local, sin Docker.
 
-El código y el script están en [entry-hub](https://github.com/MookieFumi/entry-hub/tree/main/src/samples/two-instances).
+El código y el script están en [entry-hub](https://github.com/mookie-studio/entry-hub/tree/main/src/samples/two-instances).

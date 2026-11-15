@@ -10,7 +10,7 @@ published: true
 
 Creas una API nueva con la plantilla de .NET, la arrancas y vas a `/swagger`. Un 404. Desde .NET 9 la plantilla ya no trae Swashbuckle ni Swagger UI. En su lugar trae `Microsoft.AspNetCore.OpenApi`, un paquete del propio ASP.NET Core que genera el documento OpenAPI, y no trae ninguna página para verlo.
 
-Al principio parece que te han quitado algo. Pero el cambio tiene sentido: el documento lo genera el framework a partir del código, y la página que lo enseña es otra pieza que eliges tú. En [entry-hub](https://github.com/MookieFumi/entry-hub) hemos ido un paso más allá. El documento se escribe en un fichero en cada build, se revisa en cada PR y se publica con cada versión, así que hace de contrato de la API.
+Al principio parece que te han quitado algo. Pero el cambio tiene sentido: el documento lo genera el framework a partir del código, y la página que lo enseña es otra pieza que eliges tú. En [entry-hub](https://github.com/mookie-studio/entry-hub) hemos ido un paso más allá. El documento se escribe en un fichero en cada build, se revisa en cada PR y se publica con cada versión, así que hace de contrato de la API.
 
 Este es el tercer post de la serie. En el [primero](/2026-09-23-minimal-apis-vertical-slice) organizamos la API por casos de uso y en el [segundo](/2026-09-24-validacion-errores-minimal-apis) vimos la validación y los errores. Aquí vemos qué cuenta el documento de todo eso y qué se le escapa.
 
@@ -185,7 +185,7 @@ En entry-hub Scalar solo existe en Development. Fuera de ahí no se mapea, y el 
 
 ## Cuando hay varias versiones
 
-entry-hub solo tiene `v1`, pero ¿qué pasa el día que salga una `v2` con cambios incompatibles? Los clientes de la `v1` necesitan su contrato, y los nuevos el suyo. Lo natural es un documento por versión. Para que el código sea real lo he montado en el [ejemplo de versionado](https://github.com/MookieFumi/entry-hub/tree/main/src/samples/versioning/MapGroupVersioning) del repositorio, donde cada versión es un grupo de rutas:
+entry-hub solo tiene `v1`, pero ¿qué pasa el día que salga una `v2` con cambios incompatibles? Los clientes de la `v1` necesitan su contrato, y los nuevos el suyo. Lo natural es un documento por versión. Para que el código sea real lo he montado en el [ejemplo de versionado](https://github.com/mookie-studio/entry-hub/tree/main/src/samples/versioning/MapGroupVersioning) del repositorio, donde cada versión es un grupo de rutas:
 
 ```csharp
 // One OpenAPI document per version. Each one keeps only the endpoints under its own prefix.
@@ -289,4 +289,4 @@ Aquí sí se usa el CDN, porque la página es estática y no hay una aplicación
 - Scalar lo enseña en local, con un selector cuando hay varias versiones, y cada versión tiene su documento.
 - El build escribe el contrato en el repositorio, la CI falla si no está al día y cada release lo publica. El cambio de la API se revisa en el PR, al lado del código.
 
-El código está en [entry-hub](https://github.com/MookieFumi/entry-hub). En el siguiente post cruzamos el documento y Scalar con la autenticación: el candado en las operaciones que piden token y cómo probarlas desde Scalar. Más adelante, en el post de contract testing, comprobaremos que las respuestas reales cumplen el contrato.
+El código está en [entry-hub](https://github.com/mookie-studio/entry-hub). En el siguiente post cruzamos el documento y Scalar con la autenticación: el candado en las operaciones que piden token y cómo probarlas desde Scalar. Más adelante, en el post de contract testing, comprobaremos que las respuestas reales cumplen el contrato.

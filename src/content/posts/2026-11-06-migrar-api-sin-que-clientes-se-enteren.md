@@ -34,7 +34,7 @@ Aquí nos interesa el gateway. El balanceador lo vemos en el siguiente post.
 
 ## La demo
 
-En [entry-hub](https://github.com/MookieFumi/entry-hub/tree/main/src/samples/gateway) hay tres proyectos pequeños. `LegacyApi` hace de sistema antiguo y `NewApi` de API nueva. `Gateway` es YARP delante de los dos. Ninguno de los dos backends es el código real de entry-hub: son piezas mínimas para ver el comportamiento. Cada respuesta lleva una cabecera `X-Served-By` con el nombre del backend que la ha dado, para ver quién contesta.
+En [entry-hub](https://github.com/mookie-studio/entry-hub/tree/main/src/samples/gateway) hay tres proyectos pequeños. `LegacyApi` hace de sistema antiguo y `NewApi` de API nueva. `Gateway` es YARP delante de los dos. Ninguno de los dos backends es el código real de entry-hub: son piezas mínimas para ver el comportamiento. Cada respuesta lleva una cabecera `X-Served-By` con el nombre del backend que la ha dado, para ver quién contesta.
 
 El gateway lee las rutas de un fichero propio. Este es el primero (he quitado las líneas del límite de peticiones, que vemos más abajo):
 
@@ -144,4 +144,4 @@ Si tu API es una sola, la consumen tus propios clientes y puedes cambiarla cuand
 - El rate limiting en el gateway dio 20 respuestas `200` y 10 respuestas `429` de 30 peticiones por API key.
 - La demo no traduce el formato de las respuestas ni reparte porcentajes de tráfico.
 
-El código y el script están en [entry-hub](https://github.com/MookieFumi/entry-hub/tree/main/src/samples/gateway).
+El código y el script están en [entry-hub](https://github.com/mookie-studio/entry-hub/tree/main/src/samples/gateway).

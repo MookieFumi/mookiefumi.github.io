@@ -8,7 +8,7 @@ series: minimal-apis-dotnet
 published: true
 ---
 
-Tres peticiones para reservar una sala en [entry-hub](https://github.com/MookieFumi/entry-hub), y las tres fallan. La primera llega sin título y con cero asistentes. La segunda pide la sala un sábado para nueve personas, y la sala es de cuatro. La tercera es correcta, pero otra persona acaba de reservar esa misma franja.
+Tres peticiones para reservar una sala en [entry-hub](https://github.com/mookie-studio/entry-hub), y las tres fallan. La primera llega sin título y con cero asistentes. La segunda pide la sala un sábado para nueve personas, y la sala es de cuatro. La tercera es correcta, pero otra persona acaba de reservar esa misma franja.
 
 Las tres son "errores de validación", y sería fácil responder un 400 a todas. Pero no las detecta el mismo código y el cliente no tiene que hacer lo mismo con cada una: la primera es un formulario mal rellenado, la segunda una regla del negocio y la tercera una carrera que el usuario ha perdido. En el [post anterior](/2026-09-23-minimal-apis-vertical-slice) organizamos la API en una carpeta por caso de uso. En este vemos dónde se valida cada cosa y cómo se lo contamos al cliente.
 
@@ -383,4 +383,4 @@ Lo que no hemos sustituido son las cosas en las que FluentValidation sigue siend
 - Las reglas que necesitan datos o la hora van en el handler, que devuelve un resultado tipado con todas las violaciones, y el endpoint lo convierte en un 422.
 - Las reglas que dependen de la concurrencia las decide la base de datos. Una restricción de exclusión y un 409 hacen que dos peticiones simultáneas no puedan ganar las dos.
 
-El código está en [entry-hub](https://github.com/MookieFumi/entry-hub). En el siguiente post vemos cómo queda todo esto en el documento OpenAPI y cómo se ve con Scalar.
+El código está en [entry-hub](https://github.com/mookie-studio/entry-hub). En el siguiente post vemos cómo queda todo esto en el documento OpenAPI y cómo se ve con Scalar.

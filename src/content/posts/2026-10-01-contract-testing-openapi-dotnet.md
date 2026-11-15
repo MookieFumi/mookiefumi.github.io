@@ -8,7 +8,7 @@ series: minimal-apis-dotnet
 published: true
 ---
 
-En el [post de OpenAPI](/2026-09-25-openapi-scalar-minimal-apis) dejamos el contrato de [entry-hub](https://github.com/MookieFumi/entry-hub) en el repositorio, generado en cada build y vigilado por la CI: si cambia un endpoint y el contrato no, el PR falla. Eso asegura que el fichero refleja el código. Lo que no asegura es que la API, en marcha, responda lo que el fichero dice.
+En el [post de OpenAPI](/2026-09-25-openapi-scalar-minimal-apis) dejamos el contrato de [entry-hub](https://github.com/mookie-studio/entry-hub) en el repositorio, generado en cada build y vigilado por la CI: si cambia un endpoint y el contrato no, el PR falla. Eso asegura que el fichero refleja el código. Lo que no asegura es que la API, en marcha, responda lo que el fichero dice.
 
 Son dos direcciones distintas. El generador lee los tipos de los endpoints, pero la respuesta real pasa por la serialización, por los filtros y por el código que decide el estado HTTP. Y el post de OpenAPI ya dejó un ejemplo de que no siempre coinciden: crear una sala con un nombre repetido responde `409`, y el contrato no lo mencionaba.
 
@@ -163,4 +163,4 @@ Y esto es contract testing del lado del proveedor: comprobamos que la API cumple
 - Que la CI compruebe que el contrato está al día con el código no basta: hay que comprobar también que las respuestas reales lo cumplen. Con OpenAPI 3.1 basta una librería de JSON Schema y un test de integración.
 - Los errores son parte del contrato. `ProducesProblem`, `Produces` y un tipo propio para el `422` los declaran, y el mismo test los valida.
 
-El código está en [entry-hub](https://github.com/MookieFumi/entry-hub). En la siguiente píldora vemos cómo detectar en la CI los cambios del contrato que rompen a los clientes.
+El código está en [entry-hub](https://github.com/mookie-studio/entry-hub). En la siguiente píldora vemos cómo detectar en la CI los cambios del contrato que rompen a los clientes.

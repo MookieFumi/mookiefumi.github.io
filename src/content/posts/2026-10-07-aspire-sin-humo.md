@@ -8,7 +8,7 @@ series: aspire
 published: true
 ---
 
-Hasta hace poco, arrancar [entry-hub](https://github.com/MookieFumi/entry-hub) en local eran tres pasos:
+Hasta hace poco, arrancar [entry-hub](https://github.com/mookie-studio/entry-hub) en local eran tres pasos:
 
 ```bash
 docker compose up -d        # PostgreSQL on localhost:5432
@@ -257,4 +257,4 @@ En cuanto hay dos servicios y una base de datos, como en entry-hub, sí compensa
 - ServiceDefaults da a cada servicio OpenTelemetry, health checks, service discovery y resiliencia. El dashboard muestra esa telemetría, y `Scalar.Aspire` añade la referencia de la API.
 - No es un runtime de producción ni un Docker Compose. Si tienes un único servicio, o no tienes contenedores en la máquina o en la CI, mejor no ponerlo.
 
-El código está en [entry-hub](https://github.com/MookieFumi/entry-hub). En el [siguiente post](/2026-10-09-tests-sistema-aspire) usamos este mismo AppHost desde un test, para comprobar que una reserva acaba en un recordatorio con todo el sistema arrancado.
+El código está en [entry-hub](https://github.com/mookie-studio/entry-hub). En el [siguiente post](/2026-10-09-tests-sistema-aspire) usamos este mismo AppHost desde un test, para comprobar que una reserva acaba en un recordatorio con todo el sistema arrancado.

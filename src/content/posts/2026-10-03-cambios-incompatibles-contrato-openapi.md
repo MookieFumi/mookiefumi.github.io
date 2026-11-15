@@ -8,7 +8,7 @@ series: minimal-apis-dotnet
 published: true
 ---
 
-En [entry-hub](https://github.com/MookieFumi/entry-hub) el contrato OpenAPI vive en el repositorio. La CI comprueba que está al día con el código, como vimos en el [post de OpenAPI](/2026-09-25-openapi-scalar-minimal-apis), y un test comprueba que las respuestas reales lo cumplen, como vimos en el [post de contract testing](/2026-10-01-contract-testing-openapi-dotnet). Falta una pregunta: cuando un PR cambia el contrato, ¿rompe a los clientes que ya lo usan?
+En [entry-hub](https://github.com/mookie-studio/entry-hub) el contrato OpenAPI vive en el repositorio. La CI comprueba que está al día con el código, como vimos en el [post de OpenAPI](/2026-09-25-openapi-scalar-minimal-apis), y un test comprueba que las respuestas reales lo cumplen, como vimos en el [post de contract testing](/2026-10-01-contract-testing-openapi-dotnet). Falta una pregunta: cuando un PR cambia el contrato, ¿rompe a los clientes que ya lo usan?
 
 El diff del PR lo enseña todo, pero no distingue. Añadir un campo a una respuesta y renombrar otro se ven igual de inocentes en un JSON de casi 900 líneas. En esta píldora la CI hace esa distinción por nosotros.
 
@@ -150,4 +150,4 @@ Y oasdiff solo sabe lo que dice el contrato. Si un endpoint cambia lo que hace s
 - Un cambio es incompatible cuando rompe a un cliente que no ha cambiado nada. `oasdiff breaking --fail-on ERR` lo detecta comparando el contrato del PR con el de `main`.
 - El resumen del job enseña todos los cambios, y la `!` del título deja pasar los incompatibles a propósito y sube la versión mayor.
 
-El código está en [entry-hub](https://github.com/MookieFumi/entry-hub). En la siguiente píldora añadimos un manejador global de errores con `IExceptionHandler`, para que ninguna excepción llegue al cliente con su traza.
+El código está en [entry-hub](https://github.com/mookie-studio/entry-hub). En la siguiente píldora añadimos un manejador global de errores con `IExceptionHandler`, para que ninguna excepción llegue al cliente con su traza.

@@ -8,7 +8,7 @@ series: minimal-apis-dotnet
 published: true
 ---
 
-En la puerta de cada sala de [entry-hub](https://github.com/MookieFumi/entry-hub) hay una pantalla que dice si la sala está libre y hasta cuándo. Tiene que enterarse de los cambios sin que nadie recargue nada. Se puede hacer con polling, preguntando cada pocos segundos, o con SignalR. Pero la información solo va en un sentido, del servidor a la pantalla, y para eso hay algo más sencillo: Server-Sent Events.
+En la puerta de cada sala de [entry-hub](https://github.com/mookie-studio/entry-hub) hay una pantalla que dice si la sala está libre y hasta cuándo. Tiene que enterarse de los cambios sin que nadie recargue nada. Se puede hacer con polling, preguntando cada pocos segundos, o con SignalR. Pero la información solo va en un sentido, del servidor a la pantalla, y para eso hay algo más sencillo: Server-Sent Events.
 
 Con SSE el cliente hace una petición HTTP normal y la respuesta no se cierra. El servidor va escribiendo eventos de texto por esa misma respuesta, con tipo `text/event-stream`. .NET 10 lo trae de serie en Minimal APIs con `TypedResults.ServerSentEvents`.
 
@@ -173,4 +173,4 @@ SignalR sigue siendo la opción cuando el cliente también tiene que mandar mens
 - `TypedResults.ServerSentEvents` con un `IAsyncEnumerable` basta para emitir eventos. Comprueba lo que pueda dar `404` antes de empezar el stream.
 - La desconexión del cliente cancela el token y el iterador termina solo. En el navegador, `EventSource` reconecta solo, pero no admite cabeceras de autenticación.
 
-El código está en [entry-hub](https://github.com/MookieFumi/entry-hub). En el siguiente post comprobamos que lo que responde la API cumple el contrato OpenAPI.
+El código está en [entry-hub](https://github.com/mookie-studio/entry-hub). En el siguiente post comprobamos que lo que responde la API cumple el contrato OpenAPI.

@@ -8,7 +8,7 @@ series: aspire
 published: true
 ---
 
-Los tests de la API de [entry-hub](https://github.com/MookieFumi/entry-hub) necesitan un PostgreSQL de verdad. Hasta hace poco, ese PostgreSQL no lo ponían los tests. En la CI lo ponía el job, y en tu máquina lo tenías que tener instalado tú, con el usuario, la contraseña y la base de datos que el código esperaba. Si no lo tenías, los tests fallaban al conectar, y el error no decía qué te faltaba.
+Los tests de la API de [entry-hub](https://github.com/mookie-studio/entry-hub) necesitan un PostgreSQL de verdad. Hasta hace poco, ese PostgreSQL no lo ponían los tests. En la CI lo ponía el job, y en tu máquina lo tenías que tener instalado tú, con el usuario, la contraseña y la base de datos que el código esperaba. Si no lo tenías, los tests fallaban al conectar, y el error no decía qué te faltaba.
 
 El mismo test pasaba o fallaba según quién lo ejecutara. Este post va de cómo dejó de ser así con [Testcontainers](https://dotnet.testcontainers.org/).
 
@@ -127,4 +127,4 @@ Es fácil mezclarlos, porque los dos arrancan PostgreSQL en Docker desde un test
 - Los tests comparten base de datos: cada uno crea sus datos con nombres únicos, y los que cuentan usan su propia planta.
 - Sin Docker, `ENTRYHUB_TEST_CONNECTION` apunta a un PostgreSQL propio, y `check-docker.sh` hace que la CI falle con un mensaje claro.
 
-El cambio completo está en [entry-hub](https://github.com/MookieFumi/entry-hub/blob/main/src/tests/EntryHub.Api.Tests/Support/TestDatabase.cs).
+El cambio completo está en [entry-hub](https://github.com/mookie-studio/entry-hub/blob/main/src/tests/EntryHub.Api.Tests/Support/TestDatabase.cs).

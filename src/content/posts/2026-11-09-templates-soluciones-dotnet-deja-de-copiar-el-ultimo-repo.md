@@ -22,7 +22,7 @@ dotnet new launchpad-api -n Orders --worker    # + background worker
 
 ## Qué lleva dentro (y qué no)
 
-Como referencia usé [entry-hub](https://github.com/MookieFumi/entry-hub), el repo de las demos de esta serie. De ahí salen la estructura de `src/`, los ficheros de gobernanza, la API organizada por funcionalidades y el CI. Lo que se queda fuera es todo lo que solo tiene sentido en esas demos: Kubernetes, el gateway, el dominio de salas, los tests que arrancan el sistema entero.
+Como referencia usé [entry-hub](https://github.com/mookie-studio/entry-hub), el repo de las demos de esta serie. De ahí salen la estructura de `src/`, los ficheros de gobernanza, la API organizada por funcionalidades y el CI. Lo que se queda fuera es todo lo que solo tiene sentido en esas demos: Kubernetes, el gateway, el dominio de salas, los tests que arrancan el sistema entero.
 
 La plantilla es un ejemplo mínimo a propósito. El único *slice* es `GET /api/v1/greetings/{name}`: un endpoint, un handler y una respuesta, sin base de datos. Compila y pasa sus tests desde el primer minuto, y cada equipo lo sustituye por su primera funcionalidad real.
 

@@ -26,7 +26,7 @@ El mismo documento lo separa de otro riesgo con el que se suele confundir. Si el
 
 ## El endpoint vulnerable
 
-En [entry-hub](https://github.com/MookieFumi/entry-hub), la API de reservas de salas de esta serie, cualquier empleado puede consultar una reserva por su id. El grupo de rutas exige estar autenticado y tener un rol de empleado:
+En [entry-hub](https://github.com/mookie-studio/entry-hub), la API de reservas de salas de esta serie, cualquier empleado puede consultar una reserva por su id. El grupo de rutas exige estar autenticado y tener un rol de empleado:
 
 ```csharp
 var bookings = v1.MapGroup("/bookings").WithTags("Bookings").RequireAuthorization(Policies.AnyEmployee);
@@ -174,4 +174,4 @@ Las dos se combinan bien. En entry-hub, el listado usa la consulta acotada porqu
 - Hay dos arreglos: filtrar la consulta por el propietario o cargar el objeto y preguntar a `IAuthorizationService`. El segundo deja la regla en un solo sitio.
 - Ninguno de los dos te protege del endpoint en el que te olvides de aplicarlo.
 
-El código está en [entry-hub](https://github.com/MookieFumi/entry-hub). En el siguiente post veremos qué no te protege aunque lo parezca, como usar GUID en lugar de enteros, si conviene devolver `403` o `404` y el test que falla cuando un endpoint nuevo se olvida de la comprobación.
+El código está en [entry-hub](https://github.com/mookie-studio/entry-hub). En el siguiente post veremos qué no te protege aunque lo parezca, como usar GUID en lugar de enteros, si conviene devolver `403` o `404` y el test que falla cuando un endpoint nuevo se olvida de la comprobación.

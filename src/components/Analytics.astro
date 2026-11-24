@@ -1,0 +1,16 @@
+---
+// Google Analytics 4. Only rendered in production builds so local development
+// does not pollute the statistics.
+const MEASUREMENT_ID = 'G-FNSBZN1TJN';
+const enabled = import.meta.env.PROD;
+const inlineScript = `window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${MEASUREMENT_ID}');`;
+---
+{enabled && (
+  <>
+    <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${MEASUREMENT_ID}`}></script>
+    <script is:inline set:html={inlineScript}></script>
+  </>
+)}

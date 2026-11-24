@@ -1626,12 +1626,23 @@ a.chip:hover {
 
 .consent {
   position: fixed;
-  left: 16px;
-  right: 16px;
-  bottom: 16px;
+  inset: 0;
   z-index: 50;
-  max-width: 520px;
-  margin-inline: auto;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(5, 7, 10, 0.55);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.consent[hidden] {
+  display: none;
+}
+
+.consent-window {
+  width: 100%;
+  max-width: 480px;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
@@ -1639,17 +1650,8 @@ a.chip:hover {
   overflow: hidden;
 }
 
-.consent[hidden] {
-  display: none;
-}
-
-@media (min-width: 640px) {
-  .consent {
-    right: auto;
-    margin-inline: 0;
-    left: 24px;
-    bottom: 24px;
-  }
+:root[data-theme="light"] .consent {
+  background: rgba(244, 246, 248, 0.55);
 }
 
 .consent-body {

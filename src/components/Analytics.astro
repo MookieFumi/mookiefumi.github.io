@@ -6,7 +6,8 @@ import WindowBar from './WindowBar.astro';
 const MEASUREMENT_ID = 'G-FNSBZN1TJN';
 const track = import.meta.env.PROD;
 ---
-<div class="consent" data-consent role="dialog" aria-labelledby="consent-title" hidden>
+<div class="consent" data-consent hidden>
+  <div class="consent-window" role="dialog" aria-modal="true" aria-labelledby="consent-title">
   <WindowBar title="cookies.sh" hidden />
   <div class="consent-body">
     <p id="consent-title" class="consent-text">
@@ -16,6 +17,7 @@ const track = import.meta.env.PROD;
       <button type="button" class="consent-btn consent-btn-primary" data-consent-accept>aceptar</button>
       <button type="button" class="consent-btn" data-consent-reject>rechazar</button>
     </div>
+  </div>
   </div>
 </div>
 <script is:inline define:vars={{ MEASUREMENT_ID, track }}>

@@ -1,6 +1,5 @@
 ---
 import { SITE } from '../site';
-import Analytics from './Analytics.astro';
 // Estilos propios: Astro los empaqueta con hash en el nombre, así que pueden cachearse sin caducidad.
 import '../styles/tokens.css';
 import '../styles/site.css';
@@ -119,8 +118,6 @@ const jsonLd = graph.length ? JSON.stringify({ '@context': 'https://schema.org',
 
   <link rel="preload" href={geistLatin} as="font" type="font/woff2" crossorigin>
   <link rel="preload" href={geistMonoLatin} as="font" type="font/woff2" crossorigin>
-
-  <Analytics />
 
   <slot />
 

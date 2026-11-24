@@ -2,23 +2,35 @@
 
 GitHub Pages no permite configurar cabeceras de caché ni devolver redirecciones 301: sirve todo con `Cache-Control: max-age=600` y las redirecciones de `astro.config.mjs` son páginas HTML con `<meta http-equiv="refresh">`. Google las acaba siguiendo, pero un 301 real es más fiable y transmite mejor la autoridad de la URL antigua.
 
-Para tener ambas cosas, el dominio tiene que pasar por Cloudflare (registros DNS con la nube naranja, «Proxied»). Todo lo de este documento se configura en el panel de Cloudflare, no en el repositorio, y no hace nada mientras el dominio no esté detrás del proxy.
+Para tener ambas cosas, el dominio pasa por Cloudflare (registros DNS con la nube naranja, «Proxied»). Todo lo de este documento se configura en el panel de Cloudflare, no en el repositorio.
 
-Comprueba si lo está:
+## Estado: aplicado y verificado el 2026-11-24
 
-```bash
-curl -sI https://mookiefumi.com | grep -i -E 'cf-ray|server'
-```
+Todas las reglas están creadas en el panel. Se comprobaron con `curl` contra producción el 2026-11-24, entre las 21:22 y las 21:38 (hora de Madrid), y se repitieron a las 21:38.
 
-Si aparece `cf-ray` y `server: cloudflare`, está detrás del proxy. Si no, hay que activar el proxy en **DNS → Records** antes de seguir.
+| Paso | Qué se comprobó | Resultado | Estado |
+| --- | --- | --- | --- |
+| Proxy | `curl -sI https://mookiefumi.com` muestra `server: cloudflare` y `cf-ray` | Detrás del proxy | Confirmado |
+| Caché `/_astro/*` | `/_astro/Base.DpvRQtPz.css` | `cache-control: max-age=31536000`; segunda petición con `cf-cache-status: HIT` | Confirmado |
+| Caché imágenes | `/img/brand/mookie-og.png` | `cache-control: max-age=86400` | Confirmado |
+| HTML | `/` | `max-age=600` (sin cambios, es lo previsto) | Confirmado |
+| 301 `/temas` | `curl -sI` y con User-Agent de Googlebot | `301` a `https://mookiefumi.com/topics` | Confirmado |
+| 301 `/recursos` | `curl -sI` | `301` a `https://mookiefumi.com/resources` | Confirmado |
+| 301 slug MacOS | `curl -sI` | `301` a `.../2019-10-20-unit-testing-tools-using-your-macos-terminal` | Confirmado |
+| 301 `/index.html` | `curl -sI` | `301` a `https://mookiefumi.com/` | Confirmado |
+| `www` | `curl -sI https://www.mookiefumi.com/` | `301` a `https://mookiefumi.com/` | Confirmado (ya redirigía) |
+| `.html` | `/topics.html` | `404`, no hay duplicado que redirigir | No necesaria |
+| Search Console, prueba en vivo | Inspección de URLs sobre `/temas` | Google la ve disponible porque sigue la redirección | Confirmado (2026-11-24) |
+| Search Console, informe «Página con redirección» | `/temas` | Aún no aparece | Pendiente |
+| Sitemap | `sitemap-index.xml` enviado a Google y a Bing | Enviado el 2026-11-24 | Confirmado |
 
 ## 1. Reglas de caché
 
-En **Caching → Cache Rules → Create rule**. Crea estas dos, en este orden.
+En **Rules → Overview → Create rule → Cache Rule**. Crea estas dos, en este orden.
 
 ### `/_astro/*`: un año, inmutable
 
-Desde que CSS, JavaScript y fuentes salen empaquetados por Astro, su nombre lleva un hash del contenido (`Base.Be8E0LfQ.css`). Si el contenido cambia, cambia el nombre, así que puede cachearse sin caducidad.
+Desde que CSS, JavaScript y fuentes salen empaquetados por Astro, su nombre lleva un hash del contenido (`Base.DpvRQtPz.css`). Si el contenido cambia, cambia el nombre, así que puede cachearse sin caducidad.
 
 - **When incoming requests match:** `URI Path` `starts with` `/_astro/`
 - **Cache eligibility:** Eligible for cache
@@ -40,15 +52,16 @@ Cloudflare no cachea HTML por defecto y GitHub Pages ya lo sirve con diez minuto
 
 ## 2. Redirecciones 301
 
-En **Rules → Redirect Rules → Create rule**, con plantilla «Custom filter expression» y tipo **Static** (o **Dynamic** donde se indica). Código de estado **301**. Activa **Preserve query string**.
+En **Rules → Overview → Create rule → Redirect Rule**, con plantilla «Custom filter expression» y tipo **Static**. Código de estado **301**. Activa **Preserve query string**.
 
 | Origen | Destino |
 | --- | --- |
 | `/temas` | `/topics` |
 | `/recursos` | `/resources` |
 | `/2019-10-20-unit-testing-tools-using-your-MacOS-terminal` | `/2019-10-20-unit-testing-tools-using-your-macos-terminal` |
+| `/index.html` | `/` |
 
-Son las mismas tres redirecciones que declara `astro.config.mjs`. Se mantienen allí como red de seguridad, por si el dominio dejara de pasar por Cloudflare. Para cada una, la expresión es:
+Las tres primeras son las mismas redirecciones que declara `astro.config.mjs`. Se mantienen allí como red de seguridad, por si el dominio dejara de pasar por Cloudflare. Para cada una, la expresión es:
 
 ```
 (http.host eq "mookiefumi.com" and http.request.uri.path eq "/temas")
@@ -56,23 +69,17 @@ Son las mismas tres redirecciones que declara `astro.config.mjs`. Se mantienen a
 
 con destino estático `https://mookiefumi.com/topics`.
 
-### Quitar `.html` de las URL (opcional, recomendado)
+### `index-html-to-root`
 
-Con `build.format: 'preserve'`, cada post existe como `/slug.html` y como `/slug`. El canonical ya apunta a la versión limpia, pero un 301 evita el duplicado del todo. Usa una regla con comodín:
+Regla añadida al aplicar el documento, para que la portada no tenga dos URL: Hostname `mookiefumi.com` **y** URI Path `equals` `/index.html`, con 301 a `https://mookiefumi.com/`.
 
-- **Request URL:** `https://mookiefumi.com/*.html`
-- **Target URL:** `https://mookiefumi.com/${1}`
-- **Status:** 301
+### `www` hacia el dominio sin `www`
 
-Pon antes otra regla que mande `/index.html` a `/`, para que la portada no acabe en `/index`.
+`www.mookiefumi.com` ya respondía con un 301 al dominio sin `www` antes de crear ninguna regla, así que no hay nada que configurar. La comprobación está en la tabla de estado.
 
-### `www` hacia el dominio sin `www` (solo si existe el registro)
+### Quitar `.html` de las URL: no necesario
 
-Si `www.mookiefumi.com` resuelve, redirígelo al dominio principal:
-
-- **Request URL:** `https://www.mookiefumi.com/*`
-- **Target URL:** `https://mookiefumi.com/${1}`
-- **Status:** 301
+Se planteó una regla con comodín (`https://mookiefumi.com/*.html` → `https://mookiefumi.com/${1}`), pero `https://mookiefumi.com/topics.html` devuelve 404, así que no hay versión duplicada con `.html` que redirigir. No se ha creado. Si en el futuro alguna URL con `.html` se sirviera con 200, habría que reconsiderarlo, siempre con `/index.html` resuelta antes.
 
 ## 3. Comprobar que funciona
 
@@ -86,7 +93,7 @@ curl -sI https://mookiefumi.com/temas | grep -i -E '^HTTP|location'
 # debe decir 301 y location: https://mookiefumi.com/topics
 ```
 
-Después, en Search Console, usa **Inspección de URLs** sobre `/temas`: debe indicar que redirige.
+Después, en Search Console, usa **Inspección de URLs** sobre `/temas`: debe indicar que redirige. El informe «Página con redirección» tarda en reflejarlo.
 
 ## Mantenimiento
 

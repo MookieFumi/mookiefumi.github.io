@@ -2,6 +2,7 @@
 import Head from '../components/Head.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import Analytics from '../components/Analytics.astro';
 
 interface Props {
   title?: string;
@@ -27,8 +28,8 @@ const { title, description, article, canonical, published, modified, image, noin
       <slot />
     </main>
     <Footer />
+    <Analytics />
     <script is:inline src="/js/site.js"></script>
     <slot name="scripts" />
-    <!-- Cloudflare Web Analytics --><script is:inline type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e95cc07b53044249b258add717d68750"}'></script><!-- End Cloudflare Web Analytics -->
   </body>
 </html>

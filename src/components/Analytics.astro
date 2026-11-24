@@ -1,0 +1,64 @@
+---
+// Google Analytics 4 con aviso de cookies (RGPD): el tag de Google solo se carga
+// si la persona acepta, y solo en producción para no ensuciar las estadísticas.
+import WindowBar from './WindowBar.astro';
+
+const MEASUREMENT_ID = 'G-FNSBZN1TJN';
+const track = import.meta.env.PROD;
+---
+<div class="consent" data-consent hidden>
+  <div class="consent-window" role="dialog" aria-modal="true" aria-labelledby="consent-title">
+  <WindowBar title="cookies.sh" hidden />
+  <div class="consent-body">
+    <p id="consent-title" class="consent-text">
+      <span class="consent-prompt">$</span> Uso Google Analytics para saber qué posts se leen. Solo se activa si aceptas.
+    </p>
+    <div class="consent-actions">
+      <button type="button" class="consent-btn" data-consent-reject>rechazar</button>
+      <button type="button" class="consent-btn consent-btn-primary" data-consent-accept>aceptar</button>
+    </div>
+  </div>
+  </div>
+</div>
+<script is:inline define:vars={{ MEASUREMENT_ID, track }}>
+  (function () {
+    var KEY = 'consent-analytics';
+    var banner = document.querySelector('[data-consent]');
+    var loaded = false;
+
+    function read() {
+      try { return localStorage.getItem(KEY); } catch (e) { return null; }
+    }
+    function save(value) {
+      try { localStorage.setItem(KEY, value); } catch (e) {}
+    }
+    function load() {
+      if (loaded || !track) return;
+      loaded = true;
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function () { window.dataLayer.push(arguments); };
+      window.gtag('js', new Date());
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtm.js?id=' + MEASUREMENT_ID;
+      document.head.appendChild(s);
+    }
+    function show() { if (banner) banner.hidden = false; }
+    function hide() { if (banner) banner.hidden = true; }
+
+    var saved = read();
+    if (saved === 'granted') load();
+    else if (saved !== 'denied') show();
+
+    document.addEventListener('click', function (e) {
+      var t = e.target instanceof Element ? e.target : null;
+      if (!t) return;
+      if (t.closest('[data-consent-accept]')) { save('granted'); hide(); load(); }
+      else if (t.closest('[data-consent-reject]')) {
+        save('denied'); hide();
+        // Si ya estaba cargado, se recarga para dejar de enviar datos.
+        if (loaded) location.reload();
+      } else if (t.closest('[data-consent-open]')) show();
+    });
+  })();
+</script>
